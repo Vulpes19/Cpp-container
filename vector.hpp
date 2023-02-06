@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/06 14:01:10 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:26:48 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ namespace ft
 			//default constructor
 			vector( void ) : data(NULL), size(0) {};
 
-			explicit vector( const Allocator &allocator );
-
-			//constructor
+			//fill constructor
 			explicit vector( size_type size, const T &val ) : size(size)
 			{
 				Allocator alloc;
@@ -39,6 +37,9 @@ namespace ft
 				for ( size_type i = 0; i < size; i++ )
 					alloc.construct(data + i, val);
 			};
+
+			//range constructor
+			// vector( Iterator first, Iterator last );
 
 			//copy constructor
 			vector( const vector &source )
@@ -91,6 +92,26 @@ namespace ft
 					throw(std::out_of_range("error: out of range"));
 				return ( data[index] );
 			};
+
+			//at member function
+			T	&at( size_type position ) const
+			{
+				return (position >= size) ? throw(std::out_of_range("error: out of range")) : data[position];
+			};
+			
+			//back memeber function
+			T	&back( void ) const
+			{
+				return (size > 0) ? data[size - 1] : throw(std::out_of_range("error out of range"));
+			};
+
+			//empty member function
+			bool	empty( void ) const
+			{
+				return (size == 0) ? true : false;
+			};
+
+			
 		private:
 			T	*data;
 			size_type	size;
