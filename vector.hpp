@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/06 15:20:17 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:52:35 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ namespace ft
 			//fill constructor
 			explicit vector( size_type size, const T &val ) : _size(size), _capacity(size)
 			{
-				Allocator alloc;
-
 				data = alloc.allocate( _size );
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.construct(data + i, val);
@@ -44,8 +42,6 @@ namespace ft
 			//copy constructor
 			vector( const vector &source )
 			{
-				Allocator alloc;
-
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.destroy( data + i );
 				alloc.deallocate( data, _capacity );
@@ -60,8 +56,6 @@ namespace ft
 			//copy assignement operator
 			vector	&operator= ( const vector &source )
 			{
-				Allocator alloc;
-
 				if ( this != &source )
 				{
 					for ( size_type i = 0; i < _size; i++ )
@@ -80,7 +74,6 @@ namespace ft
 			//destructor
 			~vector( void )
 			{
-				Allocator alloc;
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.destroy( data + i );
 				alloc.deallocate( data, _capacity );
@@ -112,17 +105,24 @@ namespace ft
 			};
 
 			//resize memeber function
-			// void	resize( size_type newSize, const T &val )
-			// {
-			// 	Allocate alloc;
-
-			// 	if ( newSize == 0 )
-			// 		throw(std::runtime_error("error: size can't be zero"));
-			// 	if ( newSize < size )
-			// 	{
-					
-			// 	}
-			// };
+			void	resize( size_type newSize, const T &val )
+			{
+				if ( newSize > _size )
+				{
+					_capacity = newSize;
+					T *newData = alloc.allocate(_capacity);
+					for ( size_type i = 0; i < _size; i++ )
+					{
+						alloc.construct(newData + i, data[i]);
+						alloc.destroy(data + i);
+					}
+					alloc.deallocate(data, _size);
+					data = newData;
+				}
+				for ( size_t i = _size; i < newSize; i++ )
+					data[i] = val;
+				_size = newSize;
+			};
 
 			//capacity member function
 			size_type	capacity( void ) const
