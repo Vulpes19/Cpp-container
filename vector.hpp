@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/07 14:01:57 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:21:32 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <cstddef>
 #include <stdexcept>
 
-typedef size_t size_type;
+
 // typedef Allocator allocator_type;
 
 namespace ft
@@ -25,6 +25,10 @@ namespace ft
 	class vector
 	{
 		public:
+			//alias
+			typedef size_t size_type;
+			typedef T* iterator;
+
 			//default constructor
 			vector( void ) : data(NULL), _size(0), _capacity(0) {};
 
@@ -38,6 +42,8 @@ namespace ft
 						throw(std::length_error("maximum supported size is exceeded"));
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.construct(data + i, val);
+				_begin = data;
+				_end = data + size - 1;
 			};
 
 			//range constructor
@@ -112,6 +118,20 @@ namespace ft
 				std::swap(_capacity, x._capacity);
 			};
 
+			/* iterators */
+			//begin member function
+			iterator	begin( void )
+			{
+				return (_begin);
+			};
+
+			//end member function
+			iterator	end( void )
+			{
+				return (_end);
+			};
+
+			//operations
 			//at member function
 			T	&at( size_type position ) const
 			{
@@ -241,6 +261,8 @@ namespace ft
 			};
 		private:
 			T			*data;
+			iterator	_begin;
+			iterator	_end;
 			size_type	_size;
 			size_type	_capacity;
 			Allocator	alloc;

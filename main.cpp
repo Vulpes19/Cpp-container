@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/07 14:01:42 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:20:17 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,46 +88,58 @@ int	main( void )
 	// }
 	
 	/*testing front, pop_back*/
-	std::vector<int> vec(1, 1);
-	ft::vector<int> vec2(3, 2);
-	ft::vector<int> vec3(2, 1);
-	ft::vector<int> vec1(1, 1);
+	// std::vector<int> vec(1, 1);
+	// ft::vector<int> vec2(3, 2);
+	// ft::vector<int> vec3(2, 1);
+	// ft::vector<int> vec1(1, 1);
 
-	std::cout << "vec2 size: " << vec2.size() << std::endl;
-	std::cout << "vec3 size: " << vec3.size() << std::endl;
-	std::cout << "vec2 capacity: " << vec2.capacity() << std::endl;
-	std::cout << "vec3 capacity: " << vec3.capacity() << std::endl;
-	printVecElements(vec2);
-	printVecElements(vec3);
-	vec2.swap(vec3);
-	std::cout << "vec2 size: " << vec2.size() << std::endl;
-	std::cout << "vec3 size: " << vec3.size() << std::endl;
-	std::cout << "vec2 capacity: " << vec2.capacity() << std::endl;
-	std::cout << "vec3 capacity: " << vec3.capacity() << std::endl;
-	printVecElements(vec2);
-	printVecElements(vec3);
-	try
-	{
-		std::cout << vec.front() << std::endl;
-		std::cout << vec1.front() << std::endl;
-		vec.push_back(2);
-		vec1.push_back(2);
-		std::cout << vec.back() << " " << vec1.back() << std::endl;
-		vec.pop_back();
-		vec1.pop_back();
-		std::cout << vec.back() << " " << vec1.back() << std::endl;
-		std::cout << "std::vector capacity: " << vec.capacity() << std::endl;
-		std::cout << "ft::vector capacity: " << vec1.capacity() << std::endl;
-		vec.reserve(10);
-		vec1.reserve(10);
-		std::cout << "std::vector capacity: " << vec.capacity() << std::endl;
-		std::cout << "ft::vector capacity: " << vec1.capacity() << std::endl;
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
+	// std::cout << "vec2 size: " << vec2.size() << std::endl;
+	// std::cout << "vec3 size: " << vec3.size() << std::endl;
+	// std::cout << "vec2 capacity: " << vec2.capacity() << std::endl;
+	// std::cout << "vec3 capacity: " << vec3.capacity() << std::endl;
+	// printVecElements(vec2);
+	// printVecElements(vec3);
+	// vec2.swap(vec3);
+	// std::cout << "vec2 size: " << vec2.size() << std::endl;
+	// std::cout << "vec3 size: " << vec3.size() << std::endl;
+	// std::cout << "vec2 capacity: " << vec2.capacity() << std::endl;
+	// std::cout << "vec3 capacity: " << vec3.capacity() << std::endl;
+	// printVecElements(vec2);
+	// printVecElements(vec3);
+	// try
+	// {
+	// 	std::cout << vec.front() << std::endl;
+	// 	std::cout << vec1.front() << std::endl;
+	// 	vec.push_back(2);
+	// 	vec1.push_back(2);
+	// 	std::cout << vec.back() << " " << vec1.back() << std::endl;
+	// 	vec.pop_back();
+	// 	vec1.pop_back();
+	// 	std::cout << vec.back() << " " << vec1.back() << std::endl;
+	// 	std::cout << "std::vector capacity: " << vec.capacity() << std::endl;
+	// 	std::cout << "ft::vector capacity: " << vec1.capacity() << std::endl;
+	// 	vec.reserve(10);
+	// 	vec1.reserve(10);
+	// 	std::cout << "std::vector capacity: " << vec.capacity() << std::endl;
+	// 	std::cout << "ft::vector capacity: " << vec1.capacity() << std::endl;
+	// }
+	// catch(const std::exception& e)
+	// {
+	// 	std::cerr << e.what() << '\n';
+	// }
 	
+
+	std::vector<int> vec(1, 1);
+	ft::vector<int> vec2(1, 1);
+	vec.push_back(2);
+	vec2.push_back(2);
+	std::vector<int>::iterator it = vec.begin();
+	ft::vector<int>::iterator it2 = vec2.begin();
+
+	it++;
+	std::cout << *it << std::endl;
+	it2++;
+	std::cout << *it2 << std::endl;
 	system("leaks test_vector");
 	// std::cout << empty[0] << std::endl;
 }
