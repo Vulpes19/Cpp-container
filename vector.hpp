@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/06 15:52:35 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:59:17 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ namespace ft
 			//fill constructor
 			explicit vector( size_type size, const T &val ) : _size(size), _capacity(size)
 			{
+				if ( _size == 0 )
+					throw(std::length_error("size can't be zero"));
 				data = alloc.allocate( _size );
+				if ( data == NULL )
+						throw(std::length_error("maximum supported size is exceeded"));
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.construct(data + i, val);
 			};
@@ -48,7 +52,11 @@ namespace ft
 				_size = source._size;
 				_capacity = source._capacity;
 				if ( _size > 0 )
+				{
 					data = alloc.allocate( _capacity );
+					if ( data == NULL )
+						throw(std::length_error("maximum supported size is exceeded"));
+				}
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.construct( data + i, source.data[i] );
 			};
@@ -64,7 +72,11 @@ namespace ft
 					_size = source._size;
 					_capacity = source._capacity;
 					if ( _size > 0 )
+					{
 						data = alloc.allocate( _capacity );
+						if ( data == NULL )
+							throw(std::length_error("maximum supported size is exceeded"));
+					}
 					for ( size_type i = 0; i < _size; i++ )
 						alloc.construct( data + i, source.data[i] );
 				}
@@ -81,9 +93,23 @@ namespace ft
 			};
 
 			//[] operator
-			T	&operator[]( size_type index ) const
+			T	&operator[]( size_type index )
 			{
 				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
+			};
+
+			const T	&operator[]( size_type index ) const
+			{
+				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
+			};
+
+			//swap member function
+
+			void	swap( vector &x )
+			{
+				std::swap(data, x.data);
+				std::swap(_size, x._size);
+				// std::swap(_capacity, x._capacity);
 			};
 
 			//at member function
@@ -92,7 +118,13 @@ namespace ft
 				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
 			
-			//back memeber function
+			//front member function
+			T	&front( void ) const
+			{
+				return (data[0]);
+			};
+	
+			//back member function
 			T	&back( void ) const
 			{
 				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
@@ -107,10 +139,14 @@ namespace ft
 			//resize memeber function
 			void	resize( size_type newSize, const T &val )
 			{
+				if ( newSize == 0 )
+					throw(std::length_error("size can't be zero"));
 				if ( newSize > _size )
 				{
 					_capacity = newSize;
 					T *newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::length_error("maximum supported size is exceeded"));
 					for ( size_type i = 0; i < _size; i++ )
 					{
 						alloc.construct(newData + i, data[i]);
@@ -122,6 +158,25 @@ namespace ft
 				for ( size_t i = _size; i < newSize; i++ )
 					data[i] = val;
 				_size = newSize;
+			};
+
+			//reserve member function
+			void	reserve( size_type newSize )
+			{
+				if ( newSize > _capacity )
+				{
+					_capacity = newSize;
+					T *newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::length_error("maximum supported size is exceeded"));
+					for ( size_type i = 0; i < _size; i++ )
+					{
+						alloc.construct(newData + i, data[i]);
+						alloc.destroy(data + i);
+					}
+					alloc.deallocate(data, _size);
+					data = newData;
+				}
 			};
 
 			//capacity member function
@@ -143,6 +198,8 @@ namespace ft
 				{
 					_capacity += 3;
 					T *newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::length_error("maximum supported size is exceeded"));
 					for ( size_type i = 0; i < _size; i++ )
 					{
 						alloc.construct(newData + i, data[i]);
@@ -154,8 +211,36 @@ namespace ft
 				_size += 1;
 				data[_size - 1] = val;
 			};
+
+			//pop_back member function
+			void	pop_back( void )
+			{
+				if ( _size == 0 )
+					throw(std::length_error("size is zero"));
+				_size -= 1;
+				alloc.destroy( data + _size );
+			};
+
+			//clear member function
+			void	clear( void )
+			{
+				for ( size_type i = 0; i < _size; i++ )
+					alloc.destroy(data + i);
+				_size = 0;
+			};
+
+			//get_allocator member function
+			Allocator	get_allocator( void ) const
+			{
+				return (alloc);
+			};
+
+			size_type	max_size( void ) const
+			{
+				return (alloc.max_size());
+			};
 		private:
-			T	*data;
+			T			*data;
 			size_type	_size;
 			size_type	_capacity;
 			Allocator	alloc;
