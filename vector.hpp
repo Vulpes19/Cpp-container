@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/07 13:59:17 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:01:57 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ namespace ft
 			{
 				std::swap(data, x.data);
 				std::swap(_size, x._size);
-				// std::swap(_capacity, x._capacity);
+				std::swap(_capacity, x._capacity);
 			};
 
 			//at member function

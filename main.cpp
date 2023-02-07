@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/07 11:22:32 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:01:42 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	main( void )
 	
 	/*testing front, pop_back*/
 	std::vector<int> vec(1, 1);
-	std::vector<int> vec2(3, 2);
-	std::vector<int> vec3(2, 1);
+	ft::vector<int> vec2(3, 2);
+	ft::vector<int> vec3(2, 1);
 	ft::vector<int> vec1(1, 1);
 
 	std::cout << "vec2 size: " << vec2.size() << std::endl;
