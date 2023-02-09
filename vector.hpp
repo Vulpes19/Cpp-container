@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/07 14:21:32 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:16:06 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <memory>
 #include <cstddef>
 #include <stdexcept>
+#include "Iterator.hpp"
 
 
 // typedef Allocator allocator_type;
