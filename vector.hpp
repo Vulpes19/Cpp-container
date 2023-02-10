@@ -6,9 +6,11 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/09 14:16:06 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/10 15:59:29 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -28,7 +30,8 @@ namespace ft
 		public:
 			//alias
 			typedef size_t size_type;
-			typedef T* iterator;
+			typedef T value_type;
+			typedef random_access_iterator< vector<T> > iterator;
 
 			//default constructor
 			vector( void ) : data(NULL), _size(0), _capacity(0) {};
@@ -43,8 +46,6 @@ namespace ft
 						throw(std::length_error("maximum supported size is exceeded"));
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.construct(data + i, val);
-				_begin = data;
-				_end = data + size - 1;
 			};
 
 			//range constructor
@@ -123,13 +124,13 @@ namespace ft
 			//begin member function
 			iterator	begin( void )
 			{
-				return (_begin);
+				return (iterator( data ));
 			};
 
 			//end member function
 			iterator	end( void )
 			{
-				return (_end);
+				return (iterator( data + _size ));
 			};
 
 			//operations
@@ -262,8 +263,6 @@ namespace ft
 			};
 		private:
 			T			*data;
-			iterator	_begin;
-			iterator	_end;
 			size_type	_size;
 			size_type	_capacity;
 			Allocator	alloc;

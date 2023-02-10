@@ -6,49 +6,129 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/09 15:13:36 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/10 15:55:01 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #include <iostream>
 
 namespace ft
 {
-	template < typename T, typename Distance = ptrdiff_t, typename Pointer = T*, typename Reference = T& >
+	template < typename  vector >
 
 	class random_access_iterator
 	{
 		public:
-			typedef T   value_type;
-			typedef Distance  difference_type;
-			typedef Pointer   pointer;
-			typedef Reference reference;
+			typedef typename vector::value_type	value_type;
+			typedef ptrdiff_t		difference_type;
+			typedef value_type*		pointer;
+			typedef value_type&		reference;
 
-			random_access_iterator( void ) : data(NULL) {};			
-			random_access_iterator( const random_access_iterator &it );
-			random_access_iterator	&operator=( const random_access_iterator &it );
-			~random_access_iterator( void );
+			random_access_iterator( void ) : data(NULL) {};
+			random_access_iterator( pointer newData ) : data(newData) {};			
+			random_access_iterator( const random_access_iterator &it )
+			{
+				size_t size = sizeof(value_type) * (it.data - it.data);
+				data = new value_type[size];
+				std::copy(it.data, it.data + size, data);
+			};
+			random_access_iterator	&operator=( const random_access_iterator &it )
+			{
+				if (this != &it)
+				{
+					size_t size = sizeof(value_type) * (it.data - it.data);
+					data = new value_type[size];
+					std::copy(it.data, it.data + size, data);
+				}
+				return *this;
+			};
+			~random_access_iterator( void )
+			{};
 			bool	operator==( const random_access_iterator &it ) const
 			{
-				return 
+				return ( data == it.data );
 			};			
-			bool	operator!=( const random_access_iterator &it ) const;
-			reference	operator*( const random_access_iterator &it ) const;
-			pointer		operator->( const random_access_iterator &it ) const;
-			random_access_iterator	&operator++( void );		
-			random_access_iterator	&operator--( void );
-			random_access_iterator	&operator++( int );		
-			random_access_iterator	&operator--( int );
-			random_access_iterator	&operator+( const int &n );		
-			random_access_iterator	&operator-( const int &n );		
-			random_access_iterator	&operator-( const random_access_iterator &it );
-			bool	operator<( const random_access_iterator &it ) const;		
-			bool	operator<=( const random_access_iterator &it ) const;		
-			bool	operator>( const random_access_iterator &it ) const;		
-			bool	operator>=( const random_access_iterator &it ) const;
-			random_access_iterator	&operator+=( int n );
-			random_access_iterator	&operator-=( int n );
-			value_type	&operator[]( size_t index ) const;
+			bool	operator!=( const random_access_iterator &it ) const
+			{
+				return ( data != it.data );
+			};
+			reference	operator*( void ) const
+			{
+				return (*data);
+			};
+			pointer		operator->( void ) const
+			{
+				return (data);
+			};
+			random_access_iterator	&operator++( void )
+			{
+				data++;
+				return (*this);
+			};		
+			random_access_iterator	&operator--( void )
+			{
+				data++;
+				return (*this);
+			};
+			random_access_iterator	operator++( int )
+			{
+				random_access_iterator it = *this;
+				++data;
+				return (it);
+			};		
+			random_access_iterator	operator--( int )
+			{
+				random_access_iterator it = *this;
+				--data;
+				return (it);
+			};		
+			random_access_iterator	&operator+( const int &n )
+			{
+				data += n;
+				return (*this);
+			};		
+			random_access_iterator	&operator-( const int &n )
+			{
+				data -= n;
+				return (*this);
+			};		
+			random_access_iterator	&operator-( const random_access_iterator &it )
+			{
+				data -= it.data;
+				return (*this);
+			};
+			bool	operator<( const random_access_iterator &it ) const
+			{
+				return ( data < it.data );
+			};		
+			bool	operator<=( const random_access_iterator &it ) const
+			{
+				return ( data <= it.data );
+			};		
+			bool	operator>( const random_access_iterator &it ) const
+			{
+				return ( data > it.data );
+			};				
+			bool	operator>=( const random_access_iterator &it ) const
+			{
+				return ( data > it.data );
+			};				
+			random_access_iterator	&operator+=( int n )
+			{
+				data += n;
+				return (*this);
+			};
+			random_access_iterator	&operator-=( int n )
+			{
+				data -= n;
+				return (*this);
+			};;
+			reference	operator[]( size_t index ) const
+			{
+				return (data[index]);
+			};
 		private:
 			value_type	*data;
 	};

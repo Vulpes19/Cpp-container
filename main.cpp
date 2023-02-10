@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/09 15:17:32 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/10 15:52:09 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,15 @@ int	main( void )
 	ft::vector<int> vec2(1, 1);
 	vec.push_back(2);
 	vec2.push_back(2);
-	std::vector<int>::iterator it = vec.begin();
+	// std::vector<int>::iterator it = vec.begin();
 	// ft::vector<int>::iterator it2 = vec2.begin();
 
-	it++;
-	std::cout << *it << std::endl;
-	// it2++;
-	// std::cout << *it2 << std::endl;
+	for ( std::vector<int>::iterator it = vec.begin(); it < vec.end(); it++)
+		std::cout << *it << std::endl;
+	// ++it;
+	// ++it2;
+	for ( ft::vector<int>::iterator it2 = vec2.begin(); it2 < vec2.end(); it2++)
+		std::cout << *it2 << std::endl;
 	system("leaks test_vector");
 	// std::cout << empty[0] << std::endl;
 }
