@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/10 15:52:09 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/11 15:03:02 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,19 +129,28 @@ int	main( void )
 	// }
 	
 
-	std::vector<int> vec(1, 1);
-	ft::vector<int> vec2(1, 1);
+	std::vector<int> vec(5, 1);
+	ft::vector<int> vec2(5, 1);
 	vec.push_back(2);
 	vec2.push_back(2);
-	// std::vector<int>::iterator it = vec.begin();
-	// ft::vector<int>::iterator it2 = vec2.begin();
+	std::vector<int>::iterator begin = vec.begin();
+	ft::vector<int>::iterator begin2 = vec2.begin();
+	std::vector<int>::iterator end = vec.begin();
+	ft::vector<int>::iterator end2 = vec2.begin();
 
-	for ( std::vector<int>::iterator it = vec.begin(); it < vec.end(); it++)
-		std::cout << *it << std::endl;
+	end - 2;
+	end2 - 2;
+	vec.assign( begin, end );
+	printVecElements(vec);
+	std::cout << "******" << std::endl;
+	vec2.assign( begin2, end2 );
+	printVecElements(vec2);
+	// for ( std::vector<int>::iterator it = vec.begin(); it < vec.end(); it++)
+	// 	std::cout << *it << std::endl;
 	// ++it;
 	// ++it2;
-	for ( ft::vector<int>::iterator it2 = vec2.begin(); it2 < vec2.end(); it2++)
-		std::cout << *it2 << std::endl;
+	// for ( ft::vector<int>::iterator it2 = vec2.begin(); it2 < vec2.end(); it2++)
+	// 	std::cout << *it2 << std::endl;
 	system("leaks test_vector");
 	// std::cout << empty[0] << std::endl;
 }

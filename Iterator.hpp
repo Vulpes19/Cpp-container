@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/10 15:55:01 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/11 15:09:38 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,13 @@ namespace ft
 			random_access_iterator( pointer newData ) : data(newData) {};			
 			random_access_iterator( const random_access_iterator &it )
 			{
-				size_t size = sizeof(value_type) * (it.data - it.data);
-				data = new value_type[size];
-				std::copy(it.data, it.data + size, data);
+				data = it.data;
 			};
 			random_access_iterator	&operator=( const random_access_iterator &it )
 			{
 				if (this != &it)
 				{
-					size_t size = sizeof(value_type) * (it.data - it.data);
-					data = new value_type[size];
-					std::copy(it.data, it.data + size, data);
+					data = it.data;
 				}
 				return *this;
 			};
@@ -94,10 +90,9 @@ namespace ft
 				data -= n;
 				return (*this);
 			};		
-			random_access_iterator	&operator-( const random_access_iterator &it )
+			size_t	operator-( const random_access_iterator &it ) const
 			{
-				data -= it.data;
-				return (*this);
+				return (it.data - data);
 			};
 			bool	operator<( const random_access_iterator &it ) const
 			{

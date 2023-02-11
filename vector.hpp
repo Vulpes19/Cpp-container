@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/10 15:59:29 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/11 15:15:03 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,45 @@ namespace ft
 				return (iterator( data + _size ));
 			};
 
+			void	assign( const iterator first, const iterator last )
+			{
+				_capacity = last - first;
+				T *newData = alloc.allocate(_capacity);
+				if ( newData == NULL )
+					throw(std::length_error("maximum supported size is exceeded"));
+				for ( size_type i = 0; i < _size; i++ )
+				{
+					alloc.construct(newData + i, data[i]);
+					alloc.destroy(data + i);
+				}
+				alloc.deallocate(data, _size);
+				_size = _capacity;
+				data = newData;
+				size_t i = 0;
+				iterator it = first;
+				while ( i < _size && it < last )
+				{
+					data[i++] = *it;
+					it++;
+				}	
+			};
+			void	assign( size_type newSize, const value_type value )
+			{
+				_capacity = newSize;
+				_size = newSize;
+				T *newData = alloc.allocate(_capacity);
+				if ( newData == NULL )
+					throw(std::length_error("maximum supported size is exceeded"));
+				for ( size_type i = 0; i < _size; i++ )
+				{
+					alloc.construct(newData + i, data[i]);
+					alloc.destroy(data + i);
+				}
+				alloc.deallocate(data, _size);
+				data = newData;
+				for ( size_t i = 0; i < newSize; i++ )
+					data[i] = value;
+			};
 			//operations
 			//at member function
 			T	&at( size_type position ) const
