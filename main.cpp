@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/11 15:03:02 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/11 15:52:08 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,22 +129,26 @@ int	main( void )
 	// }
 	
 
-	std::vector<int> vec(5, 1);
-	ft::vector<int> vec2(5, 1);
+	std::vector<int> vec(2, 1);
+	ft::vector<int> vec2(2, 1);
+	std::vector<int> vec3(8, 4);
+	ft::vector<int> vec4(8, 4);
 	vec.push_back(2);
 	vec2.push_back(2);
-	std::vector<int>::iterator begin = vec.begin();
-	ft::vector<int>::iterator begin2 = vec2.begin();
-	std::vector<int>::iterator end = vec.begin();
-	ft::vector<int>::iterator end2 = vec2.begin();
+	// std::vector<int>::iterator begin = vec.begin();
+	// ft::vector<int>::iterator begin2 = vec2.begin();
+	// std::vector<int>::iterator end = vec.end();
+	// ft::vector<int>::iterator end2 = vec2.end();
 
-	end - 2;
-	end2 - 2;
-	vec.assign( begin, end );
-	printVecElements(vec);
+	// end--;
+	// end2--;
+	// vec3.assign( begin, end );
+	vec3.assign( 10, 1);
+	printVecElements(vec3);
 	std::cout << "******" << std::endl;
-	vec2.assign( begin2, end2 );
-	printVecElements(vec2);
+	// vec4.assign( begin2, end2 );
+	vec4.assign( 10, 1);
+	printVecElements(vec4);
 	// for ( std::vector<int>::iterator it = vec.begin(); it < vec.end(); it++)
 	// 	std::cout << *it << std::endl;
 	// ++it;

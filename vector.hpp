@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/11 15:15:03 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/11 15:51:01 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,42 +135,61 @@ namespace ft
 
 			void	assign( const iterator first, const iterator last )
 			{
-				_capacity = last - first;
-				T *newData = alloc.allocate(_capacity);
-				if ( newData == NULL )
-					throw(std::length_error("maximum supported size is exceeded"));
-				for ( size_type i = 0; i < _size; i++ )
+				size_t newSize = last - first;
+				if ( newSize > _capacity )
 				{
-					alloc.construct(newData + i, data[i]);
-					alloc.destroy(data + i);
+					_capacity = newSize;
+					T *newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::bad_alloc());
+					for ( size_type i = 0; i < _size; i++ )
+					{
+						alloc.construct(newData + i, data[i]);
+						alloc.destroy(data + i);
+					}
+					alloc.deallocate(data, _size);
+					_size = newSize;
+					data = newData;
 				}
-				alloc.deallocate(data, _size);
-				_size = _capacity;
-				data = newData;
+				else
+				{
+					for ( size_type i = 0; i < _size; i++ )
+						alloc.destroy(data + i);
+				}
 				size_t i = 0;
 				iterator it = first;
 				while ( i < _size && it < last )
 				{
 					data[i++] = *it;
 					it++;
-				}	
+				}
+				_size = newSize;
 			};
 			void	assign( size_type newSize, const value_type value )
 			{
-				_capacity = newSize;
-				_size = newSize;
-				T *newData = alloc.allocate(_capacity);
-				if ( newData == NULL )
-					throw(std::length_error("maximum supported size is exceeded"));
-				for ( size_type i = 0; i < _size; i++ )
+				if ( newSize > _capacity )
 				{
-					alloc.construct(newData + i, data[i]);
-					alloc.destroy(data + i);
+					_capacity = newSize;
+					T *newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::bad_alloc());
+					for ( size_type i = 0; i < _size; i++ )
+					{
+						alloc.construct(newData + i, data[i]);
+						alloc.destroy(data + i);
+					}
+					alloc.deallocate(data, _size);
+					_size = newSize;
+					data = newData;
 				}
-				alloc.deallocate(data, _size);
-				data = newData;
+				else
+				{
+					for ( size_type i = 0; i < _size; i++ )
+						alloc.destroy(data + i);
+				}
 				for ( size_t i = 0; i < newSize; i++ )
 					data[i] = value;
+				_size = newSize;
 			};
 			//operations
 			//at member function
@@ -207,7 +226,7 @@ namespace ft
 					_capacity = newSize;
 					T *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
-						throw(std::length_error("maximum supported size is exceeded"));
+						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
 						alloc.construct(newData + i, data[i]);
@@ -260,7 +279,7 @@ namespace ft
 					_capacity += 3;
 					T *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
-						throw(std::length_error("maximum supported size is exceeded"));
+						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
 						alloc.construct(newData + i, data[i]);
