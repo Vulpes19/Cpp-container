@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/11 15:51:01 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/11 18:21:27 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace ft
 					throw(std::length_error("size can't be zero"));
 				data = alloc.allocate( _size );
 				if ( data == NULL )
-						throw(std::length_error("maximum supported size is exceeded"));
+						throw(std::bad_alloc());
 				for ( size_type i = 0; i < _size; i++ )
 					alloc.construct(data + i, val);
 			};
@@ -133,6 +133,7 @@ namespace ft
 				return (iterator( data + _size ));
 			};
 
+			//assign member function
 			void	assign( const iterator first, const iterator last )
 			{
 				size_t newSize = last - first;
@@ -191,21 +192,65 @@ namespace ft
 					data[i] = value;
 				_size = newSize;
 			};
+
+			//insert member function
+			iterator	insert( iterator position, const value_type &value )
+			{
+				size_type index = position - data;
+				_size += 1;
+
+				if ( _size > _capacity )
+				{
+					size_type i, j;
+					
+					i = 0;
+					j = 0;
+					_capacity *= 2;
+					value_type	*newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::bad_alloc());
+					while ( i < _size && j < _size - 1 )
+					{
+						if ( i == index )
+						{
+							alloc.construct(newData + i, value);
+							i++;
+							continue ;
+						}
+						alloc.construct(newData + i, data[j]);
+						alloc.destroy(data + j);
+						i++;
+						j++;
+					}
+					alloc.deallocate(data, _size - 1);
+					data = newData;
+				}
+				else
+				{
+					for ( size_type i = _size; i > index; --i )
+					{
+						data[i] = data[i - 1];
+					}
+					data[index] = value;
+				}
+				return ( position );
+			};
+
 			//operations
 			//at member function
-			T	&at( size_type position ) const
+			value_type	&at( size_type position ) const
 			{
 				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
 			
 			//front member function
-			T	&front( void ) const
+			value_type	&front( void ) const
 			{
 				return (data[0]);
 			};
 	
 			//back member function
-			T	&back( void ) const
+			value_type	&back( void ) const
 			{
 				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
 			};
@@ -224,7 +269,7 @@ namespace ft
 				if ( newSize > _size )
 				{
 					_capacity = newSize;
-					T *newData = alloc.allocate(_capacity);
+					value_type *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
@@ -235,7 +280,7 @@ namespace ft
 					alloc.deallocate(data, _size);
 					data = newData;
 				}
-				for ( size_t i = _size; i < newSize; i++ )
+				for ( size_type i = _size; i < newSize; i++ )
 					data[i] = val;
 				_size = newSize;
 			};
@@ -246,9 +291,9 @@ namespace ft
 				if ( newSize > _capacity )
 				{
 					_capacity = newSize;
-					T *newData = alloc.allocate(_capacity);
+					value_type *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
-						throw(std::length_error("maximum supported size is exceeded"));
+						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
 						alloc.construct(newData + i, data[i]);
@@ -276,7 +321,7 @@ namespace ft
 			{
 				if ( _size + 1 > _capacity )
 				{
-					_capacity += 3;
+					_capacity *= 2;
 					T *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
@@ -299,6 +344,20 @@ namespace ft
 					throw(std::length_error("size is zero"));
 				_size -= 1;
 				alloc.destroy( data + _size );
+				if ( _size < _capacity / 2 )
+				{
+					_capacity = _size;
+					value_type *newData = alloc.allocate( _capacity );
+					if ( newData == NULL )
+						throw( std::bad_alloc() );
+					for ( size_type i = 0; i < _size; i++ )
+					{
+						alloc.construct(newData + i, data[i]);
+						alloc.destroy(data + i);
+					}
+					alloc.deallocate(data, _size + 1);
+					data = newData;
+				}
 			};
 
 			//clear member function

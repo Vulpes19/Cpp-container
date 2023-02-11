@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/11 15:52:08 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/11 18:20:55 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 template<typename T>
 void	printVecElements( ft::vector<T> &vec )
 {
+	std::cout << "****my vector****" << std::endl;
 	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << vec[i] << std::endl;
 }
@@ -24,10 +25,26 @@ void	printVecElements( ft::vector<T> &vec )
 template<typename T>
 void	printVecElements( std::vector<T> &vec )
 {
+	std::cout << "****std vector****" << std::endl;
 	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << vec[i] << std::endl;
 }
 
+template<typename T>
+void	printSizeAndCapacity( ft::vector<T> &vec )
+{
+	std::cout << "****my vector****" << std::endl;
+	std::cout << "size: " << vec.size() << std::endl;
+	std::cout << "capacity: " << vec.capacity() << std::endl;
+}
+
+template<typename T>
+void	printSizeAndCapacity( std::vector<T> &vec )
+{
+	std::cout << "****std vector****" << std::endl;
+	std::cout << "size: " << vec.size() << std::endl;
+	std::cout << "capacity: " << vec.capacity() << std::endl;
+}
 int	main( void )
 {
 	/* testing push_back*/
@@ -129,32 +146,42 @@ int	main( void )
 	// }
 	
 
-	std::vector<int> vec(2, 1);
-	ft::vector<int> vec2(2, 1);
+	std::vector<int> vec(8, 1);
+	ft::vector<int> vec2(8, 1);
 	std::vector<int> vec3(8, 4);
 	ft::vector<int> vec4(8, 4);
-	vec.push_back(2);
-	vec2.push_back(2);
-	// std::vector<int>::iterator begin = vec.begin();
-	// ft::vector<int>::iterator begin2 = vec2.begin();
+	// vec.push_back(2);
+	// vec2.push_back(2);
+	std::vector<int>::iterator begin = vec.begin();
+	ft::vector<int>::iterator begin2 = vec2.begin();
 	// std::vector<int>::iterator end = vec.end();
 	// ft::vector<int>::iterator end2 = vec2.end();
 
-	// end--;
-	// end2--;
+	// begin++;
+	// begin2++;
+	printSizeAndCapacity(vec2);
+	printSizeAndCapacity(vec);
+	printVecElements(vec);
+	printVecElements(vec2);
+	vec.insert( begin, 9 );
+	vec2.insert( begin2, 9 );
+	printSizeAndCapacity(vec2);
+	printSizeAndCapacity(vec);
+	printVecElements(vec);
+	printVecElements(vec2);
+	// printSizeAndCapacity(vec);
+	//testing assign
 	// vec3.assign( begin, end );
-	vec3.assign( 10, 1);
-	printVecElements(vec3);
-	std::cout << "******" << std::endl;
-	// vec4.assign( begin2, end2 );
-	vec4.assign( 10, 1);
-	printVecElements(vec4);
-	// for ( std::vector<int>::iterator it = vec.begin(); it < vec.end(); it++)
-	// 	std::cout << *it << std::endl;
-	// ++it;
-	// ++it2;
-	// for ( ft::vector<int>::iterator it2 = vec2.begin(); it2 < vec2.end(); it2++)
-	// 	std::cout << *it2 << std::endl;
+	// printSizeAndCapacity(vec3);
+	// vec3.assign( 10, 1);
+	// printSizeAndCapacity(vec3);
+	// printVecElements(vec3);
+	// std::cout << "******" << std::endl;
+	// // vec4.assign( begin2, end2 );
+	// printSizeAndCapacity(vec4);
+	// vec4.assign( 10, 1);
+	// printSizeAndCapacity(vec4);
+	// printVecElements(vec4);
 	system("leaks test_vector");
 	// std::cout << empty[0] << std::endl;
 }
