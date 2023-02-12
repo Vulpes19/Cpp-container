@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/11 18:20:55 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/12 14:02:26 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,21 +150,21 @@ int	main( void )
 	ft::vector<int> vec2(8, 1);
 	std::vector<int> vec3(8, 4);
 	ft::vector<int> vec4(8, 4);
-	// vec.push_back(2);
-	// vec2.push_back(2);
+	vec.push_back(2);
+	vec2.push_back(2);
 	std::vector<int>::iterator begin = vec.begin();
 	ft::vector<int>::iterator begin2 = vec2.begin();
 	// std::vector<int>::iterator end = vec.end();
 	// ft::vector<int>::iterator end2 = vec2.end();
 
-	// begin++;
-	// begin2++;
+	begin++;
+	begin2++;
 	printSizeAndCapacity(vec2);
 	printSizeAndCapacity(vec);
 	printVecElements(vec);
 	printVecElements(vec2);
-	vec.insert( begin, 9 );
-	vec2.insert( begin2, 9 );
+	vec.insert( begin, 3, 9 );
+	vec2.insert( begin2, 3, 9 );
 	printSizeAndCapacity(vec2);
 	printSizeAndCapacity(vec);
 	printVecElements(vec);

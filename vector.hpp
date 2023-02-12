@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/11 18:21:27 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/12 14:02:03 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,46 @@ namespace ft
 				return ( position );
 			};
 
+			void	insert( iterator position, size_type n, const value_type &value )
+			{
+				size_type index = position - data;
+				if ( _size + n > _capacity )
+				{
+					size_type i, j;
+					
+					i = 0;
+					j = 0;
+					_capacity *= 2;
+					value_type	*newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::bad_alloc());
+					while ( i < _size + n && j < _size )
+					{
+						if ( i == index )
+						{
+							for ( size_type k = i; k < i + n; k++ )
+								alloc.construct(newData + k, value);
+							i += n;
+							continue ;
+						}
+						alloc.construct(newData + i, data[j]);
+						alloc.destroy(data + j);
+						i++;
+						j++;
+					}
+					alloc.deallocate(data, _size);
+					_size += n;
+					data = newData;
+				}
+				else
+				{
+					for ( size_type i = _size - 1; i > index; --i )
+						data[i + n] = data[i];
+					for ( size_type i = index; i < index + n; i++ )
+						data[i] = value;
+					_size += n;
+				}
+			};
 			//operations
 			//at member function
 			value_type	&at( size_type position ) const
