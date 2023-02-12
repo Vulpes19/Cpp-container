@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/12 15:21:50 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/12 19:29:42 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,37 +50,80 @@ void	printSizeAndCapacity( std::vector<T> &vec )
 	std::cout << "capacity: " << vec.capacity() << std::endl;
 }
 
-void	printTime( clock_t start, clock_t end )
+void	printTime( clock_t start, clock_t end, std::string str )
 {
-	std::cout << ((double)(end - start)) / CLOCKS_PER_SEC << std::endl;
+	std::cout << "****TIME****" << std::endl;
+	std::cout << str << ": " << ((double)(end - start)) / CLOCKS_PER_SEC << std::endl;
+}
+
+void	testing_push_back( void )
+{
+	clock_t start, end;
+	/* testing push_back*/
+	ft::vector<char> vec(3, 'a');
+	std::vector<char> og_vec(3, 'a');
+	ft::vector<int> empty;
+	std::vector<int> og_empty;
+
+	printSizeAndCapacity(empty);
+	printSizeAndCapacity(og_empty);
+	start = clock();
+	empty.push_back(1);
+	end = clock();
+	printTime(start, end, "std");
+	start = clock();
+	og_empty.push_back(1);
+	end = clock();
+	printTime(start, end, "ft");
+	printVecElements(empty);
+	printVecElements(og_empty);
+	printSizeAndCapacity(empty);
+	printSizeAndCapacity(og_empty);
+}
+
+void	testing_assign( void )
+{
+	clock_t start, end;
+	std::vector<int> vec(4, 1);
+	ft::vector<int> vec2(4, 1);
+	std::vector<int>::iterator begin = vec.begin();
+	myIterator begin2 = vec2.begin();
+	std::vector<int>::iterator end = vec.end();
+	myIterator end2 = vec2.end();
+	end -= 2;
+	end2 -= 2;
+	printSizeAndCapacity(vec);
+	start = clock();
+	vec.assign( begin, end );
+	// vec.assign( 2, 1);
+	end = clock();
+	printTime(start, end, "std");
+	printSizeAndCapacity(vec);
+	printVecElements(vec);
+	vec2.assign( begin2, end2 );
+	printSizeAndCapacity(vec2);
+	start = clock();
+	vec2.assign( 2, 1);
+	end = clock();
+	printTime(start, end, "ft");
+	printSizeAndCapacity(vec2);
+	printVecElements(vec2);
 }
 
 int	main( void )
 {
-	/* testing push_back*/
-	// ft::vector<char> vec2(3, 'a');
-	// std::vector<char> og_vec2(3, 'a');
-	// ft::vector<int> empty;
-	// std::vector<int> og_empty;
-
-	// empty.push_back(1);
-	// og_empty.push_back(1);
-	// std::cout << empty.back() << " " << empty.capacity() << " " << empty.size() << std::endl;
-	// std::cout << og_empty.back() << " " << og_empty.capacity() << " " << og_empty.size() << std::endl;
-
-	// vec2.push_back('b');
-	// og_vec2.push_back('b');
-	// std::cout << vec2.back() << " " << vec2.capacity() << " " << vec2.size() << std::endl;
-	// std::cout << og_vec2.back() << " " << og_vec2.capacity() << " " << og_vec2.size() << std::endl;
-	// vec2.push_back('c');
-	// og_vec2.push_back('c');
-	// std::cout << vec2.back() << " " << vec2.capacity() << " " << vec2.size() << std::endl;
-	// std::cout << og_vec2.back() << " " << og_vec2.capacity() << " " << og_vec2.size() << std::endl;
-	// vec2.push_back('d');
-	// og_vec2.push_back('d');
-	// std::cout << vec2.back() << " " << vec2.capacity() << " " << vec2.size() << std::endl;
-	// std::cout << og_vec2.back() << " " << og_vec2.capacity() << " " << og_vec2.size() << std::endl;
-	
+	// testing_push_back();
+	testing_assign();
+	// printSizeAndCapacity(vec);
+	// printSizeAndCapacity(og_vec);
+	// vec.push_back('b');
+	// og_vec.push_back('b');
+	// vec.push_back('c');
+	// og_vec.push_back('c');
+	// vec.push_back('d');
+	// og_vec.push_back('d');
+	// printSizeAndCapacity(vec);
+	// printSizeAndCapacity(og_vec);
 	/*testing resize and capacity*/
 	// try
 	// {
@@ -156,64 +199,53 @@ int	main( void )
 	// }
 	
 
-	clock_t start, end;
-	std::vector<int> vec(8, 1);
-	ft::vector<int> vec2(8, 1);
-	std::vector<int> vec3(8, 4);
-	ft::vector<int> vec4(8, 4);
-	vec.push_back(2);
-	vec2.push_back(2);
-	// stdIterator begin = vec.begin();
-	// myIterator begin2 = vec2.begin();
-	stdIterator first = vec.begin();
-	myIterator first2 = vec2.begin();
-	stdIterator last = vec.end();
-	myIterator last2 = vec2.end();
-	stdIterator tmp;
-	myIterator tmp2;
-	// std::vector<int>::iterator end = vec.end();
-	// ft::vector<int>::iterator end2 = vec2.end();
+	// clock_t start, end;
+	// std::vector<int> vec(8, 1);
+	// ft::vector<int> vec2(8, 1);
+	// std::vector<int> vec3(8, 4);
+	// ft::vector<int> vec4(8, 4);
+	// vec.push_back(2);
+	// vec2.push_back(2);
+	// // stdIterator begin = vec.begin();
+	// // myIterator begin2 = vec2.begin();
+	// stdIterator first = vec.begin();
+	// myIterator first2 = vec2.begin();
+	// stdIterator last = vec.end();
+	// myIterator last2 = vec2.end();
+	// stdIterator tmp;
+	// myIterator tmp2;
+	// // std::vector<int>::iterator end = vec.end();
+	// // ft::vector<int>::iterator end2 = vec2.end();
 
-	first++;
-	first2++;
-	// std::cout << *first << " " << *first2 << std::endl;
-	last--;
-	last--;
-	last2--;
-	last2--;
-	// printSizeAndCapacity(vec2);
-	// printSizeAndCapacity(vec);
+	// first++;
+	// first2++;
+	// // std::cout << *first << " " << *first2 << std::endl;
+	// last--;
+	// last--;
+	// last2--;
+	// last2--;
+	// // printSizeAndCapacity(vec2);
+	// // printSizeAndCapacity(vec);
+	// // printVecElements(vec);
+	// // printVecElements(vec2);
+	// // vec.insert( begin, 3, 9 );
+	// // vec2.insert( begin2, 3, 9 );
+	// // printSizeAndCapacity(vec2);
+	// // printSizeAndCapacity(vec);
 	// printVecElements(vec);
 	// printVecElements(vec2);
-	// vec.insert( begin, 3, 9 );
-	// vec2.insert( begin2, 3, 9 );
-	// printSizeAndCapacity(vec2);
-	// printSizeAndCapacity(vec);
-	printVecElements(vec);
-	printVecElements(vec2);
-	start = clock();
-	tmp = vec.erase(first, last);
-	end = clock();
-	printTime(start, end);
-	start = clock();
-	tmp2 = vec2.erase(first2, last2);
-	end = clock();
-	printTime(start, end);
-	printVecElements(vec);
-	printVecElements(vec2);
-	// printSizeAndCapacity(vec);
+	// start = clock();
+	// tmp = vec.erase(first, last);
+	// end = clock();
+	// printTime(start, end);
+	// start = clock();
+	// tmp2 = vec2.erase(first2, last2);
+	// end = clock();
+	// printTime(start, end);
+	// printVecElements(vec);
+	// printVecElements(vec2);
+	// // printSizeAndCapacity(vec);
 	//testing assign
-	// vec3.assign( begin, end );
-	// printSizeAndCapacity(vec3);
-	// vec3.assign( 10, 1);
-	// printSizeAndCapacity(vec3);
-	// printVecElements(vec3);
-	// std::cout << "******" << std::endl;
-	// // vec4.assign( begin2, end2 );
-	// printSizeAndCapacity(vec4);
-	// vec4.assign( 10, 1);
-	// printSizeAndCapacity(vec4);
-	// printVecElements(vec4);
 	system("leaks test_vector");
 	// std::cout << empty[0] << std::endl;
 }

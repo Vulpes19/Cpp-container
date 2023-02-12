@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/12 15:19:40 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:41:46 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft
 			{
 				if ( _size == 0 )
 					throw(std::length_error("size can't be zero"));
-				data = alloc.allocate( _size );
+				data = alloc.allocate( _capacity );
 				if ( data == NULL )
 						throw(std::bad_alloc());
 				for ( size_type i = 0; i < _size; i++ )
@@ -170,7 +170,7 @@ namespace ft
 			{
 				if ( newSize > _capacity )
 				{
-					_capacity *= 2;
+					_capacity = newSize;
 					T *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
@@ -182,8 +182,11 @@ namespace ft
 					alloc.deallocate(data, _size);
 					data = newData;
 				}
-				for ( size_type i = 0; i < newSize; i++ )
-					alloc.construct( data + i, value);
+				else
+				{
+					for ( size_type i = 0; i < newSize; i++ )
+						alloc.construct( data + i, value);
+				}
 				for ( size_type i = newSize; i < _size; i++ )
 					alloc.destroy(data + i);
 				_size = newSize;
@@ -416,6 +419,8 @@ namespace ft
 				if ( _size + 1 > _capacity )
 				{
 					_capacity *= 2;
+					if ( _capacity == 0 )
+						_capacity = 1;
 					T *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
