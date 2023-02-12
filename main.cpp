@@ -6,13 +6,17 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/12 14:02:26 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/12 15:21:50 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include <vector>
+#include <time.h>
 #include <iostream>
+
+typedef ft::vector<int>::iterator myIterator;
+typedef std::vector<int>::iterator stdIterator;
 
 template<typename T>
 void	printVecElements( ft::vector<T> &vec )
@@ -45,6 +49,12 @@ void	printSizeAndCapacity( std::vector<T> &vec )
 	std::cout << "size: " << vec.size() << std::endl;
 	std::cout << "capacity: " << vec.capacity() << std::endl;
 }
+
+void	printTime( clock_t start, clock_t end )
+{
+	std::cout << ((double)(end - start)) / CLOCKS_PER_SEC << std::endl;
+}
+
 int	main( void )
 {
 	/* testing push_back*/
@@ -146,27 +156,49 @@ int	main( void )
 	// }
 	
 
+	clock_t start, end;
 	std::vector<int> vec(8, 1);
 	ft::vector<int> vec2(8, 1);
 	std::vector<int> vec3(8, 4);
 	ft::vector<int> vec4(8, 4);
 	vec.push_back(2);
 	vec2.push_back(2);
-	std::vector<int>::iterator begin = vec.begin();
-	ft::vector<int>::iterator begin2 = vec2.begin();
+	// stdIterator begin = vec.begin();
+	// myIterator begin2 = vec2.begin();
+	stdIterator first = vec.begin();
+	myIterator first2 = vec2.begin();
+	stdIterator last = vec.end();
+	myIterator last2 = vec2.end();
+	stdIterator tmp;
+	myIterator tmp2;
 	// std::vector<int>::iterator end = vec.end();
 	// ft::vector<int>::iterator end2 = vec2.end();
 
-	begin++;
-	begin2++;
-	printSizeAndCapacity(vec2);
-	printSizeAndCapacity(vec);
+	first++;
+	first2++;
+	// std::cout << *first << " " << *first2 << std::endl;
+	last--;
+	last--;
+	last2--;
+	last2--;
+	// printSizeAndCapacity(vec2);
+	// printSizeAndCapacity(vec);
+	// printVecElements(vec);
+	// printVecElements(vec2);
+	// vec.insert( begin, 3, 9 );
+	// vec2.insert( begin2, 3, 9 );
+	// printSizeAndCapacity(vec2);
+	// printSizeAndCapacity(vec);
 	printVecElements(vec);
 	printVecElements(vec2);
-	vec.insert( begin, 3, 9 );
-	vec2.insert( begin2, 3, 9 );
-	printSizeAndCapacity(vec2);
-	printSizeAndCapacity(vec);
+	start = clock();
+	tmp = vec.erase(first, last);
+	end = clock();
+	printTime(start, end);
+	start = clock();
+	tmp2 = vec2.erase(first2, last2);
+	end = clock();
+	printTime(start, end);
 	printVecElements(vec);
 	printVecElements(vec2);
 	// printSizeAndCapacity(vec);

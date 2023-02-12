@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/12 14:02:03 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/12 15:19:40 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ namespace ft
 			{
 				if ( newSize > _capacity )
 				{
-					_capacity = newSize;
+					_capacity *= 2;
 					T *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
@@ -180,16 +180,12 @@ namespace ft
 						alloc.destroy(data + i);
 					}
 					alloc.deallocate(data, _size);
-					_size = newSize;
 					data = newData;
 				}
-				else
-				{
-					for ( size_type i = 0; i < _size; i++ )
-						alloc.destroy(data + i);
-				}
-				for ( size_t i = 0; i < newSize; i++ )
-					data[i] = value;
+				for ( size_type i = 0; i < newSize; i++ )
+					alloc.construct( data + i, value);
+				for ( size_type i = newSize; i < _size; i++ )
+					alloc.destroy(data + i);
 				_size = newSize;
 			};
 
@@ -276,6 +272,64 @@ namespace ft
 					_size += n;
 				}
 			};
+
+			//erase member function
+			iterator	erase( iterator position )
+			{
+				size_type index = position - data;
+				size_type i = 0;
+				size_type j = 0;
+				value_type *newData = alloc.allocate(_capacity);
+				if ( newData == NULL )
+					throw(std::bad_alloc());
+				while ( i < _size && j < _size - 1 )
+				{
+					if ( index == i )
+					{
+						i++;
+						continue ;
+					}
+					alloc.construct(newData + j, data[i]);
+					alloc.destroy(data + i);
+					i++;
+					j++;
+				}
+				alloc.deallocate(data, _size);
+				_size -= 1;
+				data = newData;
+				return (position);
+			}
+
+			iterator	erase( iterator first, iterator last )
+			{
+				if ( first > data )
+					first = data;
+				size_type start = first - data;
+				size_type end = last - data;
+				size_type n = last - first;
+				size_type i = 0;
+				size_type j = 0;
+				value_type *newData = alloc.allocate(_capacity);
+				if ( newData == NULL )
+					throw(std::bad_alloc());
+				while ( i < _size && j < _size - n )
+				{
+					if ( start == i )
+					{
+						while ( i < end )
+							i++;
+						continue ;
+					}
+					alloc.construct(newData + j, data[i]);
+					alloc.destroy(data + i);
+					i++;
+					j++;
+				}
+				alloc.deallocate(data, _size);
+				_size -= n;
+				data = newData;
+				return (first);
+			}
 			//operations
 			//at member function
 			value_type	&at( size_type position ) const
