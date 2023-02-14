@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/11 15:38:50 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/14 11:31:32 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,20 @@
 
 namespace ft
 {
-	template < typename  vector >
+	template< typename InputIterator >
+	size_t	ft_distance( InputIterator first, InputIterator last )
+	{
+		size_t size = 0;
+		for ( ;first != last; ++first )
+			size++;
+		return (size);
+	}
+	template < typename  T >
 
 	class random_access_iterator
 	{
 		public:
-			typedef typename vector::value_type	value_type;
+			typedef T				value_type;
 			typedef ptrdiff_t		difference_type;
 			typedef value_type*		pointer;
 			typedef value_type&		reference;
@@ -124,6 +132,7 @@ namespace ft
 			{
 				return (data[index]);
 			};
+
 		private:
 			value_type	*data;
 	};

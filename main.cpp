@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/12 19:29:42 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/14 12:03:18 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,31 +83,51 @@ void	testing_push_back( void )
 
 void	testing_assign( void )
 {
-	clock_t start, end;
+	clock_t start, stop;
 	std::vector<int> vec(4, 1);
-	ft::vector<int> vec2(4, 1);
-	std::vector<int>::iterator begin = vec.begin();
+	std::vector<int> vec3(3, 9);
+	ft::vector<int> vec2(3, 9);
+	stdIterator begin = vec.begin();
 	myIterator begin2 = vec2.begin();
-	std::vector<int>::iterator end = vec.end();
+	stdIterator end = vec.end();
 	myIterator end2 = vec2.end();
-	end -= 2;
-	end2 -= 2;
-	printSizeAndCapacity(vec);
-	start = clock();
-	vec.assign( begin, end );
-	// vec.assign( 2, 1);
-	end = clock();
-	printTime(start, end, "std");
-	printSizeAndCapacity(vec);
-	printVecElements(vec);
-	vec2.assign( begin2, end2 );
+	// end -= 2;
+	// end2 -= 2;
+	printSizeAndCapacity(vec3);
 	printSizeAndCapacity(vec2);
+	printVecElements(vec3);
 	start = clock();
-	vec2.assign( 2, 1);
-	end = clock();
-	printTime(start, end, "ft");
-	printSizeAndCapacity(vec2);
+	vec3.assign( begin, end );
+	stop = clock();
+	printTime(start, stop, "std");
+	printVecElements(vec3);
 	printVecElements(vec2);
+	start = clock();
+	vec2.assign( begin, end );
+	stop = clock();
+	printTime(start, stop, "ft");
+	printVecElements(vec2);
+	printSizeAndCapacity(vec3);
+	printSizeAndCapacity(vec2);
+	std::cout << "**************\n";
+	std::cout << "**************\n";
+	std::cout << "**************\n";
+	printSizeAndCapacity(vec3);
+	printSizeAndCapacity(vec2);
+	printVecElements(vec3);
+	start = clock();
+	vec3.assign( 10, -1 );
+	stop = clock();
+	printTime(start, stop, "std");
+	printVecElements(vec3);
+	printVecElements(vec2);
+	start = clock();
+	vec2.assign( 10, -1 );
+	stop = clock();
+	printTime(start, stop, "ft");
+	printVecElements(vec2);
+	printSizeAndCapacity(vec3);
+	printSizeAndCapacity(vec2);
 }
 
 int	main( void )
@@ -247,5 +267,7 @@ int	main( void )
 	// // printSizeAndCapacity(vec);
 	//testing assign
 	system("leaks test_vector");
+
+
 	// std::cout << empty[0] << std::endl;
 }

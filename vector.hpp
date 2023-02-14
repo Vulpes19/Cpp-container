@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/12 16:41:46 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/14 12:04:03 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include "Iterator.hpp"
+#include <iterator>
 
 
 // typedef Allocator allocator_type;
@@ -31,7 +32,7 @@ namespace ft
 			//alias
 			typedef size_t size_type;
 			typedef T value_type;
-			typedef random_access_iterator< vector<T> > iterator;
+			typedef random_access_iterator< T > iterator;
 
 			//default constructor
 			vector( void ) : data(NULL), _size(0), _capacity(0) {};
@@ -40,7 +41,10 @@ namespace ft
 			explicit vector( size_type size, const T &val ) : _size(size), _capacity(size)
 			{
 				if ( _size == 0 )
-					throw(std::length_error("size can't be zero"));
+				{
+					data = NULL;
+					return ;
+				}
 				data = alloc.allocate( _capacity );
 				if ( data == NULL )
 						throw(std::bad_alloc());
@@ -134,38 +138,6 @@ namespace ft
 			};
 
 			//assign member function
-			void	assign( const iterator first, const iterator last )
-			{
-				size_t newSize = last - first;
-				if ( newSize > _capacity )
-				{
-					_capacity = newSize;
-					T *newData = alloc.allocate(_capacity);
-					if ( newData == NULL )
-						throw(std::bad_alloc());
-					for ( size_type i = 0; i < _size; i++ )
-					{
-						alloc.construct(newData + i, data[i]);
-						alloc.destroy(data + i);
-					}
-					alloc.deallocate(data, _size);
-					_size = newSize;
-					data = newData;
-				}
-				else
-				{
-					for ( size_type i = 0; i < _size; i++ )
-						alloc.destroy(data + i);
-				}
-				size_t i = 0;
-				iterator it = first;
-				while ( i < _size && it < last )
-				{
-					data[i++] = *it;
-					it++;
-				}
-				_size = newSize;
-			};
 			void	assign( size_type newSize, const value_type value )
 			{
 				if ( newSize > _capacity )
@@ -189,6 +161,35 @@ namespace ft
 				}
 				for ( size_type i = newSize; i < _size; i++ )
 					alloc.destroy(data + i);
+				_size = newSize;
+			};
+			template< typename InputIterator >
+
+			void	assign( InputIterator first, InputIterator last )
+			{
+				size_t newSize = ft_distance(first, last);
+				if ( newSize > _capacity )
+				{
+					_capacity = newSize;
+					value_type *newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::bad_alloc());
+					for ( size_type i = 0; i < _size; i++ )
+					{
+						alloc.construct(newData + i, data[i]);
+						alloc.destroy(data + i);
+					}
+					alloc.deallocate(data, _size);
+					_size = newSize;
+					data = newData;
+				}
+				size_t i = 0;
+				for ( ; first != last; ++first, i++ )
+				{
+					alloc.construct(data + i, *(first));
+				}
+				for ( int j = i; i < _size; i++ )
+					alloc.destroy(data + j);
 				_size = newSize;
 			};
 
