@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/14 14:53:28 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:47:07 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ namespace ft
 			typedef size_t size_type;
 			typedef T value_type;
 			typedef value_type& reference;
-			typedef typename const reference const_reference;
+			// typedef const typename reference const_reference;
 			typedef random_access_iterator< T > iterator;
-			typedef typename const iterator const_iterator;
+			typedef random_access_iterator< const T > const_iterator;
 
 			//default constructor
 			vector( void ) : data(NULL), _size(0), _capacity(0) {};
@@ -113,7 +113,7 @@ namespace ft
 				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
 			};
 
-			const reference operator[]( size_type index ) const
+			reference operator[]( size_type index ) const
 			{
 				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
 			};
@@ -290,6 +290,41 @@ namespace ft
 				}
 			};
 
+			template < typename InputIterator >
+			
+			void	insert( iterator position, InputIterator first, InputIterator last )
+			{
+				size_type	index = position - data;
+				size_type	n = distance( first, last );
+				if ( _size + n > _capacity )
+				{
+					size_type i, j;
+					
+					i = 0;
+					j = 0;
+					_capacity *= 2;
+					value_type	*newData = alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::bad_alloc());
+					while ( i < _size + n && j < _size )
+					{
+						if ( i == index )
+						{
+							for ( size_type k = i; first != last; k++, ++first )
+								alloc.construct(newData + k, *first);
+							i += n;
+							continue ;
+						}
+						alloc.construct(newData + i, data[j]);
+						alloc.destroy(data + j);
+						i++;
+						j++;
+					}
+					alloc.deallocate(data, _size);
+					_size += n;
+					data = newData;
+				}
+			};
 			//erase member function
 			iterator	erase( iterator position )
 			{
@@ -354,7 +389,7 @@ namespace ft
 				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
 			
-			const_reference	at( size_type position ) const
+			reference	at( size_type position ) const
 			{
 				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
@@ -364,7 +399,7 @@ namespace ft
 				return (data[0]);
 			};
 
-			const_reference	front( void ) const
+			reference	front( void ) const
 			{
 				return (data[0]);
 			};
@@ -374,7 +409,7 @@ namespace ft
 				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
 			};
 			
-			const_reference	back( void ) const
+			reference	back( void ) const
 			{
 				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
 			};
