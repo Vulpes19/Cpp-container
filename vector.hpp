@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/14 12:04:03 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/14 14:53:28 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ namespace ft
 			//alias
 			typedef size_t size_type;
 			typedef T value_type;
+			typedef value_type& reference;
+			typedef typename const reference const_reference;
 			typedef random_access_iterator< T > iterator;
+			typedef typename const iterator const_iterator;
 
 			//default constructor
 			vector( void ) : data(NULL), _size(0), _capacity(0) {};
@@ -105,12 +108,12 @@ namespace ft
 			};
 
 			//[] operator
-			T	&operator[]( size_type index )
+			reference	operator[]( size_type index )
 			{
 				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
 			};
 
-			const T	&operator[]( size_type index ) const
+			const reference operator[]( size_type index ) const
 			{
 				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
 			};
@@ -131,8 +134,18 @@ namespace ft
 				return (iterator( data ));
 			};
 
+			const_iterator	begin( void ) const
+			{
+				return (iterator( data ));
+			};
+
 			//end member function
 			iterator	end( void )
+			{
+				return (iterator( data + _size ));
+			};
+
+			const_iterator	end( void ) const
 			{
 				return (iterator( data + _size ));
 			};
@@ -336,23 +349,35 @@ namespace ft
 			}
 			//operations
 			//at member function
-			value_type	&at( size_type position ) const
+			reference	at( size_type position )
 			{
 				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
 			
+			const_reference	at( size_type position ) const
+			{
+				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
+			};
 			//front member function
-			value_type	&front( void ) const
+			reference	front( void )
 			{
 				return (data[0]);
 			};
-	
+
+			const_reference	front( void ) const
+			{
+				return (data[0]);
+			};
 			//back member function
-			value_type	&back( void ) const
+			reference	back( void )
 			{
 				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
 			};
-
+			
+			const_reference	back( void ) const
+			{
+				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
+			};
 			//empty member function
 			bool	empty( void ) const
 			{
