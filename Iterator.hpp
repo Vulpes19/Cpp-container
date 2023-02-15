@@ -6,13 +6,14 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/14 11:31:32 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/15 16:33:43 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <iostream>
+#include "TypeTraits.hpp"
 
 namespace ft
 {
@@ -135,5 +136,17 @@ namespace ft
 
 		private:
 			value_type	*data;
+	};
+
+	template< typename iterator_type >
+
+	class reverse_iterator
+	{
+		public:
+			reverse_iterator( void );
+			explicit	reverse_iterator( iterator_type it );
+			template < typename Iter >
+			reverse_iterator( typename ft::enable_if<!ft::is_integral<Iter>::value, typename reverse_iterator>::type<Iter> const &rev_it );
+			
 	};
 }
