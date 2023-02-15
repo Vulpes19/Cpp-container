@@ -6,11 +6,12 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/14 15:30:44 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:39:28 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
+#include "TypeTraits.hpp"
 #include <vector>
 #include <time.h>
 #include <iostream>
@@ -154,7 +155,9 @@ int	main( void )
 {
 	// testing_push_back();
 	// testing_assign();
-	testing_insert();
+	// testing_insert();
+
+	std::cout << ft::is_integral<int>::value << std::endl; 
 	// printSizeAndCapacity(vec);
 	// printSizeAndCapacity(og_vec);
 	// vec.push_back('b');
