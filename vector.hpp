@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/14 15:47:07 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/15 16:02:00 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include "Iterator.hpp"
+#include "TypeTraits.hpp"
 #include <iterator>
 
 
@@ -292,7 +293,7 @@ namespace ft
 
 			template < typename InputIterator >
 			
-			void	insert( iterator position, InputIterator first, InputIterator last )
+			void	insert( typename ft::enable_if<!ft::is_integral<InputIterator>::value, typename ft::vector<T>::iterator>::type position, InputIterator first, InputIterator last )
 			{
 				size_type	index = position - data;
 				size_type	n = distance( first, last );

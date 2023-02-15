@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 15:07:36 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/15 15:39:05 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:53:13 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,12 @@ namespace ft
     
     template< bool B, typename T = void >
 
-    struct enable_if
+    struct enable_if {};
+    
+    template< typename T >
+
+    struct enable_if< true, T > 
     {
-        
+        typedef T type;
     };
 }

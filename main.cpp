@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/15 15:39:28 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/15 16:05:11 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,12 @@ void	testing_insert( void )
 	it++;
 	myIterator it2 = ftvec.begin();
 	it2++;
-	stdIterator begin = c.begin();
-	stdIterator end = c.end();
+	// stdIterator begin = c.begin();
+	// stdIterator end = c.end();
 	printVecElements(vec);
 	printVecElements(ftvec);
-	vec.insert(it, begin, end);
-	ftvec.insert(it2, begin, end);
+	vec.insert(it, 3, 9);
+	ftvec.insert(it2, 3, 9);
 	printVecElements(vec);
 	printVecElements(ftvec);
 }
@@ -155,9 +155,8 @@ int	main( void )
 {
 	// testing_push_back();
 	// testing_assign();
-	// testing_insert();
+	testing_insert();
 
-	std::cout << ft::is_integral<int>::value << std::endl; 
 	// printSizeAndCapacity(vec);
 	// printSizeAndCapacity(og_vec);
 	// vec.push_back('b');
