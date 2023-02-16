@@ -1,5 +1,7 @@
 #* TARGETS *#
 VECTOR = test_vector
+STACK = test_stack
+MAP = test_map
 
 #* SRC FILES *#
 V_FILE = vector_main.cpp
@@ -18,7 +20,9 @@ TYPE_INCLUDE = TypeTraits/
 #* DELETE *#
 DEL = rm -rf
 
-all: $(VECTOR)
+all: $(VECTOR) $(STACK) $(MAP)
+
+vector: $(VECTOR)
 
 $(V_OBJ): $(V_FILE)
 	@g++ $(CFLAGS) -I $(V_INCLUDE) -I $(IT_INCLUDE) -I $(TYPE_INCLUDE) -c $(V_FILE)

@@ -3,3 +3,4 @@ nonsense.cpp
 .gitignore
 Map
 Stack
+*.o
