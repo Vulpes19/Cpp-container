@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/16 12:39:14 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/16 15:50:08 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,12 @@ void	testing_reverse_iterator( void )
 	std::vector<int> vec(5, 9);
 	stdIterator iter_end;
 	stdIterator iter_begin;
+	vec.push_back(10);
 	iter_end = vec.begin();
 	iter_begin = vec.end();
 
+	std::reverse_iterator<stdIterator> stdrev1(iter_end);
+	std::reverse_iterator<stdIterator> stdrev2(iter_begin);
 	ft::reverse_iterator<stdIterator> rev_until(iter_end);
 	ft::reverse_iterator<stdIterator> rev_from(iter_begin);
 	// 	std::cout << *rev_until << std::endl;
@@ -146,8 +149,48 @@ void	testing_reverse_iterator( void )
 	while ( rev_from != rev_until )
 	{
 		std::cout << *rev_from++ << std::endl;
-		// ++rev_from;
 	}
+	std::cout << std::endl;
+	while ( stdrev2 != stdrev1 )
+	{
+		std::cout << *stdrev2++ << std::endl;
+	}
+
+	ft::reverse_iterator<stdIterator> my_rev_op(iter_begin);
+	std::reverse_iterator<stdIterator> std_rev_op(iter_begin);
+
+	my_rev_op++;
+	std_rev_op++;
+	std::cout << *my_rev_op << " " << *std_rev_op << std::endl;
+	my_rev_op += 3;
+	std_rev_op += 3;
+	std::cout << *my_rev_op << " " << *std_rev_op << std::endl;
+	my_rev_op -= 2;
+	std_rev_op -= 2;
+	std::cout << *my_rev_op << " " << *std_rev_op << std::endl;
+	
+	my_rev_op--;
+	std_rev_op--;
+	std::cout << *my_rev_op << " > " << *rev_until << std::endl;
+	if (my_rev_op > rev_until)
+		std::cout << "1\n";
+	else
+		std::cout << "0\n";
+	std::cout << *my_rev_op << " < " << *rev_until << std::endl;
+	if (my_rev_op < rev_until)
+		std::cout << "1\n";
+	else
+		std::cout << "0\n";
+	std::cout << *std_rev_op << " > " << *stdrev1 << std::endl;
+	if (std_rev_op > stdrev1)
+		std::cout << "1\n";
+	else
+		std::cout << "0\n";
+	std::cout << *std_rev_op << " < " << *stdrev1 << std::endl;
+	if (std_rev_op < stdrev1)
+		std::cout << "1\n";
+	else
+		std::cout << "0\n";
 }
 
 void	testing_insert( void )
