@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/15 16:05:11 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/16 12:39:14 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,25 @@ void	testing_push_back( void )
 // 	printSizeAndCapacity(vec2);
 // }
 
+void	testing_reverse_iterator( void )
+{
+	std::vector<int> vec(5, 9);
+	stdIterator iter_end;
+	stdIterator iter_begin;
+	iter_end = vec.begin();
+	iter_begin = vec.end();
+
+	ft::reverse_iterator<stdIterator> rev_until(iter_end);
+	ft::reverse_iterator<stdIterator> rev_from(iter_begin);
+	// 	std::cout << *rev_until << std::endl;
+	// exit(1);
+	while ( rev_from != rev_until )
+	{
+		std::cout << *rev_from++ << std::endl;
+		// ++rev_from;
+	}
+}
+
 void	testing_insert( void )
 {
 	std::vector<int> vec(5, 1);
@@ -155,7 +174,8 @@ int	main( void )
 {
 	// testing_push_back();
 	// testing_assign();
-	testing_insert();
+	// testing_insert();
+	testing_reverse_iterator();
 
 	// printSizeAndCapacity(vec);
 	// printSizeAndCapacity(og_vec);

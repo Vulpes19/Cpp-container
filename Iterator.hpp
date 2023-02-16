@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/15 16:33:43 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/16 12:41:15 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ namespace ft
 			};		
 			random_access_iterator	&operator--( void )
 			{
-				data++;
+				data--;
 				return (*this);
 			};
 			random_access_iterator	operator++( int )
@@ -128,7 +128,7 @@ namespace ft
 			{
 				data -= n;
 				return (*this);
-			};;
+			};
 			reference	operator[]( size_t index ) const
 			{
 				return (data[index]);
@@ -142,11 +142,107 @@ namespace ft
 
 	class reverse_iterator
 	{
+		typedef typename iterator_type::value_type value_type;
+		typedef value_type& reference;
+		typedef size_t size_type;
 		public:
-			reverse_iterator( void );
-			explicit	reverse_iterator( iterator_type it );
-			template < typename Iter >
-			reverse_iterator( typename ft::enable_if<!ft::is_integral<Iter>::value, typename reverse_iterator>::type<Iter> const &rev_it );
-			
+			reverse_iterator( void ) {};
+			explicit	reverse_iterator( iterator_type it ) : it(it) {};
+			reverse_iterator( const reverse_iterator &rev )
+			{
+				it = rev.it;
+			};
+			// template < typename Iter >
+			// reverse_iterator( typename ft::enable_if<!ft::is_integral<Iter>::value, typename reverse_iterator>::type<Iter> const &rev_it );
+			reference	operator*( void ) const
+			{
+				iterator_type tmp = it;
+				tmp--;
+				return (*tmp);
+			};
+			reference	operator[]( size_type index ) const
+			{
+				return (it[index]);
+			};
+			reverse_iterator	&operator++( void )
+			{
+				--it;
+				return (*this);
+			};
+			reverse_iterator	&operator--( void )
+			{
+				++it;
+				return (*this);
+			};
+			reverse_iterator	&operator++( int )
+			{
+				reverse_iterator tmp = *this;
+				*this--;
+				return (tmp);
+			};
+			// value_type	operator++( int )
+			// {
+			// 	reverse_iterator tmp = this;
+			// 	this--;
+			// 	return (*tmp);
+			// };		
+			reverse_iterator	&operator--( int )
+			{
+				reverse_iterator tmp = *this;
+				*this++;
+				return (*this);
+			};
+			// value_type	operator--( int )
+			// {
+			// 	reverse_iterator tmp = this;
+			// 	this++;
+			// 	return (*tmp);
+			// };	
+			reverse_iterator	&operator+=( int n )
+			{
+				it -= n;
+				return (*this);
+			};
+			reverse_iterator	&operator-=( int n )
+			{
+				it += n;
+				return (*this);
+			};
+			reverse_iterator	&operator+( const int &n )
+			{
+				it -= n;
+				return (*this);
+			};		
+			reverse_iterator	&operator-( const int &n )
+			{
+				it += n;
+				return (*this);
+			};
+			bool	operator==( const reverse_iterator &it ) const
+			{
+				return ( this->it == it );
+			};
+			bool	operator!=( const reverse_iterator &it ) const
+			{
+				return ( this->it != it.it );
+			};
+			bool	operator<( const reverse_iterator &it ) const
+			{
+				return ( this->it < it );
+			};
+			bool	operator<=( const reverse_iterator &it ) const
+			{
+				return ( this->it <= it );
+			};
+			bool	operator>( const reverse_iterator &it ) const
+			{
+				return ( this->it > it );
+			};
+			bool	operator>=( const reverse_iterator &it ) const
+			{
+				return ( this->it >= it );
+			};
+		private:
+			iterator_type it;
 	};
 }
