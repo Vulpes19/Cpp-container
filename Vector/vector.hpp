@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/15 16:06:56 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/16 16:05:18 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <memory>
 #include <cstddef>
 #include <stdexcept>
-#include "Iterator.hpp"
-#include "TypeTraits.hpp"
+#include "../Iterators/Iterator.hpp"
+#include "../TypeTraits/TypeTraits.hpp"
 #include <iterator>
 
 namespace ft
