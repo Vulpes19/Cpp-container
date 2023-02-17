@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/16 16:24:18 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:14:14 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include "../Iterators/Iterator.hpp"
+#include "../Iterators/Iterator_traits.hpp"
 #include "../TypeTraits/TypeTraits.hpp"
 #include <iterator>
 
@@ -35,7 +36,8 @@ namespace ft
 			// typedef const typename reference const_reference;
 			typedef random_access_iterator< T > iterator;
 			typedef random_access_iterator< const T > const_iterator;
-			typedef reverse_iterator< T > reverse_iterator;
+			// typedef reverse_iterator< T > reverse_iterator;
+			// typedef reverse_iterator< const T > const_reverse_iterator;
 
 			//default constructor
 			// vector( void ) : data(NULL), _size(0), _capacity(0) {};
@@ -57,23 +59,23 @@ namespace ft
 			};
 
 			//range constructor
-			template< typename InputIterator >
-			vector( InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type() ) : alloc(alloc)
-			{
-				size_type newSize = ft_distance(first, last);
-				if ( newSize == 0 )
-				{
-					data = NULL;
-					_size = 0;
-					return ;
-				}
-				_capacity = newSize;
-				data = alloc.allocate( _capacity );
-				if ( data == NULL )
-					throw(std::bad_alloc());
-				for ( size_type i = 0; first != last; i++, first++ )
-					alloc.construct(data + i, *first);
-			};
+			// template< typename InputIterator >
+			// vector( InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type() ) : alloc(alloc)
+			// {
+			// 	size_type newSize = distance(first, last);
+			// 	if ( newSize == 0 )
+			// 	{
+			// 		data = NULL;
+			// 		_size = 0;
+			// 		return ;
+			// 	}
+			// 	_capacity = newSize;
+			// 	data = alloc.allocate( _capacity );
+			// 	if ( data == NULL )
+			// 		throw(std::bad_alloc());
+			// 	for ( size_type i = 0; first != last; i++, first++ )
+			// 		alloc.construct(data + i, *first);
+			// };
 
 			//copy constructor
 			vector( const vector &source )
@@ -173,7 +175,7 @@ namespace ft
 				if ( newSize > _capacity )
 				{
 					_capacity = newSize;
-					T *newData = alloc.allocate(_capacity);
+					value_type *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
@@ -198,7 +200,7 @@ namespace ft
 
 			void	assign( InputIterator first, InputIterator last )
 			{
-				size_t newSize = ft_distance(first, last);
+				size_type newSize = ft_distance(first, last);
 				if ( newSize > _capacity )
 				{
 					_capacity = newSize;
@@ -214,7 +216,7 @@ namespace ft
 					_size = newSize;
 					data = newData;
 				}
-				size_t i = 0;
+				size_type i = 0;
 				for ( ; first != last; ++first, i++ )
 				{
 					alloc.construct(data + i, *(first));
@@ -501,7 +503,7 @@ namespace ft
 					_capacity *= 2;
 					if ( _capacity == 0 )
 						_capacity = 1;
-					T *newData = alloc.allocate(_capacity);
+					value_type *newData = alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )

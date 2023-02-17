@@ -6,25 +6,40 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/16 15:51:08 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:13:25 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <iostream>
+#include "Iterator_traits.hpp"
 #include "TypeTraits.hpp"
 
 namespace ft
 {
 	template< typename InputIterator >
-	size_t	ft_distance( InputIterator first, InputIterator last )
+	typename ft::iterator_traits<InputIterator>::difference_type calculate( InputIterator first, InputIterator last, random_access_iterator_tag )
+	{
+		return ( last - first );
+	}
+
+	template< typename InputIterator >
+	typename ft::iterator_traits<InputIterator>::difference_type	calculate( InputIterator first, InputIterator last, input_iterator_tag)
 	{
 		size_t size = 0;
 		for ( ;first != last; ++first )
 			size++;
 		return (size);
 	}
+
+	template< typename InputIterator >
+	typename ft::iterator_traits<InputIterator>::difference_type	distance( InputIterator first, InputIterator last )
+	{
+		return (calculate(first, last, ft::iterator_traits<InputIterator>::iterator_category()));
+	}
+
+
 	template < typename  T >
 
 	class random_access_iterator
@@ -34,6 +49,7 @@ namespace ft
 			typedef ptrdiff_t		difference_type;
 			typedef value_type*		pointer;
 			typedef value_type&		reference;
+			typedef	ft::random_access_iterator_tag iterator_category;
 
 			random_access_iterator( void ) : data(NULL) {};
 			random_access_iterator( pointer newData ) : data(newData) {};			

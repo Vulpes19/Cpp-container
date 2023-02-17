@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   vector_main.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/16 15:50:08 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:18:37 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include "TypeTraits.hpp"
 #include <vector>
+#include <typeinfo>
 #include <time.h>
 #include <iostream>
 
@@ -213,12 +214,24 @@ void	testing_insert( void )
 	printVecElements(ftvec);
 }
 
+void	testing_iterator_traits( void )
+{
+	std::i
+	if ( typeid(ft::iterator_traits<stdIterator>::iterator_category) == typeid(std::random_access_iterator_tag))
+		std::cout << "random access iterator\n";
+	if ( typeid(ft::iterator_traits<myIterator>::iterator_category) == typeid(ft::random_access_iterator_tag))
+		std::cout << "random access iterator\n";
+	if ( typeid(ft::iterator_traits<myIterator>::iterator_category) == typeid(ft::random_access_iterator_tag))
+		std::cout << "random access iterator\n";
+}
+
 int	main( void )
 {
+	testing_iterator_traits();
 	// testing_push_back();
 	// testing_assign();
 	// testing_insert();
-	testing_reverse_iterator();
+	// testing_reverse_iterator();
 
 	// printSizeAndCapacity(vec);
 	// printSizeAndCapacity(og_vec);
