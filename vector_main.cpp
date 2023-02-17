@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 13:18:37 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:34:13 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,24 +204,29 @@ void	testing_insert( void )
 	it++;
 	myIterator it2 = ftvec.begin();
 	it2++;
-	// stdIterator begin = c.begin();
-	// stdIterator end = c.end();
+	stdIterator begin = c.begin();
+	stdIterator end = c.end();
 	printVecElements(vec);
 	printVecElements(ftvec);
-	vec.insert(it, 3, 9);
-	ftvec.insert(it2, 3, 9);
+	vec.insert( it, begin, end);
+	// vec.insert(it, 3, 9);
+	// ftvec.insert(it2, 3, 9);
+	ftvec.insert( it2, begin, end);
 	printVecElements(vec);
 	printVecElements(ftvec);
 }
 
 void	testing_iterator_traits( void )
 {
-	std::i
+	int arr[] = {1, 2, 3};
+	int *a = arr;
+	int *b = arr + 3;
+	std::cout << ft::distance(a, b) << std::endl;
 	if ( typeid(ft::iterator_traits<stdIterator>::iterator_category) == typeid(std::random_access_iterator_tag))
 		std::cout << "random access iterator\n";
 	if ( typeid(ft::iterator_traits<myIterator>::iterator_category) == typeid(ft::random_access_iterator_tag))
 		std::cout << "random access iterator\n";
-	if ( typeid(ft::iterator_traits<myIterator>::iterator_category) == typeid(ft::random_access_iterator_tag))
+	if ( typeid(ft::iterator_traits<int *>::iterator_category) == typeid(ft::random_access_iterator_tag))
 		std::cout << "random access iterator\n";
 }
 

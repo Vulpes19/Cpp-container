@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 13:13:25 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:53:35 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,25 @@
 namespace ft
 {
 	template< typename InputIterator >
-	typename ft::iterator_traits<InputIterator>::difference_type calculate( InputIterator first, InputIterator last, random_access_iterator_tag )
+	typename ft::iterator_traits<InputIterator>::difference_type calculate( InputIterator first, InputIterator last, std::random_access_iterator_tag )
 	{
 		return ( last - first );
 	}
 
 	template< typename InputIterator >
-	typename ft::iterator_traits<InputIterator>::difference_type	calculate( InputIterator first, InputIterator last, input_iterator_tag)
+	typename ft::iterator_traits<InputIterator>::difference_type	calculate( InputIterator first, InputIterator last, std::input_iterator_tag)
 	{
-		size_t size = 0;
+		typename ft::iterator_traits<InputIterator>::difference_type size = 0;
 		for ( ;first != last; ++first )
 			size++;
 		return (size);
 	}
-
 	template< typename InputIterator >
 	typename ft::iterator_traits<InputIterator>::difference_type	distance( InputIterator first, InputIterator last )
 	{
-		return (calculate(first, last, ft::iterator_traits<InputIterator>::iterator_category()));
+		return (calculate(first, last, typename ft::iterator_traits<InputIterator>::iterator_category()));
 	}
+
 
 
 	template < typename  T >

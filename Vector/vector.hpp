@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 13:14:14 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:24:09 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,7 @@ namespace ft
 				 InputIterator first, InputIterator last )
 			{
 				size_type	index = position - data;
-				size_type	n = distance( first, last );
+				size_type	n = ft::distance( first, last );
 				if ( _size + n > _capacity )
 				{
 					size_type i, j;
