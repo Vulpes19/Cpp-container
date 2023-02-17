@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 13:53:35 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:51:35 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,6 @@
 
 namespace ft
 {
-	template< typename InputIterator >
-	typename ft::iterator_traits<InputIterator>::difference_type calculate( InputIterator first, InputIterator last, std::random_access_iterator_tag )
-	{
-		return ( last - first );
-	}
-
-	template< typename InputIterator >
-	typename ft::iterator_traits<InputIterator>::difference_type	calculate( InputIterator first, InputIterator last, std::input_iterator_tag)
-	{
-		typename ft::iterator_traits<InputIterator>::difference_type size = 0;
-		for ( ;first != last; ++first )
-			size++;
-		return (size);
-	}
-	template< typename InputIterator >
-	typename ft::iterator_traits<InputIterator>::difference_type	distance( InputIterator first, InputIterator last )
-	{
-		return (calculate(first, last, typename ft::iterator_traits<InputIterator>::iterator_category()));
-	}
-
-
-
 	template < typename  T >
 
 	class random_access_iterator
@@ -162,6 +140,7 @@ namespace ft
 		typedef	typename iterator_type::pointer		pointer;
 		typedef value_type&							reference;
 		typedef size_t 								size_type;
+		
 		public:
 			reverse_iterator( void ) {};
 			explicit	reverse_iterator( iterator_type it ) : it(it) {};

@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 13:24:09 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:54:03 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../Iterators/Iterator.hpp"
 #include "../Iterators/Iterator_traits.hpp"
 #include "../TypeTraits/TypeTraits.hpp"
+#include "../Algorithm/Algorithm.hpp"
 #include <iterator>
 
 namespace ft
@@ -36,8 +37,7 @@ namespace ft
 			// typedef const typename reference const_reference;
 			typedef random_access_iterator< T > iterator;
 			typedef random_access_iterator< const T > const_iterator;
-			// typedef reverse_iterator< T > reverse_iterator;
-			// typedef reverse_iterator< const T > const_reverse_iterator;
+			typedef reverse_iterator< iterator > reverse_iterator;
 
 			//default constructor
 			// vector( void ) : data(NULL), _size(0), _capacity(0) {};
@@ -58,24 +58,24 @@ namespace ft
 					alloc.construct(data + i, val);
 			};
 
-			//range constructor
-			// template< typename InputIterator >
-			// vector( InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type() ) : alloc(alloc)
-			// {
-			// 	size_type newSize = distance(first, last);
-			// 	if ( newSize == 0 )
-			// 	{
-			// 		data = NULL;
-			// 		_size = 0;
-			// 		return ;
-			// 	}
-			// 	_capacity = newSize;
-			// 	data = alloc.allocate( _capacity );
-			// 	if ( data == NULL )
-			// 		throw(std::bad_alloc());
-			// 	for ( size_type i = 0; first != last; i++, first++ )
-			// 		alloc.construct(data + i, *first);
-			// };
+			// range constructor
+			template< typename InputIterator >
+			vector( typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type() ) : alloc(alloc)
+			{
+				size_type newSize = ft::distance(first, last);
+				if ( newSize == 0 )
+				{
+					data = NULL;
+					_size = 0;
+					return ;
+				}
+				_capacity = newSize;
+				data = alloc.allocate( _capacity );
+				if ( data == NULL )
+					throw(std::bad_alloc());
+				for ( size_type i = 0; first != last; i++, first++ )
+					alloc.construct(data + i, *first);
+			};
 
 			//copy constructor
 			vector( const vector &source )
@@ -141,9 +141,9 @@ namespace ft
 
 			void	swap( vector &x )
 			{
-				std::swap(data, x.data);
-				std::swap(_size, x._size);
-				std::swap(_capacity, x._capacity);
+				ft::swap(data, x.data);
+				ft::swap(_size, x._size);
+				ft::swap(_capacity, x._capacity);
 			};
 
 			/* iterators */
@@ -158,6 +158,11 @@ namespace ft
 				return (iterator( data ));
 			};
 
+			reverse_iterator	rbegin( void )
+			{
+				return (iterator( data + _size));
+			};
+
 			//end member function
 			iterator	end( void )
 			{
@@ -167,6 +172,11 @@ namespace ft
 			const_iterator	end( void ) const
 			{
 				return (iterator( data + _size ));
+			};
+
+			reverse_iterator	rend( void )
+			{
+				return (iterator( data ));
 			};
 
 			//assign member function

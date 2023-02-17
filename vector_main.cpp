@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 13:34:13 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/17 16:08:51 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,13 +230,77 @@ void	testing_iterator_traits( void )
 		std::cout << "random access iterator\n";
 }
 
+bool mypredicate (int i, int j)
+{
+  return (i == j);
+}
+
+bool mycomp (char c1, char c2)
+{ 
+	return std::tolower(c1)<std::tolower(c2);
+}
+
+void	testing_algorithm( void )
+{
+	std::vector<int> v1;
+	v1.push_back(1);
+	v1.push_back(2);
+	v1.push_back(3);
+	std::vector<int> v2;
+	v2.push_back(1);
+	v2.push_back(2);
+	v2.push_back(3);
+	std::vector<int> v3;
+	v3.push_back(1);
+	v3.push_back(2);
+	v3.push_back(4);
+	std::vector<int> v4;
+	v4.push_back(1);
+	v4.push_back(2);
+	std::vector<int> v5;
+	v5.push_back(1);
+	v5.push_back(2);
+	v5.push_back(3);
+	v5.push_back(4);
+
+	// Test equal
+	std::cout << "Test std::equal" << std::endl;
+	std::cout << "v1 == v2: " << std::equal(v1.begin(), v1.end(), v2.begin()) << std::endl;
+	std::cout << "v1 == v3: " << std::equal(v1.begin(), v1.end(), v3.begin()) << std::endl;
+	std::cout << "v1 == v4: " << std::equal(v1.begin(), v1.end(), v4.begin()) << std::endl;
+	std::cout << "v1 == v5: " << std::equal(v1.begin(), v1.end(), v5.begin()) << std::endl;
+	std::cout << std::endl;
+	std::cout << "Test ft::equal" << std::endl;
+	std::cout << "v1 == v2: " << ft::equal(v1.begin(), v1.end(), v2.begin()) << std::endl;
+	std::cout << "v1 == v3: " << ft::equal(v1.begin(), v1.end(), v3.begin()) << std::endl;
+	std::cout << "v1 == v4: " << ft::equal(v1.begin(), v1.end(), v4.begin()) << std::endl;
+	std::cout << "v1 == v5: " << ft::equal(v1.begin(), v1.end(), v5.begin()) << std::endl;
+	std::cout << std::endl;
+
+	// Test lexicographical_compare
+	std::cout << "Test std::lexicographical_compare" << std::endl;
+	std::cout << "v1 < v2: " << std::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end()) << std::endl;
+	std::cout << "v1 < v3: " << std::lexicographical_compare(v1.begin(), v1.end(), v3.begin(), v3.end()) << std::endl;
+	std::cout << "v1 < v4: " << std::lexicographical_compare(v1.begin(), v1.end(), v4.begin(), v4.end()) << std::endl;
+	std::cout << "v1 < v5: " << std::lexicographical_compare(v1.begin(), v1.end(), v5.begin(), v5.end()) << std::endl;
+	std::cout << std::endl;
+	std::cout << "Test ft::lexicographical_compare" << std::endl;
+	std::cout << "v1 < v2: " << ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end()) << std::endl;
+	std::cout << "v1 < v3: " << ft::lexicographical_compare(v1.begin(), v1.end(), v3.begin(), v3.end()) << std::endl;
+	std::cout << "v1 < v4: " << ft::lexicographical_compare(v1.begin(), v1.end(), v4.begin(), v4.end()) << std::endl;
+	std::cout << "v1 < v5: " << ft::lexicographical_compare(v1.begin(), v1.end(), v5.begin(), v5.end()) << std::endl;
+	std::cout << std::endl;
+}
+
+
 int	main( void )
 {
-	testing_iterator_traits();
+	// testing_iterator_traits();
 	// testing_push_back();
 	// testing_assign();
 	// testing_insert();
 	// testing_reverse_iterator();
+	testing_algorithm();
 
 	// printSizeAndCapacity(vec);
 	// printSizeAndCapacity(og_vec);
