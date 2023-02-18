@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 17:47:35 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/18 18:27:33 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/18 18:36:13 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,13 @@ namespace ft
 	void	swap( pair<T1, T2> &p1, pair<T1, T2> &p2 )
 	{
 		p1.swap(p2);
+	};
+
+	template < typename T1, typename T2 >
+
+	pair< T1, T2 >	make_pair( T1 x, T2 y )
+	{
+		pair<T1, T2> p(x, y);
+		return (p);
 	};
 }
