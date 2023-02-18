@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 14:54:03 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:02:24 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ namespace ft
 			typedef reverse_iterator< iterator > reverse_iterator;
 
 			//default constructor
-			// vector( void ) : data(NULL), _size(0), _capacity(0) {};
-
 			explicit vector( const allocator_type &alloc = allocator_type() ) : data(NULL), _size(0), _capacity(0), alloc(alloc) {};
 			//fill constructor
 			explicit vector( size_type size, const T &val ) : _size(size), _capacity(size)
@@ -196,11 +194,8 @@ namespace ft
 					alloc.deallocate(data, _size);
 					data = newData;
 				}
-				else
-				{
-					for ( size_type i = 0; i < newSize; i++ )
-						alloc.construct( data + i, value);
-				}
+				for ( size_type i = 0; i < newSize; i++ )
+					alloc.construct( data + i, value);
 				for ( size_type i = newSize; i < _size; i++ )
 					alloc.destroy(data + i);
 				_size = newSize;
@@ -208,9 +203,9 @@ namespace ft
 			
 			template< typename InputIterator >
 
-			void	assign( InputIterator first, InputIterator last )
+			void	assign( typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last )
 			{
-				size_type newSize = ft_distance(first, last);
+				size_type newSize = ft::distance(first, last);
 				if ( newSize > _capacity )
 				{
 					_capacity = newSize;
