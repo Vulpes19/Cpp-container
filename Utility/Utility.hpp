@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 17:47:35 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/18 18:22:57 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/18 18:27:33 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft
 		{};
 		pair    &operator=( const pair &p )
 		{
-			if (p != &this )
+			if (&p != this )
 			{
 				first = p.first;
 				second = p.second;
@@ -59,6 +59,7 @@ namespace ft
 	{
 		return ( p1.first <= p2.first && p1.second <= p2.second );
 	};
+
 
 	template< typename T1, typename T2 >
 	bool    operator<( const pair<T1, T2> &p1, const pair<T1, T2> &p2 )

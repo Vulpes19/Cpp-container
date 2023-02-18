@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/18 18:13:29 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/18 18:27:19 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,7 @@ void	testing_utility( void )
 	std::cout << p.first << p.second << std::endl;
 	ft::pair<int, int> p2(4, 2);
 	ft::pair<int, int> pc2(6, 9);
+	p2 = pc2;
 	std::cout << p2.first << p2.second << std::endl;
 	p.swap(pc);
 	std::cout << p.first << p.second << std::endl;
