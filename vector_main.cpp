@@ -6,12 +6,13 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 16:08:51 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/18 18:13:29 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include "TypeTraits.hpp"
+#include "Utility.hpp"
 #include <vector>
 #include <typeinfo>
 #include <time.h>
@@ -292,6 +293,24 @@ void	testing_algorithm( void )
 	std::cout << std::endl;
 }
 
+void	testing_utility( void )
+{
+	std::pair<int, int> p(4, 2);
+	std::pair<int, int> pc(6, 9);
+	std::cout << p.first << p.second << std::endl;
+	ft::pair<int, int> p2(4, 2);
+	ft::pair<int, int> pc2(6, 9);
+	std::cout << p2.first << p2.second << std::endl;
+	p.swap(pc);
+	std::cout << p.first << p.second << std::endl;
+	std::cout << pc.first << pc.second << std::endl;
+	p2.swap(pc2);
+	std::cout << p2.first << p2.second << std::endl;
+	std::cout << pc2.first << pc2.second << std::endl;
+
+	if (p2 == pc2) std::cout << "hello\n";
+	if (p2 != pc2) std::cout << "bye bye\n";
+}
 
 int	main( void )
 {
@@ -300,7 +319,8 @@ int	main( void )
 	// testing_assign();
 	// testing_insert();
 	// testing_reverse_iterator();
-	testing_algorithm();
+	// testing_algorithm();
+	testing_utility();
 
 	// printSizeAndCapacity(vec);
 	// printSizeAndCapacity(og_vec);
