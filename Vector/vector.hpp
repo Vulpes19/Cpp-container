@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/19 14:45:07 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/19 16:16:55 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,16 +376,19 @@ namespace ft
 				_alloc.deallocate(data, _size);
 				_size -= 1;
 				data = newData;
-				return (position);
+				return (index == _size) ? position : ++position;
 			}
 
 			iterator	erase( iterator first, iterator last )
 			{
-				if ( first > data )
-					first = data;
+				if ( first >= data + _size || first < data || first >= last  || last > data + _size )
+					return (first);
 				size_type start = first - data;
 				size_type end = last - data;
 				size_type n = last - first;
+				std::cout << "start: " << start << std::endl;
+				std::cout << "end: " << end << std::endl;
+				std::cout << "n: " << n << std::endl;
 				size_type i = 0;
 				size_type j = 0;
 				value_type *newData = _alloc.allocate(_capacity);
@@ -407,7 +410,7 @@ namespace ft
 				_alloc.deallocate(data, _size);
 				_size -= n;
 				data = newData;
-				return (first);
+				return (first + n);
 			}
 			//operations
 			//at member function
@@ -416,7 +419,7 @@ namespace ft
 				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
 			
-			reference	at( size_type position ) const
+			const_reference	at( size_type position ) const
 			{
 				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
@@ -426,7 +429,7 @@ namespace ft
 				return (data[0]);
 			};
 
-			reference	front( void ) const
+			const_reference	front( void ) const
 			{
 				return (data[0]);
 			};
@@ -436,14 +439,14 @@ namespace ft
 				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
 			};
 			
-			reference	back( void ) const
+			const_reference	back( void ) const
 			{
 				return (_size > 0) ? data[_size - 1] : throw(std::out_of_range("error out of range"));
 			};
 			//empty member function
 			bool	empty( void ) const
 			{
-				return (_size == 0) ? true : false;
+				return ( _size == 0 );
 			};
 
 			//resize memeber function

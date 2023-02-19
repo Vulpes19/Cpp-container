@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/19 14:47:00 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/19 16:16:04 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,9 +369,63 @@ void	testing_relational_op( void )
 	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
 }
 
+void	testing_erase( void )
+{
+	myIterator ft_ret;
+	stdIterator std_ret;
+	ft::vector<int> ftvec;
+	ftvec.push_back(1);
+	ftvec.push_back(2);
+	ftvec.push_back(3);
+	std::vector<int> stdvec;
+	stdvec.push_back(1);
+	stdvec.push_back(2);
+	stdvec.push_back(3);
+
+	myIterator ft_it = ftvec.begin();
+	stdIterator std_it = stdvec.begin();
+
+	ft_it += 1;
+	std_it += 1;
+
+	ft_ret = ftvec.erase(ft_it);
+	std_ret = stdvec.erase(std_it);
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
+	std::cout << "*** return values ***\n";
+	std::cout << *ft_ret << " " << *std_ret << std::endl;
+
+	ftvec.push_back(4);
+	ftvec.push_back(5);
+	ftvec.push_back(6);
+	stdvec.push_back(4);
+	stdvec.push_back(5);
+	stdvec.push_back(6);
+
+	myIterator b = ftvec.begin() + 2;
+	stdIterator b2 = stdvec.begin() + 2;
+	myIterator e = ftvec.end() - 1;
+	stdIterator e2 = stdvec.end() - 1;
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
+	ft_ret = ftvec.erase(b, e);
+	std_ret = stdvec.erase(b2, e2);
+	std::cout << "*** return values ***\n";
+	std::cout << *ft_ret << " " << *std_ret << std::endl;
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
+}
+
 int	main( void )
 {
-	testing_vec_constructors();
+	// testing_vec_constructors();
+	testing_erase();
 	// testing_iterator_traits();
 	// testing_push_back();
 	// testing_assign();
