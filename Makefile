@@ -14,7 +14,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 #* INCLUDE PATHS *#
 V_INCLUDE = Vector/
-IT_INCLUDE = Iterator/
+IT_INCLUDE = Iterators/
 TYPE_INCLUDE = TypeTraits/
 ALGO_INCLUDE = Algorithm/
 UTIL_INCLUDE = Utility/
@@ -26,12 +26,12 @@ all: $(VECTOR) $(STACK) $(MAP)
 
 vector: $(VECTOR)
 
-$(V_OBJ): $(V_FILE)
-	@g++ $(CFLAGS) -I $(V_INCLUDE) -I $(IT_INCLUDE) -I $(TYPE_INCLUDE) -I $(UTIL_INCLUDE) -I $(ALGO_INCLUDE) -c $(V_FILE)
+$(V_OBJ): $(V_FILE) $(V_INCLUDE) $(IT_INCLUDE) $(TYPE_INCLUDE) $(UTIL_INCLUDE) $(ALGO_INCLUDE)
+	@c++ $(CFLAGS) -I $(V_INCLUDE) -I $(IT_INCLUDE) -I $(TYPE_INCLUDE) -I $(UTIL_INCLUDE) -I $(ALGO_INCLUDE) -c $(V_FILE)
 	@echo "Vector test object files created"
 
-$(VECTOR): $(V_OBJ)
-	@g++ $(CFLAGS) -I $(V_INCLUDE) -I $(IT_INCLUDE) -I $(TYPE_INCLUDE) -I $(UTIL_INCLUDE) -I $(ALGO_INCLUDE) $(V_OBJ) -o $(VECTOR)
+$(VECTOR): $(V_OBJ) $(V_FILE) $(V_INCLUDE) $(IT_INCLUDE) $(TYPE_INCLUDE) $(UTIL_INCLUDE) $(ALGO_INCLUDE)
+	@c++ $(CFLAGS) -I $(V_INCLUDE) -I $(IT_INCLUDE) -I $(TYPE_INCLUDE) -I $(UTIL_INCLUDE) -I $(ALGO_INCLUDE) $(V_OBJ) -o $(VECTOR)
 	@echo "Vector test compiled"
 
 re: fclean all

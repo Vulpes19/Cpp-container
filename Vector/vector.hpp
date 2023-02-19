@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/19 14:08:16 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/19 14:45:07 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@ namespace ft
 			typedef reverse_iterator< iterator > reverse_iterator;
 
 			//default constructor
-			explicit vector( const allocator_type &alloc = allocator_type() ) : data(NULL), _size(0), _capacity(0), alloc(alloc) {};
+			explicit vector( const allocator_type &alloc = allocator_type() ) : data(NULL), _size(0), _capacity(0), _alloc(alloc) {};
 			//fill constructor
-			explicit vector( size_type size, const T &val ) : _size(size), _capacity(size)
+			explicit vector( size_type size, const T &val = value_type() ) : _size(size), _capacity(size)
 			{
 				if ( _size == 0 )
 				{
 					data = NULL;
 					return ;
 				}
-				data = alloc.allocate( _capacity );
+				data = _alloc.allocate( _capacity );
 				if ( data == NULL )
 						throw(std::bad_alloc());
 				for ( size_type i = 0; i < _size; i++ )
-					alloc.construct(data + i, val);
+					_alloc.construct(data + i, val);
 			};
 
 			// range constructor
 			template< typename InputIterator >
-			vector( typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type() ) : alloc(alloc)
+			vector( typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type() ) : _alloc(alloc)
 			{
 				size_type newSize = ft::distance(first, last);
 				if ( newSize == 0 )
@@ -68,29 +68,30 @@ namespace ft
 					return ;
 				}
 				_capacity = newSize;
-				data = alloc.allocate( _capacity );
+				_size = newSize;
+				data = _alloc.allocate( _capacity );
 				if ( data == NULL )
 					throw(std::bad_alloc());
 				for ( size_type i = 0; first != last; i++, first++ )
-					alloc.construct(data + i, *first);
+					_alloc.construct(data + i, *first);
 			};
 
 			//copy constructor
 			vector( const vector &source )
 			{
 				for ( size_type i = 0; i < _size; i++ )
-					alloc.destroy( data + i );
-				alloc.deallocate( data, _capacity );
+					_alloc.destroy( data + i );
+				_alloc.deallocate( data, _capacity );
 				_size = source._size;
 				_capacity = source._capacity;
 				if ( _size > 0 )
 				{
-					data = alloc.allocate( _capacity );
+					data = _alloc.allocate( _capacity );
 					if ( data == NULL )
 						throw(std::length_error("maximum supported size is exceeded"));
 				}
 				for ( size_type i = 0; i < _size; i++ )
-					alloc.construct( data + i, source.data[i] );
+					_alloc.construct( data + i, source.data[i] );
 			};
 
 			//copy assignement operator
@@ -99,18 +100,18 @@ namespace ft
 				if ( this != &source )
 				{
 					for ( size_type i = 0; i < _size; i++ )
-						alloc.destroy( data + i );
-					alloc.deallocate( data, _capacity );
+						_alloc.destroy( data + i );
+					_alloc.deallocate( data, _capacity );
 					_size = source._size;
 					_capacity = source._capacity;
 					if ( _size > 0 )
 					{
-						data = alloc.allocate( _capacity );
+						data = _alloc.allocate( _capacity );
 						if ( data == NULL )
 							throw(std::length_error("maximum supported size is exceeded"));
 					}
 					for ( size_type i = 0; i < _size; i++ )
-						alloc.construct( data + i, source.data[i] );
+						_alloc.construct( data + i, source.data[i] );
 				}
 				return (*this);
 			};
@@ -119,8 +120,8 @@ namespace ft
 			~vector( void )
 			{
 				for ( size_type i = 0; i < _size; i++ )
-					alloc.destroy( data + i );
-				alloc.deallocate( data, _capacity );
+					_alloc.destroy( data + i );
+				_alloc.deallocate( data, _capacity );
 				_size = 0;
 			};
 
@@ -183,21 +184,21 @@ namespace ft
 				if ( newSize > _capacity )
 				{
 					_capacity = newSize;
-					value_type *newData = alloc.allocate(_capacity);
+					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						alloc.construct(newData + i, data[i]);
-						alloc.destroy(data + i);
+						_alloc.construct(newData + i, data[i]);
+						_alloc.destroy(data + i);
 					}
-					alloc.deallocate(data, _size);
+					_alloc.deallocate(data, _size);
 					data = newData;
 				}
 				for ( size_type i = 0; i < newSize; i++ )
-					alloc.construct( data + i, value);
+					_alloc.construct( data + i, value);
 				for ( size_type i = newSize; i < _size; i++ )
-					alloc.destroy(data + i);
+					_alloc.destroy(data + i);
 				_size = newSize;
 			};
 			
@@ -209,25 +210,25 @@ namespace ft
 				if ( newSize > _capacity )
 				{
 					_capacity = newSize;
-					value_type *newData = alloc.allocate(_capacity);
+					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						alloc.construct(newData + i, data[i]);
-						alloc.destroy(data + i);
+						_alloc.construct(newData + i, data[i]);
+						_alloc.destroy(data + i);
 					}
-					alloc.deallocate(data, _size);
+					_alloc.deallocate(data, _size);
 					_size = newSize;
 					data = newData;
 				}
 				size_type i = 0;
 				for ( ; first != last; ++first, i++ )
 				{
-					alloc.construct(data + i, *(first));
+					_alloc.construct(data + i, *(first));
 				}
 				for ( int j = i; i < _size; i++ )
-					alloc.destroy(data + j);
+					_alloc.destroy(data + j);
 				_size = newSize;
 			};
 
@@ -244,23 +245,23 @@ namespace ft
 					i = 0;
 					j = 0;
 					_capacity *= 2;
-					value_type	*newData = alloc.allocate(_capacity);
+					value_type	*newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					while ( i < _size && j < _size - 1 )
 					{
 						if ( i == index )
 						{
-							alloc.construct(newData + i, value);
+							_alloc.construct(newData + i, value);
 							i++;
 							continue ;
 						}
-						alloc.construct(newData + i, data[j]);
-						alloc.destroy(data + j);
+						_alloc.construct(newData + i, data[j]);
+						_alloc.destroy(data + j);
 						i++;
 						j++;
 					}
-					alloc.deallocate(data, _size - 1);
+					_alloc.deallocate(data, _size - 1);
 					data = newData;
 				}
 				else
@@ -284,7 +285,7 @@ namespace ft
 					i = 0;
 					j = 0;
 					_capacity *= 2;
-					value_type	*newData = alloc.allocate(_capacity);
+					value_type	*newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					while ( i < _size + n && j < _size )
@@ -292,16 +293,16 @@ namespace ft
 						if ( i == index )
 						{
 							for ( size_type k = i; k < i + n; k++ )
-								alloc.construct(newData + k, value);
+								_alloc.construct(newData + k, value);
 							i += n;
 							continue ;
 						}
-						alloc.construct(newData + i, data[j]);
-						alloc.destroy(data + j);
+						_alloc.construct(newData + i, data[j]);
+						_alloc.destroy(data + j);
 						i++;
 						j++;
 					}
-					alloc.deallocate(data, _size);
+					_alloc.deallocate(data, _size);
 					_size += n;
 					data = newData;
 				}
@@ -329,7 +330,7 @@ namespace ft
 					i = 0;
 					j = 0;
 					_capacity *= 2;
-					value_type	*newData = alloc.allocate(_capacity);
+					value_type	*newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					while ( i < _size + n && j < _size )
@@ -337,16 +338,16 @@ namespace ft
 						if ( i == index )
 						{
 							for ( size_type k = i; first != last; k++, ++first )
-								alloc.construct(newData + k, *first);
+								_alloc.construct(newData + k, *first);
 							i += n;
 							continue ;
 						}
-						alloc.construct(newData + i, data[j]);
-						alloc.destroy(data + j);
+						_alloc.construct(newData + i, data[j]);
+						_alloc.destroy(data + j);
 						i++;
 						j++;
 					}
-					alloc.deallocate(data, _size);
+					_alloc.deallocate(data, _size);
 					_size += n;
 					data = newData;
 				}
@@ -357,7 +358,7 @@ namespace ft
 				size_type index = position - data;
 				size_type i = 0;
 				size_type j = 0;
-				value_type *newData = alloc.allocate(_capacity);
+				value_type *newData = _alloc.allocate(_capacity);
 				if ( newData == NULL )
 					throw(std::bad_alloc());
 				while ( i < _size && j < _size - 1 )
@@ -367,12 +368,12 @@ namespace ft
 						i++;
 						continue ;
 					}
-					alloc.construct(newData + j, data[i]);
-					alloc.destroy(data + i);
+					_alloc.construct(newData + j, data[i]);
+					_alloc.destroy(data + i);
 					i++;
 					j++;
 				}
-				alloc.deallocate(data, _size);
+				_alloc.deallocate(data, _size);
 				_size -= 1;
 				data = newData;
 				return (position);
@@ -387,7 +388,7 @@ namespace ft
 				size_type n = last - first;
 				size_type i = 0;
 				size_type j = 0;
-				value_type *newData = alloc.allocate(_capacity);
+				value_type *newData = _alloc.allocate(_capacity);
 				if ( newData == NULL )
 					throw(std::bad_alloc());
 				while ( i < _size && j < _size - n )
@@ -398,12 +399,12 @@ namespace ft
 							i++;
 						continue ;
 					}
-					alloc.construct(newData + j, data[i]);
-					alloc.destroy(data + i);
+					_alloc.construct(newData + j, data[i]);
+					_alloc.destroy(data + i);
 					i++;
 					j++;
 				}
-				alloc.deallocate(data, _size);
+				_alloc.deallocate(data, _size);
 				_size -= n;
 				data = newData;
 				return (first);
@@ -453,15 +454,15 @@ namespace ft
 				if ( newSize > _size )
 				{
 					_capacity = newSize;
-					value_type *newData = alloc.allocate(_capacity);
+					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						alloc.construct(newData + i, data[i]);
-						alloc.destroy(data + i);
+						_alloc.construct(newData + i, data[i]);
+						_alloc.destroy(data + i);
 					}
-					alloc.deallocate(data, _size);
+					_alloc.deallocate(data, _size);
 					data = newData;
 				}
 				for ( size_type i = _size; i < newSize; i++ )
@@ -475,15 +476,15 @@ namespace ft
 				if ( newSize > _capacity )
 				{
 					_capacity = newSize;
-					value_type *newData = alloc.allocate(_capacity);
+					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						alloc.construct(newData + i, data[i]);
-						alloc.destroy(data + i);
+						_alloc.construct(newData + i, data[i]);
+						_alloc.destroy(data + i);
 					}
-					alloc.deallocate(data, _size);
+					_alloc.deallocate(data, _size);
 					data = newData;
 				}
 			};
@@ -508,15 +509,15 @@ namespace ft
 					_capacity *= 2;
 					if ( _capacity == 0 )
 						_capacity = 1;
-					value_type *newData = alloc.allocate(_capacity);
+					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						alloc.construct(newData + i, data[i]);
-						alloc.destroy(data + i);
+						_alloc.construct(newData + i, data[i]);
+						_alloc.destroy(data + i);
 					}
-					alloc.deallocate(data, _size);
+					_alloc.deallocate(data, _size);
 					data = newData;
 				}
 				_size += 1;
@@ -529,19 +530,19 @@ namespace ft
 				if ( _size == 0 )
 					throw(std::length_error("size is zero"));
 				_size -= 1;
-				alloc.destroy( data + _size );
+				_alloc.destroy( data + _size );
 				if ( _size < _capacity / 2 )
 				{
 					_capacity = _size;
-					value_type *newData = alloc.allocate( _capacity );
+					value_type *newData = _alloc.allocate( _capacity );
 					if ( newData == NULL )
 						throw( std::bad_alloc() );
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						alloc.construct(newData + i, data[i]);
-						alloc.destroy(data + i);
+						_alloc.construct(newData + i, data[i]);
+						_alloc.destroy(data + i);
 					}
-					alloc.deallocate(data, _size + 1);
+					_alloc.deallocate(data, _size + 1);
 					data = newData;
 				}
 			};
@@ -550,19 +551,19 @@ namespace ft
 			void	clear( void )
 			{
 				for ( size_type i = 0; i < _size; i++ )
-					alloc.destroy(data + i);
+					_alloc.destroy(data + i);
 				_size = 0;
 			};
 
 			//get_allocator member function
 			Allocator	get_allocator( void ) const
 			{
-				return (alloc);
+				return (_alloc);
 			};
 
 			size_type	max_size( void ) const
 			{
-				return (alloc.max_size());
+				return (_alloc.max_size());
 			};
 
 			template< typename U, typename Alloc >
@@ -592,7 +593,7 @@ namespace ft
 			T			*data;
 			size_type	_size;
 			size_type	_capacity;
-			Allocator	alloc;
+			Allocator	_alloc;
 	};
 
 	template< typename T, typename Alloc >
@@ -640,11 +641,6 @@ namespace ft
 				return (true);
 			i++;
 		}
-		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
-		// {
-		// 	if ( v1[i] < v2[i] )
-		// 		return (true);
-		// }
 		return (false);
 	}
 
@@ -659,11 +655,6 @@ namespace ft
 				return (true);
 			i++;
 		}
-		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
-		// {
-		// 	if ( v1[i] <= v2[i] )
-		// 		return (true);
-		// }
 		return (false);
 	}
 
@@ -678,11 +669,6 @@ namespace ft
 				return (true);
 			i++;
 		}
-		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
-		// {
-		// 	if ( v1[i] > v2[i] )
-		// 		return (true);
-		// }
 		return (false);
 	}
 
@@ -697,11 +683,6 @@ namespace ft
 				return (true);
 			i++;
 		}
-		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
-		// {
-		// 	if ( v1[i] >= v2[i] )
-		// 		return (true);
-		// }
 		return (false);
 	}
 
