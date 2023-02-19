@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/18 19:02:24 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/19 14:08:16 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ namespace ft
 			typedef size_t size_type;
 			typedef T value_type;
 			typedef value_type& reference;
+			typedef value_type& const_reference;
 			typedef Allocator allocator_type;
-			// typedef const typename reference const_reference;
 			typedef random_access_iterator< T > iterator;
 			typedef random_access_iterator< const T > const_iterator;
 			typedef reverse_iterator< iterator > reverse_iterator;
@@ -130,7 +130,7 @@ namespace ft
 				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
 			};
 
-			reference operator[]( size_type index ) const
+			const_reference operator[]( size_type index ) const
 			{
 				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
 			};
@@ -564,10 +564,151 @@ namespace ft
 			{
 				return (alloc.max_size());
 			};
+
+			template< typename U, typename Alloc >
+
+			friend bool operator==( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 );
+
+			template< typename U, typename Alloc >
+
+			friend bool operator!=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 );
+
+			template< typename U, typename Alloc >
+
+			friend bool operator<=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 );
+
+			template< typename U, typename Alloc >
+
+			friend bool operator>=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 );
+
+			template< typename U, typename Alloc >
+
+			friend bool operator<( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 );
+
+			template< typename U, typename Alloc >
+
+			friend bool operator>( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 );
 		private:
 			T			*data;
 			size_type	_size;
 			size_type	_capacity;
 			Allocator	alloc;
 	};
+
+	template< typename T, typename Alloc >
+
+	bool operator==( const vector<T, Alloc> &v1, const vector<T, Alloc> &v2 )
+	{
+		if ( v1._size == v2._size)
+		{
+			for ( size_t i = 0; i < v1._size; i++ )
+			{
+				if ( v1[i] != v2[i] )
+					return (false);
+			}
+			return (true);
+		}
+		else
+			return (false);
+	}
+
+	template< typename T, typename Alloc >
+
+	bool operator!=( const vector<T, Alloc> &v1, const vector<T, Alloc> &v2 )
+	{
+		if ( v1._size == v2._size)
+		{
+			for ( size_t i = 0; i < v1._size; i++ )
+			{
+				if ( v1[i] != v2[i] )
+					return (true);
+			}
+			return (false);
+		}
+		else
+			return (true);
+	}
+
+	template< typename U, typename Alloc >
+
+	bool operator<( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
+	{
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] < v2[i] )
+				return (true);
+			i++;
+		}
+		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
+		// {
+		// 	if ( v1[i] < v2[i] )
+		// 		return (true);
+		// }
+		return (false);
+	}
+
+	template< typename U, typename Alloc >
+
+	bool operator<=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
+	{
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] <= v2[i] )
+				return (true);
+			i++;
+		}
+		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
+		// {
+		// 	if ( v1[i] <= v2[i] )
+		// 		return (true);
+		// }
+		return (false);
+	}
+
+	template< typename U, typename Alloc >
+
+	bool operator>( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
+	{
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] > v2[i] )
+				return (true);
+			i++;
+		}
+		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
+		// {
+		// 	if ( v1[i] > v2[i] )
+		// 		return (true);
+		// }
+		return (false);
+	}
+
+	template< typename U, typename Alloc >
+
+	bool operator>=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
+	{
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] >= v2[i] )
+				return (true);
+			i++;
+		}
+		// for ( size_t i = 0; i < v1._size, i < v2._size; i++ )
+		// {
+		// 	if ( v1[i] >= v2[i] )
+		// 		return (true);
+		// }
+		return (false);
+	}
+
+	template< typename U, typename Alloc >
+
+	void	swap( vector<U, Alloc> &x, vector<U, Alloc> &y )
+	{
+		x.swap(y);
+	}
 }

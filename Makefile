@@ -35,6 +35,9 @@ $(VECTOR): $(V_OBJ)
 	@echo "Vector test compiled"
 
 re: fclean all
+rev: fclean vector
+res: fclean stack
+rem: fclean map
 
 clean:
 	@$(DEL) $(V_OBJ)

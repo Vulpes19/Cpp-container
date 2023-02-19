@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/18 19:08:20 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/19 14:07:44 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,15 +326,30 @@ void	testing_utility( void )
 	if (p2 != pc2) std::cout << "bye bye\n";
 }
 
+void	testing_relational_op( void )
+{
+	ft::vector<char> foo (3,'b');   // three ints with a value of 100
+	ft::vector<char> bar (2,'a');  // two ints with a value of 200
+
+	swap( foo, bar);
+	if (foo==bar) std::cout << "foo and bar are equal\n";
+	if (foo!=bar) std::cout << "foo and bar are not equal\n";
+	if (foo< bar) std::cout << "foo is less than bar\n";
+	if (foo> bar) std::cout << "foo is greater than bar\n";
+	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+}
+
 int	main( void )
 {
 	// testing_iterator_traits();
 	// testing_push_back();
-	testing_assign();
+	// testing_assign();
 	// testing_insert();
 	// testing_reverse_iterator();
 	// testing_algorithm();
 	// testing_utility();
+	testing_relational_op();
 
 	// printSizeAndCapacity(vec);
 	// printSizeAndCapacity(og_vec);
