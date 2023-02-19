@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/19 16:16:04 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/19 17:41:54 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,12 +249,32 @@ void	testing_insert( void )
 	it2++;
 	stdIterator begin = c.begin();
 	stdIterator end = c.end();
+	printSizeAndCapacity(vec);
+	printSizeAndCapacity(ftvec);
 	printVecElements(vec);
 	printVecElements(ftvec);
 	vec.insert( it, begin, end);
-	// vec.insert(it, 3, 9);
-	// ftvec.insert(it2, 3, 9);
 	ftvec.insert( it2, begin, end);
+	printSizeAndCapacity(vec);
+	printSizeAndCapacity(ftvec);
+	printVecElements(vec);
+	printVecElements(ftvec);
+
+	it = vec.begin() + 2;
+	it2 = ftvec.begin() + 2;
+	vec.insert( it, 2, -9);
+	ftvec.insert( it2, 2, -9);
+	printSizeAndCapacity(vec);
+	printSizeAndCapacity(ftvec);
+	printVecElements(vec);
+	printVecElements(ftvec);
+
+	it = vec.begin() + 1;
+	it2 = ftvec.begin() + 1;
+	vec.insert( it, 42);
+	ftvec.insert( it2, 42);
+	printSizeAndCapacity(vec);
+	printSizeAndCapacity(ftvec);
 	printVecElements(vec);
 	printVecElements(ftvec);
 }
@@ -425,11 +445,11 @@ void	testing_erase( void )
 int	main( void )
 {
 	// testing_vec_constructors();
-	testing_erase();
+	// testing_erase();
 	// testing_iterator_traits();
 	// testing_push_back();
 	// testing_assign();
-	// testing_insert();
+	testing_insert();
 	// testing_reverse_iterator();
 	// testing_algorithm();
 	// testing_utility();
