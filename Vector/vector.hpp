@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/19 17:08:45 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:40:27 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ namespace ft
 
 			reverse_iterator	rbegin( void )
 			{
-				return (iterator( data + _size));
+				return (reverse_iterator(data + _size));
 			};
 
 			//end member function
@@ -175,7 +175,7 @@ namespace ft
 
 			reverse_iterator	rend( void )
 			{
-				return (iterator( data ));
+				return (reverse_iterator( data ));
 			};
 
 			//assign member function
@@ -450,13 +450,18 @@ namespace ft
 			};
 
 			//resize memeber function
-			void	resize( size_type newSize, const T &val )
+			void	resize( size_type newSize, value_type val = value_type() )
 			{
 				if ( newSize == 0 )
-					throw(std::length_error("size can't be zero"));
-				if ( newSize > _size )
 				{
-					_capacity = newSize;
+					for ( size_type i = 0; i < _size; i++ )
+						_alloc.destroy(data + i);
+					_size = 0;
+					return ;
+				}
+				if ( newSize > _capacity )
+				{
+					_capacity *= 2;
 					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());

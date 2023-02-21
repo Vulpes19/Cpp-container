@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/19 17:41:54 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:42:58 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -442,6 +442,35 @@ void	testing_erase( void )
 	printVecElements(stdvec);
 }
 
+void	testing_resize( void )
+{
+	ft::vector<int> ftvec(5, 2);
+	std::vector<int> stdvec(5, 2);
+
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
+	stdvec.resize( 0, 10 );
+	ftvec.resize( 0, 10 );
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
+	stdvec.resize( 6, 10 );
+	ftvec.resize( 6, 10 );
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
+	stdvec.resize( 7, 8 );
+	ftvec.resize( 7, 8 );
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
+}
+
 int	main( void )
 {
 	// testing_vec_constructors();
@@ -449,7 +478,8 @@ int	main( void )
 	// testing_iterator_traits();
 	// testing_push_back();
 	// testing_assign();
-	testing_insert();
+	// testing_insert();
+	testing_resize();
 	// testing_reverse_iterator();
 	// testing_algorithm();
 	// testing_utility();
