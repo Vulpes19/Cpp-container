@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/21 11:40:27 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/22 11:10:00 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,12 @@ namespace ft
 			//copy constructor
 			vector( const vector &source )
 			{
+				if ( source._size == 0 )
+					return ;
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.destroy( data + i );
-				_alloc.deallocate( data, _capacity );
+				if ( data )
+					_alloc.deallocate( data, _capacity );
 				_size = source._size;
 				_capacity = source._capacity;
 				if ( _size > 0 )
@@ -101,7 +104,8 @@ namespace ft
 				{
 					for ( size_type i = 0; i < _size; i++ )
 						_alloc.destroy( data + i );
-					_alloc.deallocate( data, _capacity );
+					if ( data )
+						_alloc.deallocate( data, _capacity );
 					_size = source._size;
 					_capacity = source._capacity;
 					if ( _size > 0 )
@@ -189,17 +193,27 @@ namespace ft
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						_alloc.construct(newData + i, data[i]);
 						_alloc.destroy(data + i);
 					}
-					_alloc.deallocate(data, _size);
+					if ( data )
+						_alloc.deallocate(data, _size);
+					_size = newSize;
+					for ( size_type i = 0; i < _size; i++ )
+					{
+						_alloc.construct(newData + i, value);
+					}
 					data = newData;
+					return ;
 				}
-				for ( size_type i = 0; i < newSize; i++ )
-					_alloc.construct( data + i, value);
-				for ( size_type i = newSize; i < _size; i++ )
-					_alloc.destroy(data + i);
-				_size = newSize;
+				else
+				{
+					for ( size_type i = 0; i < newSize; i++ )
+						data[i] = value;
+					if ( _size > newSize )
+						for ( size_type i = newSize; i < _size; i++ )
+							_alloc.destroy( data + i );
+					_size = newSize;
+				}
 			};
 			
 			template< typename InputIterator >
@@ -213,23 +227,30 @@ namespace ft
 					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
-					for ( size_type i = 0; i < _size; i++ )
+					if ( data )
 					{
-						_alloc.construct(newData + i, data[i]);
-						_alloc.destroy(data + i);
+						for ( size_type i = 0; i < _size; i++ )
+							_alloc.destroy(data + i);
+						_alloc.deallocate(data, _size);
 					}
-					_alloc.deallocate(data, _size);
 					_size = newSize;
+					for ( size_type i = 0; first != last; i++, ++first )
+					{
+						_alloc.construct(newData + i, *(first) );
+					}
 					data = newData;
+					_size = newSize;
+					return ;
 				}
-				size_type i = 0;
-				for ( ; first != last; ++first, i++ )
+				else
 				{
-					_alloc.construct(data + i, *(first));
+					for ( size_type i = 0; first != last; i++, ++first )
+						data[i] = *(first);
+					if ( _size > newSize )
+						for ( size_type i = newSize; i < _size; i++ )
+							_alloc.destroy( data + i );
+					_size = newSize;
 				}
-				for ( int j = i; i < _size; i++ )
-					_alloc.destroy(data + j);
-				_size = newSize;
 			};
 
 			//insert member function
@@ -416,12 +437,12 @@ namespace ft
 			//at member function
 			reference	at( size_type position )
 			{
-				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
+				return ( position >= _size ) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
 			
 			const_reference	at( size_type position ) const
 			{
-				return (position >= _size) ? throw(std::out_of_range("error: out of range")) : data[position];
+				return ( position >= _size ) ? throw(std::out_of_range("error: out of range")) : data[position];
 			};
 			//front member function
 			reference	front( void )
@@ -559,7 +580,10 @@ namespace ft
 			void	clear( void )
 			{
 				for ( size_type i = 0; i < _size; i++ )
-					_alloc.destroy(data + i);
+				{
+					if ( data[i] )
+						_alloc.destroy(data + i);
+				}
 				_size = 0;
 			};
 

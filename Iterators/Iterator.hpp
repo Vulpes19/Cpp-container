@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/19 14:41:42 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/21 14:03:48 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <iostream>
 #include "Iterator_traits.hpp"
-#include "TypeTraits.hpp"
+#include "../TypeTraits/TypeTraits.hpp"
 
 namespace ft
 {

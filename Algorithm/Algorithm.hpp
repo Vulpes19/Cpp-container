@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:50:24 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/17 16:04:11 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:49:07 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,22 @@ namespace ft
 	}
 
 	template < typename InputIterator >
+	typename ft::iterator_traits<InputIterator>::difference_type calculate( InputIterator first, InputIterator last, ft::random_access_iterator_tag )
+	{
+		return ( last - first );
+	}
+
+	template < typename InputIterator >
 	typename ft::iterator_traits<InputIterator>::difference_type	calculate( InputIterator first, InputIterator last, std::input_iterator_tag)
+	{
+		typename ft::iterator_traits<InputIterator>::difference_type size = 0;
+		for ( ;first != last; ++first )
+			size++;
+		return (size);
+	}
+
+	template < typename InputIterator >
+	typename ft::iterator_traits<InputIterator>::difference_type	calculate( InputIterator first, InputIterator last, std::bidirectional_iterator_tag)
 	{
 		typename ft::iterator_traits<InputIterator>::difference_type size = 0;
 		for ( ;first != last; ++first )

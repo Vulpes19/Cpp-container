@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/21 11:42:58 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:10:35 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,16 +126,16 @@ void	testing_assign( void )
 	printSizeAndCapacity(vec3);
 	printSizeAndCapacity(vec2);
 	printVecElements(vec3);
+	printVecElements(vec2);
 	start = clock();
 	vec3.assign( begin, end );
 	stop = clock();
 	printTime(start, stop, "std");
-	printVecElements(vec3);
-	printVecElements(vec2);
 	start = clock();
 	vec2.assign( begin, end );
 	stop = clock();
 	printTime(start, stop, "ft");
+	printVecElements(vec3);
 	printVecElements(vec2);
 	printSizeAndCapacity(vec3);
 	printSizeAndCapacity(vec2);
@@ -145,16 +145,16 @@ void	testing_assign( void )
 	printSizeAndCapacity(vec3);
 	printSizeAndCapacity(vec2);
 	printVecElements(vec3);
+	printVecElements(vec2);
 	start = clock();
 	vec3.assign( 10, -1 );
 	stop = clock();
 	printTime(start, stop, "std");
-	printVecElements(vec3);
-	printVecElements(vec2);
 	start = clock();
 	vec2.assign( 10, -1 );
 	stop = clock();
 	printTime(start, stop, "ft");
+	printVecElements(vec3);
 	printVecElements(vec2);
 	printSizeAndCapacity(vec3);
 	printSizeAndCapacity(vec2);
@@ -165,11 +165,11 @@ void	testing_assign( void )
 	vec3.assign(0, 4);
 	stop = clock();
 	printTime(start, stop, "std");
-	printVecElements(vec3);
 	start = clock();
 	vec2.assign(0, 4);
 	stop = clock();
 	printTime(start, stop, "ft");
+	printVecElements(vec3);
 	printVecElements(vec2);
 	printSizeAndCapacity(vec3);
 	printSizeAndCapacity(vec2);
@@ -477,9 +477,9 @@ int	main( void )
 	// testing_erase();
 	// testing_iterator_traits();
 	// testing_push_back();
-	// testing_assign();
+	testing_assign();
 	// testing_insert();
-	testing_resize();
+	// testing_resize();
 	// testing_reverse_iterator();
 	// testing_algorithm();
 	// testing_utility();
