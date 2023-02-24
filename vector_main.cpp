@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/22 10:10:35 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/24 11:50:48 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <typeinfo>
 #include <time.h>
 #include <iostream>
+#include <cassert>
 
 typedef ft::vector<int>::iterator myIterator;
 typedef std::vector<int>::iterator stdIterator;
@@ -118,6 +119,14 @@ void	testing_assign( void )
 	clock_t start, stop;
 	std::vector<int> vec(4, 1);
 	std::vector<int> vec3(3, 9);
+	std::vector<std::string> std_vec_char(4, "Ayman");
+	ft::vector<std::string> ft_vec_char(4, "Ayman");
+	printVecElements(std_vec_char);
+	printVecElements(ft_vec_char);
+	std_vec_char.assign(0, "");
+	ft_vec_char.assign(0, "");
+	printVecElements(std_vec_char);
+	printVecElements(ft_vec_char);
 	ft::vector<int> vec2(3, 9);
 	stdIterator begin = vec.begin();
 	myIterator begin2 = vec2.begin();
@@ -471,6 +480,57 @@ void	testing_resize( void )
 	printVecElements(stdvec);
 }
 
+void	testing_assign2( void )
+{
+	// std::vector<int> std_vec(10, 100);
+	// ft::vector<int> my_vec(10, 100);
+	std::vector<int> range;
+	range.push_back(1);
+	range.push_back(2);
+	range.push_back(3);
+	range.push_back(4);
+	// std_vec.assign(range.begin(), range.end());
+	// my_vec.assign(range.begin(), range.end());
+	// printSizeAndCapacity(std_vec);
+	// printSizeAndCapacity(my_vec);
+	// printVecElements(std_vec);
+	// printVecElements(my_vec);
+	// std::cout << "*************\n";
+	// std::vector<int> std_vec2;
+	// std_vec2.push_back(10);
+	// std_vec2.push_back(20);
+	// std_vec2.push_back(30);
+	// ft::vector<int> my_vec2;
+	// std_vec2.push_back(10);
+	// std_vec2.push_back(20);
+	// std_vec2.push_back(30);
+	// std::vector<int> range2;
+	// range2.push_back(1);
+	// range2.push_back(2);
+	// range2.push_back(3);
+	// range2.push_back(4);
+	// std_vec2.assign(range2.begin(), range2.end());
+	// my_vec2.assign(range2.begin(), range2.end());
+	// printSizeAndCapacity(std_vec2);
+	// printSizeAndCapacity(my_vec2);
+	// printVecElements(std_vec2);
+	// printVecElements(my_vec2);
+	std::cout << "*************\n";
+	std::vector<int> std_vec;
+	ft::vector<int> my_vec;
+	std_vec.push_back(10);
+	std_vec.push_back(20);
+	std_vec.push_back(30);
+	my_vec.push_back(10);
+	my_vec.push_back(20);
+	my_vec.push_back(30);
+	std_vec.assign(3, 42);
+	my_vec.assign(3, 42);
+	printSizeAndCapacity(std_vec);
+	printSizeAndCapacity(my_vec);
+	printVecElements(std_vec);
+	printVecElements(my_vec);
+}
 int	main( void )
 {
 	// testing_vec_constructors();
@@ -478,6 +538,7 @@ int	main( void )
 	// testing_iterator_traits();
 	// testing_push_back();
 	testing_assign();
+	// testing_assign2();
 	// testing_insert();
 	// testing_resize();
 	// testing_reverse_iterator();

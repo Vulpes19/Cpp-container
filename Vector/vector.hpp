@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/22 11:10:00 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/24 12:17:20 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,14 @@ namespace ft
 					_size = 0;
 					return ;
 				}
+				if ( last >= first )
+					throw( std::invalid_argument("invalid range"));
 				_capacity = newSize;
 				_size = newSize;
 				data = _alloc.allocate( _capacity );
 				if ( data == NULL )
 					throw(std::bad_alloc());
-				for ( size_type i = 0; first != last; i++, first++ )
+				for ( size_type i = 0; first != last; i++, first++ ) 
 					_alloc.construct(data + i, *first);
 			};
 
@@ -80,7 +82,12 @@ namespace ft
 			vector( const vector &source )
 			{
 				if ( source._size == 0 )
+				{
+					_size = source._size;
+					_capacity = source._capacity;
+					data = NULL;
 					return ;
+				}
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.destroy( data + i );
 				if ( data )
@@ -125,7 +132,8 @@ namespace ft
 			{
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.destroy( data + i );
-				_alloc.deallocate( data, _capacity );
+				if ( data )
+					_alloc.deallocate( data, _capacity );
 				_size = 0;
 			};
 
@@ -158,7 +166,7 @@ namespace ft
 
 			const_iterator	begin( void ) const
 			{
-				return (iterator( data ));
+				return (const_iterator( data ));
 			};
 
 			reverse_iterator	rbegin( void )
@@ -174,7 +182,7 @@ namespace ft
 
 			const_iterator	end( void ) const
 			{
-				return (iterator( data + _size ));
+				return (const_iterator( data + _size ));
 			};
 
 			reverse_iterator	rend( void )
@@ -183,11 +191,14 @@ namespace ft
 			};
 
 			//assign member function
-			void	assign( size_type newSize, const value_type value )
+			void	assign( size_type newSize, const value_type &value )
 			{
 				if ( newSize > _capacity )
 				{
-					_capacity = newSize;
+					if ( _capacity == 0)
+						_capacity = newSize;
+					else
+						_capacity *= 2;
 					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
@@ -218,12 +229,15 @@ namespace ft
 			
 			template< typename InputIterator >
 
-			void	assign( typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last )
+			void	assign( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last )
 			{
 				size_type newSize = ft::distance(first, last);
 				if ( newSize > _capacity )
 				{
-					_capacity = newSize;
+					if ( _capacity == 0)
+						_capacity = newSize;
+					else
+						_capacity *= 2;
 					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
@@ -580,10 +594,7 @@ namespace ft
 			void	clear( void )
 			{
 				for ( size_type i = 0; i < _size; i++ )
-				{
-					if ( data[i] )
 						_alloc.destroy(data + i);
-				}
 				_size = 0;
 			};
 
@@ -666,56 +677,64 @@ namespace ft
 
 	bool operator<( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		size_t i = 0;
-		while ( i < v1._size && i < v2._size )
-		{
-			if ( v1[i] < v2[i] )
-				return (true);
-			i++;
-		}
-		return (false);
+		return ( ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
+		// size_t i = 0;
+		// while ( i < v1._size && i < v2._size )
+		// {
+		// 	if ( v1[i] < v2[i] )
+		// 		return (true);
+		// 	i++;
+		// }
+		// return (false);
 	}
 
 	template< typename U, typename Alloc >
 
 	bool operator<=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		size_t i = 0;
-		while ( i < v1._size && i < v2._size )
-		{
-			if ( v1[i] <= v2[i] )
-				return (true);
-			i++;
-		}
-		return (false);
+		if ( v1 == v2 )
+			return (true);
+		return ( ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
+		// size_t i = 0;
+		// while ( i < v1._size && i < v2._size )
+		// {
+		// 	if ( v1[i] <= v2[i] )
+		// 		return (true);
+		// 	i++;
+		// }
+		// return (false);
 	}
 
 	template< typename U, typename Alloc >
 
 	bool operator>( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		size_t i = 0;
-		while ( i < v1._size && i < v2._size )
-		{
-			if ( v1[i] > v2[i] )
-				return (true);
-			i++;
-		}
-		return (false);
+		return ( !ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
+		// size_t i = 0;
+		// while ( i < v1._size && i < v2._size )
+		// {
+		// 	if ( v1[i] > v2[i] )
+		// 		return (true);
+		// 	i++;
+		// }
+		// return (false);
 	}
 
 	template< typename U, typename Alloc >
 
 	bool operator>=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		size_t i = 0;
-		while ( i < v1._size && i < v2._size )
-		{
-			if ( v1[i] >= v2[i] )
-				return (true);
-			i++;
-		}
-		return (false);
+		if ( v1 == v2 )
+			return (true);
+		return ( !ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
+		// size_t i = 0;
+		// while ( i < v1._size && i < v2._size )
+		// {
+		// 	if ( v1[i] >= v2[i] )
+		// 		return (true);
+		// 	i++;
+		// }
+		// return (false);
 	}
 
 	template< typename U, typename Alloc >
