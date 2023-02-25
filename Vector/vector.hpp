@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/24 12:17:20 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/25 11:48:19 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,8 @@ namespace ft
 			{
 				if ( newSize > _capacity )
 				{
-					if ( _capacity == 0)
+					size_type tmpCapacity = _capacity;
+					if ( _capacity < newSize )
 						_capacity = newSize;
 					else
 						_capacity *= 2;
@@ -207,22 +208,32 @@ namespace ft
 						_alloc.destroy(data + i);
 					}
 					if ( data )
-						_alloc.deallocate(data, _size);
+						_alloc.deallocate(data, tmpCapacity);
 					_size = newSize;
 					for ( size_type i = 0; i < _size; i++ )
 					{
 						_alloc.construct(newData + i, value);
 					}
 					data = newData;
-					return ;
 				}
 				else
 				{
 					for ( size_type i = 0; i < newSize; i++ )
-						data[i] = value;
-					if ( _size > newSize )
+					{
+						if ( i >= _size )
+							_alloc.construct(data + i, value);
+						else
+						{
+							_alloc.destroy( data + i );
+							_alloc.construct(data + i, value);
+							data[i] = value;
+						}
+					}
+					if ( _size >= newSize )
+					{
 						for ( size_type i = newSize; i < _size; i++ )
 							_alloc.destroy( data + i );
+					}
 					_size = newSize;
 				}
 			};

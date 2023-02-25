@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/24 11:50:48 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/25 11:36:29 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -533,11 +533,53 @@ void	testing_assign2( void )
 }
 int	main( void )
 {
+	ft::vector<char> ft_vec;
+	std::vector<char> std_vec;
+	ft_vec.assign(0, 'c');
+	std_vec.assign(0, 'c');
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	printVecElements(ft_vec);
+	printVecElements(std_vec);
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	ft_vec.assign(64, 'A');
+	std_vec.assign(64, 'A');
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	printVecElements(ft_vec);
+	printVecElements(std_vec);
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	ft_vec.assign(32, '5');
+	std_vec.assign(32, '5');
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	printVecElements(ft_vec);
+	printVecElements(std_vec);
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	ft_vec.assign(49, '8');
+	std_vec.assign(49, '8');
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	printVecElements(ft_vec);
+	printVecElements(std_vec);
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	ft_vec.assign(77, '2');
+	std_vec.assign(77, '2');
+		printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
+	printVecElements(ft_vec);
+	printVecElements(std_vec);
+	printSizeAndCapacity(ft_vec);
+	printSizeAndCapacity(std_vec);
 	// testing_vec_constructors();
 	// testing_erase();
 	// testing_iterator_traits();
 	// testing_push_back();
-	testing_assign();
+	// testing_assign();
 	// testing_assign2();
 	// testing_insert();
 	// testing_resize();
