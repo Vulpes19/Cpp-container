@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/25 11:36:29 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/25 13:17:05 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -533,48 +533,78 @@ void	testing_assign2( void )
 }
 int	main( void )
 {
-	ft::vector<char> ft_vec;
-	std::vector<char> std_vec;
-	ft_vec.assign(0, 'c');
-	std_vec.assign(0, 'c');
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	printVecElements(ft_vec);
-	printVecElements(std_vec);
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	ft_vec.assign(64, 'A');
-	std_vec.assign(64, 'A');
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	printVecElements(ft_vec);
-	printVecElements(std_vec);
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	ft_vec.assign(32, '5');
-	std_vec.assign(32, '5');
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	printVecElements(ft_vec);
-	printVecElements(std_vec);
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	ft_vec.assign(49, '8');
-	std_vec.assign(49, '8');
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	printVecElements(ft_vec);
-	printVecElements(std_vec);
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	ft_vec.assign(77, '2');
-	std_vec.assign(77, '2');
-		printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
-	printVecElements(ft_vec);
-	printVecElements(std_vec);
-	printSizeAndCapacity(ft_vec);
-	printSizeAndCapacity(std_vec);
+	{
+		ft::vector<long> ft_vec1;
+		ft::vector<long> ft_vec2;
+		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
+		else std::cout << "ft::no\n";
+		std::vector<long> std_vec1;
+		std::vector<long> std_vec2;
+		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
+		else std::cout << "std::no\n";
+	}
+	{
+		ft::vector<long> ft_vec1(5, 64);
+		ft::vector<long> ft_vec2;
+		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
+		else std::cout << "ft::no\n";
+		std::vector<long> std_vec1(5, 64);
+		std::vector<long> std_vec2;
+		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
+		else std::cout << "std::no\n";
+	}
+	{
+		ft::vector<long> ft_vec1;
+		ft::vector<long> ft_vec2(5, 32);
+		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
+		else std::cout << "ft::no\n";
+		std::vector<long> std_vec1;
+		std::vector<long> std_vec2(5, 32);
+		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
+		else std::cout << "std::no\n";
+	}
+	{
+		ft::vector<long> ft_vec1(5, 64);
+		ft::vector<long> ft_vec2(5, 48);
+		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
+		else std::cout << "ft::no\n";
+		std::vector<long> std_vec1(5, 64);
+		std::vector<long> std_vec2(5, 48);
+		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
+		else std::cout << "std::no\n";
+	}
+	{
+		ft::vector<long> ft_vec1(5, 64);
+		ft::vector<long> ft_vec2(5, 64);
+		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
+		else std::cout << "ft::no\n";
+		std::vector<long> std_vec1(5, 64);
+		std::vector<long> std_vec2(5, 64);
+		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
+		else std::cout << "std::no\n";
+	}
+	{
+		ft::vector<long> ft_vec1(5, 64);
+		ft::vector<long> ft_vec2(4, 64);
+		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
+		else std::cout << "ft::no\n";
+		std::vector<long> std_vec1(5, 64);
+		std::vector<long> std_vec2(4, 64);
+		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
+		else std::cout << "std::no\n";
+	}
+	{
+		ft::vector<long> ft_vec1(4);
+		ft::vector<long> ft_vec2(5);
+		printVecElements(ft_vec1);
+		printVecElements(ft_vec2);
+		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
+		else std::cout << "ft::no\n";
+		std::vector<long> std_vec1(4);
+		std::vector<long> std_vec2(5);
+		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
+		else std::cout << "std::no\n";
+	}
 	// testing_vec_constructors();
 	// testing_erase();
 	// testing_iterator_traits();

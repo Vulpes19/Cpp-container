@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/25 11:48:19 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/25 13:19:52 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ namespace ft
 			typedef value_type& const_reference;
 			typedef Allocator allocator_type;
 			typedef random_access_iterator< T > iterator;
-			typedef random_access_iterator< const T > const_iterator;
 			typedef reverse_iterator< iterator > reverse_iterator;
+			typedef random_access_iterator< const T > const_iterator;
 
 			//default constructor
 			explicit vector( const allocator_type &alloc = allocator_type() ) : data(NULL), _size(0), _capacity(0), _alloc(alloc) {};
@@ -58,7 +58,7 @@ namespace ft
 
 			// range constructor
 			template< typename InputIterator >
-			vector( typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const allocator_type &alloc = allocator_type() ) : _alloc(alloc)
+			vector( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last, const allocator_type &alloc = allocator_type() ) : _alloc(alloc)
 			{
 				size_type newSize = ft::distance(first, last);
 				if ( newSize == 0 )
@@ -67,7 +67,7 @@ namespace ft
 					_size = 0;
 					return ;
 				}
-				if ( last >= first )
+				if ( last > first )
 					throw( std::invalid_argument("invalid range"));
 				_capacity = newSize;
 				_size = newSize;
@@ -226,7 +226,6 @@ namespace ft
 						{
 							_alloc.destroy( data + i );
 							_alloc.construct(data + i, value);
-							data[i] = value;
 						}
 					}
 					if ( _size >= newSize )
@@ -238,14 +237,16 @@ namespace ft
 				}
 			};
 			
+			//assign range member function
 			template< typename InputIterator >
 
 			void	assign( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last )
 			{
 				size_type newSize = ft::distance(first, last);
+				// std::cout << "***new size: " << newSize << "***\n";
 				if ( newSize > _capacity )
 				{
-					if ( _capacity == 0)
+					if ( _capacity < newSize )
 						_capacity = newSize;
 					else
 						_capacity *= 2;
@@ -270,7 +271,15 @@ namespace ft
 				else
 				{
 					for ( size_type i = 0; first != last; i++, ++first )
-						data[i] = *(first);
+					{
+						if ( i >= _size )
+							_alloc.construct(data + i, *(first));
+						else
+						{
+							_alloc.destroy( data + i );
+							_alloc.construct(data + i, *(first));
+						}
+					}
 					if ( _size > newSize )
 						for ( size_type i = newSize; i < _size; i++ )
 							_alloc.destroy( data + i );
@@ -688,64 +697,72 @@ namespace ft
 
 	bool operator<( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		return ( ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
-		// size_t i = 0;
-		// while ( i < v1._size && i < v2._size )
-		// {
-		// 	if ( v1[i] < v2[i] )
-		// 		return (true);
-		// 	i++;
-		// }
-		// return (false);
+		if ( v1._size < v2._size )
+			return (true);
+		if ( v1._size > v2._size )
+			return (false);
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] < v2[i] )
+				return (true);
+			i++;
+		}
+		return (false);
 	}
 
 	template< typename U, typename Alloc >
 
 	bool operator<=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		if ( v1 == v2 )
+		if ( v1 == v2 || v1._size < v2._size )
 			return (true);
-		return ( ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
-		// size_t i = 0;
-		// while ( i < v1._size && i < v2._size )
-		// {
-		// 	if ( v1[i] <= v2[i] )
-		// 		return (true);
-		// 	i++;
-		// }
-		// return (false);
+		if ( v1._size > v2._size )
+			return (false);
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] <= v2[i] )
+				return (true);
+			i++;
+		}
+		return (false);
 	}
 
 	template< typename U, typename Alloc >
 
 	bool operator>( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		return ( !ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
-		// size_t i = 0;
-		// while ( i < v1._size && i < v2._size )
-		// {
-		// 	if ( v1[i] > v2[i] )
-		// 		return (true);
-		// 	i++;
-		// }
-		// return (false);
+		if ( v1._size > v2._size )
+			return (true);
+		if ( v1._size < v2._size )
+			return (false);
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] > v2[i] )
+				return (true);
+			i++;
+		}
+		return (false);
 	}
 
 	template< typename U, typename Alloc >
 
 	bool operator>=( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 )
 	{
-		if ( v1 == v2 )
+		if ( v1 == v2 || v1._size > v2._size )
 			return (true);
-		return ( !ft::lexicographical_compare( v1.begin(), v1.end(), v2.begin(), v2.end()) );
-		// size_t i = 0;
-		// while ( i < v1._size && i < v2._size )
-		// {
-		// 	if ( v1[i] >= v2[i] )
-		// 		return (true);
-		// 	i++;
-		// }
-		// return (false);
+		if ( v1._size < v2._size )
+			return (false);
+		size_t i = 0;
+		while ( i < v1._size && i < v2._size )
+		{
+			if ( v1[i] >= v2[i] )
+				return (true);
+			i++;
+		}
+		return (false);
 	}
 
 	template< typename U, typename Alloc >
