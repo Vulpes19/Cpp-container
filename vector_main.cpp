@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/26 15:38:51 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/26 17:15:29 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -534,12 +534,13 @@ void	testing_assign2( void )
 }
 int	main( void )
 {
-	std::istringstream str("1 2 3 4 5 6 7");
+	std::istringstream str("");
     std::istreambuf_iterator<char> it(str), end;
 
-	ft::vector<char> vec;
-	vec.assign(it, end);
+	ft::vector<char> vec(it, end);
+	// vec.assign(it, end);
 	printVecElements(vec);
+	printSizeAndCapacity(vec);
 	// testing_vec_constructors();
 	// testing_erase();
 	// testing_iterator_traits();

@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/26 16:58:25 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/26 17:19:38 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,35 @@ namespace ft
 					_alloc.construct(data + i, val);
 			};
 
-			// range constructor
 			template< typename InputIterator >
-			vector( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last, const allocator_type &alloc = allocator_type() ) : _alloc(alloc)
+
+			void	copying( InputIterator first, InputIterator last, std::input_iterator_tag )
+			{
+				_size = 0;
+				_capacity = 0;
+				for ( ; first != last; ++first )
+				{
+					push_back(*first);
+				}
+			}
+
+			template< typename InputIterator >
+
+			void	copying( InputIterator first, InputIterator last, std::forward_iterator_tag )
+			{
+				_size = 0;
+				_capacity = 0;
+				for ( ; first != last; ++first )
+				{
+					push_back(*first);
+				}
+			}
+
+			template< typename InputIterator >
+
+			void	copying( InputIterator first, InputIterator last, ft::random_access_iterator_tag )
 			{
 				size_type newSize = ft::distance(first, last);
-				// if ( newSize == 0 )
-				// {
-				// 	data = NULL;
-				// 	_size = 0;
-				// 	return ;
-				// }
 				_capacity = newSize;
 				_size = newSize;
 				data = _alloc.allocate( _capacity );
@@ -77,6 +95,28 @@ namespace ft
 					throw(std::bad_alloc());
 				for ( size_type i = 0; first != last; i++, ++first ) 
 					_alloc.construct(data + i, *first);
+			}
+
+			template< typename InputIterator >
+
+			void	copying( InputIterator first, InputIterator last, std::random_access_iterator_tag )
+			{
+				size_type newSize = ft::distance(first, last);
+				_capacity = newSize;
+				_size = newSize;
+				data = _alloc.allocate( _capacity );
+				if ( data == NULL )
+					throw(std::bad_alloc());
+				for ( size_type i = 0; first != last; i++, ++first ) 
+					_alloc.construct(data + i, *first);
+			}
+
+			// range constructor
+			template< typename InputIterator >
+
+			vector( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last, const allocator_type &alloc = allocator_type() ) : _alloc(alloc)
+			{
+				copying( first, last, typename ft::iterator_traits<InputIterator>::iterator_category() );
 			};
 
 			//copy constructor
@@ -111,6 +151,8 @@ namespace ft
 			//destructor
 			~vector( void )
 			{
+				if ( _capacity == 0 )
+					return ;
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.destroy( data + i );
 				if ( data )
@@ -626,11 +668,17 @@ namespace ft
 			//push_back member function
 			void	push_back( const T &val )
 			{
+				if ( _capacity == 0 )
+				{
+					_capacity = 1;
+					data = _alloc.allocate(_capacity);
+					_alloc.construct( data, val );
+					_size = 1;
+					return ;
+				}
 				if ( _size + 1 > _capacity )
 				{
 					_capacity *= 2;
-					if ( _capacity == 0 )
-						_capacity = 1;
 					value_type *newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
