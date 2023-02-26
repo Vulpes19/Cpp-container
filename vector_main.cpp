@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/25 13:17:05 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/26 15:38:51 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <time.h>
 #include <iostream>
 #include <cassert>
+#include <sstream>
 
 typedef ft::vector<int>::iterator myIterator;
 typedef std::vector<int>::iterator stdIterator;
@@ -533,78 +534,12 @@ void	testing_assign2( void )
 }
 int	main( void )
 {
-	{
-		ft::vector<long> ft_vec1;
-		ft::vector<long> ft_vec2;
-		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
-		else std::cout << "ft::no\n";
-		std::vector<long> std_vec1;
-		std::vector<long> std_vec2;
-		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
-		else std::cout << "std::no\n";
-	}
-	{
-		ft::vector<long> ft_vec1(5, 64);
-		ft::vector<long> ft_vec2;
-		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
-		else std::cout << "ft::no\n";
-		std::vector<long> std_vec1(5, 64);
-		std::vector<long> std_vec2;
-		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
-		else std::cout << "std::no\n";
-	}
-	{
-		ft::vector<long> ft_vec1;
-		ft::vector<long> ft_vec2(5, 32);
-		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
-		else std::cout << "ft::no\n";
-		std::vector<long> std_vec1;
-		std::vector<long> std_vec2(5, 32);
-		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
-		else std::cout << "std::no\n";
-	}
-	{
-		ft::vector<long> ft_vec1(5, 64);
-		ft::vector<long> ft_vec2(5, 48);
-		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
-		else std::cout << "ft::no\n";
-		std::vector<long> std_vec1(5, 64);
-		std::vector<long> std_vec2(5, 48);
-		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
-		else std::cout << "std::no\n";
-	}
-	{
-		ft::vector<long> ft_vec1(5, 64);
-		ft::vector<long> ft_vec2(5, 64);
-		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
-		else std::cout << "ft::no\n";
-		std::vector<long> std_vec1(5, 64);
-		std::vector<long> std_vec2(5, 64);
-		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
-		else std::cout << "std::no\n";
-	}
-	{
-		ft::vector<long> ft_vec1(5, 64);
-		ft::vector<long> ft_vec2(4, 64);
-		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
-		else std::cout << "ft::no\n";
-		std::vector<long> std_vec1(5, 64);
-		std::vector<long> std_vec2(4, 64);
-		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
-		else std::cout << "std::no\n";
-	}
-	{
-		ft::vector<long> ft_vec1(4);
-		ft::vector<long> ft_vec2(5);
-		printVecElements(ft_vec1);
-		printVecElements(ft_vec2);
-		if (ft_vec1 >= ft_vec2) std::cout << "ft::Greater than equal\n";
-		else std::cout << "ft::no\n";
-		std::vector<long> std_vec1(4);
-		std::vector<long> std_vec2(5);
-		if (std_vec1 >= std_vec2) std::cout << "std::Greater than equal\n";
-		else std::cout << "std::no\n";
-	}
+	std::istringstream str("1 2 3 4 5 6 7");
+    std::istreambuf_iterator<char> it(str), end;
+
+	ft::vector<char> vec;
+	vec.assign(it, end);
+	printVecElements(vec);
 	// testing_vec_constructors();
 	// testing_erase();
 	// testing_iterator_traits();

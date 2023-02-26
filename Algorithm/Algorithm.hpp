@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:50:24 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/22 10:49:07 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/26 16:44:12 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,15 @@ namespace ft
 	typename ft::iterator_traits<InputIterator>::difference_type	calculate( InputIterator first, InputIterator last, std::input_iterator_tag)
 	{
 		typename ft::iterator_traits<InputIterator>::difference_type size = 0;
-		for ( ;first != last; ++first )
-			size++;
+		// std::copy()
+		InputIterator temp = first;
+		std::cout << "first inside distance: " << *(first) << std::endl;
+		while ( temp != last )
+		{
+			++temp;
+			++size;
+		}
+		std::cout << "first inside distance: " << *(first) << std::endl;
 		return (size);
 	}
 

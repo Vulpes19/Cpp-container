@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/25 13:19:52 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/26 16:58:25 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@ namespace ft
 		public:
 			//alias
 			typedef size_t size_type;
-			typedef T value_type;
-			typedef value_type& reference;
-			typedef value_type& const_reference;
 			typedef Allocator allocator_type;
-			typedef random_access_iterator< T > iterator;
-			typedef reverse_iterator< iterator > reverse_iterator;
+			typedef T value_type;
+			typedef typename Allocator::reference reference;
+			typedef typename Allocator::const_reference const_reference;
+			typedef typename Allocator::pointer	pointer;
+			typedef typename Allocator::const_pointer	const_pointer;
+			typedef ft::random_access_iterator< T > iterator;
+			typedef ft::reverse_iterator< iterator > reverse_iterator;
 			typedef random_access_iterator< const T > const_iterator;
+			typedef ft::reverse_iterator< const_iterator > const_reverse_iterator;
 
 			//default constructor
 			explicit vector( const allocator_type &alloc = allocator_type() ) : data(NULL), _size(0), _capacity(0), _alloc(alloc) {};
@@ -61,45 +64,27 @@ namespace ft
 			vector( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last, const allocator_type &alloc = allocator_type() ) : _alloc(alloc)
 			{
 				size_type newSize = ft::distance(first, last);
-				if ( newSize == 0 )
-				{
-					data = NULL;
-					_size = 0;
-					return ;
-				}
-				if ( last > first )
-					throw( std::invalid_argument("invalid range"));
+				// if ( newSize == 0 )
+				// {
+				// 	data = NULL;
+				// 	_size = 0;
+				// 	return ;
+				// }
 				_capacity = newSize;
 				_size = newSize;
 				data = _alloc.allocate( _capacity );
 				if ( data == NULL )
 					throw(std::bad_alloc());
-				for ( size_type i = 0; first != last; i++, first++ ) 
+				for ( size_type i = 0; first != last; i++, ++first ) 
 					_alloc.construct(data + i, *first);
 			};
 
 			//copy constructor
 			vector( const vector &source )
 			{
-				if ( source._size == 0 )
-				{
-					_size = source._size;
-					_capacity = source._capacity;
-					data = NULL;
-					return ;
-				}
-				for ( size_type i = 0; i < _size; i++ )
-					_alloc.destroy( data + i );
-				if ( data )
-					_alloc.deallocate( data, _capacity );
 				_size = source._size;
 				_capacity = source._capacity;
-				if ( _size > 0 )
-				{
-					data = _alloc.allocate( _capacity );
-					if ( data == NULL )
-						throw(std::length_error("maximum supported size is exceeded"));
-				}
+				data = _alloc.allocate( _capacity );
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( data + i, source.data[i] );
 			};
@@ -116,11 +101,7 @@ namespace ft
 					_size = source._size;
 					_capacity = source._capacity;
 					if ( _size > 0 )
-					{
 						data = _alloc.allocate( _capacity );
-						if ( data == NULL )
-							throw(std::length_error("maximum supported size is exceeded"));
-					}
 					for ( size_type i = 0; i < _size; i++ )
 						_alloc.construct( data + i, source.data[i] );
 				}
@@ -135,17 +116,18 @@ namespace ft
 				if ( data )
 					_alloc.deallocate( data, _capacity );
 				_size = 0;
+				_capacity = 0;
 			};
 
 			//[] operator
 			reference	operator[]( size_type index )
 			{
-				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
+				return (index >= _size) ? throw(std::invalid_argument("invalid range")) : data[index];
 			};
 
 			const_reference operator[]( size_type index ) const
 			{
-				return (index >= _size) ? throw(std::out_of_range("error: out of range")) : data[index];
+				return (index >= _size) ? throw(std::invalid_argument("invalid range")) : data[index];
 			};
 
 			//swap member function
@@ -240,10 +222,31 @@ namespace ft
 			//assign range member function
 			template< typename InputIterator >
 
-			void	assign( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last )
+			void	assigning( InputIterator first, InputIterator last, std::input_iterator_tag )
+			{
+				clear();
+				for ( ; first != last; ++first )
+				{
+					push_back(*first);
+				}
+			}
+
+			template< typename InputIterator >
+
+			void	assigning( InputIterator first, InputIterator last, std::forward_iterator_tag )
+			{
+				clear();
+				for ( ; first != last; ++first )
+				{
+					push_back(*first);
+				}
+			}
+
+			template< typename InputIterator >
+
+			void	assigning( InputIterator first, InputIterator last, ft::random_access_iterator_tag )
 			{
 				size_type newSize = ft::distance(first, last);
-				// std::cout << "***new size: " << newSize << "***\n";
 				if ( newSize > _capacity )
 				{
 					if ( _capacity < newSize )
@@ -281,10 +284,69 @@ namespace ft
 						}
 					}
 					if ( _size > newSize )
+					{
 						for ( size_type i = newSize; i < _size; i++ )
 							_alloc.destroy( data + i );
+					}
 					_size = newSize;
 				}
+			}
+
+			template< typename InputIterator >
+
+			void	assigning( InputIterator first, InputIterator last, std::random_access_iterator_tag )
+			{
+				size_type newSize = ft::distance(first, last);
+				if ( newSize > _capacity )
+				{
+					if ( _capacity < newSize )
+						_capacity = newSize;
+					else
+						_capacity *= 2;
+					value_type *newData = _alloc.allocate(_capacity);
+					if ( newData == NULL )
+						throw(std::bad_alloc());
+					if ( data )
+					{
+						for ( size_type i = 0; i < _size; i++ )
+							_alloc.destroy(data + i);
+						_alloc.deallocate(data, _size);
+					}
+					_size = newSize;
+					for ( size_type i = 0; first != last; i++, ++first )
+					{
+						_alloc.construct(newData + i, *(first) );
+					}
+					data = newData;
+					_size = newSize;
+					return ;
+				}
+				else
+				{
+					for ( size_type i = 0; first != last; i++, ++first )
+					{
+						if ( i >= _size )
+							_alloc.construct(data + i, *(first));
+						else
+						{
+							_alloc.destroy( data + i );
+							_alloc.construct(data + i, *(first));
+						}
+					}
+					if ( _size > newSize )
+					{
+						for ( size_type i = newSize; i < _size; i++ )
+							_alloc.destroy( data + i );
+					}
+					_size = newSize;
+				}
+			}
+
+			template< typename InputIterator >
+
+			void	assign( InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last )
+			{
+				assigning( first, last, typename ft::iterator_traits<InputIterator>::iterator_category() );
 			};
 
 			//insert member function
@@ -414,8 +476,8 @@ namespace ft
 				size_type i = 0;
 				size_type j = 0;
 				value_type *newData = _alloc.allocate(_capacity);
-				if ( newData == NULL )
-					throw(std::bad_alloc());
+				// if ( newData == NULL )
+				// 	throw(std::bad_alloc());
 				while ( i < _size && j < _size - 1 )
 				{
 					if ( index == i )
@@ -441,14 +503,11 @@ namespace ft
 				size_type start = first - data;
 				size_type end = last - data;
 				size_type n = last - first;
-				std::cout << "start: " << start << std::endl;
-				std::cout << "end: " << end << std::endl;
-				std::cout << "n: " << n << std::endl;
 				size_type i = 0;
 				size_type j = 0;
 				value_type *newData = _alloc.allocate(_capacity);
-				if ( newData == NULL )
-					throw(std::bad_alloc());
+				// if ( newData == NULL )
+				// 	throw(std::bad_alloc());
 				while ( i < _size && j < _size - n )
 				{
 					if ( start == i )
@@ -580,26 +639,27 @@ namespace ft
 						_alloc.construct(newData + i, data[i]);
 						_alloc.destroy(data + i);
 					}
-					_alloc.deallocate(data, _size);
+					if (data)
+						_alloc.deallocate(data, _size);
 					data = newData;
 				}
+				_alloc.construct( data + _size, val );
 				_size += 1;
-				data[_size - 1] = val;
 			};
 
 			//pop_back member function
 			void	pop_back( void )
 			{
-				if ( _size == 0 )
-					throw(std::length_error("size is zero"));
+				// if ( _size == 0 )
+				// 	throw(std::length_error("size is zero"));
 				_size -= 1;
-				_alloc.destroy( data + _size );
+				_alloc.destroy( data + _size - 1 );
 				if ( _size < _capacity / 2 )
 				{
 					_capacity = _size;
 					value_type *newData = _alloc.allocate( _capacity );
-					if ( newData == NULL )
-						throw( std::bad_alloc() );
+					// if ( newData == NULL )
+					// 	throw( std::bad_alloc() );
 					for ( size_type i = 0; i < _size; i++ )
 					{
 						_alloc.construct(newData + i, data[i]);
