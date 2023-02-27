@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/26 17:19:38 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/27 12:08:09 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -515,27 +515,26 @@ namespace ft
 			iterator	erase( iterator position )
 			{
 				size_type index = position - data;
-				size_type i = 0;
-				size_type j = 0;
-				value_type *newData = _alloc.allocate(_capacity);
-				// if ( newData == NULL )
-				// 	throw(std::bad_alloc());
-				while ( i < _size && j < _size - 1 )
+				size_type i = index;
+				if ( index == _size - 1 )
+					_alloc.destroy(data + index);
+				else
 				{
-					if ( index == i )
+					while ( i < _size )
 					{
+						value_type tmp = data[i + 1];
+						if ( index == i )
+						{
+							_alloc.destroy(data + i);
+							_alloc.construct( data + i, tmp);
+						}
+						else
+							data[i] = tmp;
 						i++;
-						continue ;
 					}
-					_alloc.construct(newData + j, data[i]);
-					_alloc.destroy(data + i);
-					i++;
-					j++;
 				}
-				_alloc.deallocate(data, _size);
 				_size -= 1;
-				data = newData;
-				return (index == _size) ? position : ++position;
+				return (index == _size ) ? end() : position + 1;
 			}
 
 			iterator	erase( iterator first, iterator last )
