@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/27 12:08:09 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/28 12:57:13 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ namespace ft
 			typedef typename Allocator::const_pointer	const_pointer;
 			typedef ft::random_access_iterator< T > iterator;
 			typedef ft::reverse_iterator< iterator > reverse_iterator;
-			typedef random_access_iterator< const T > const_iterator;
+			typedef ft::random_access_iterator< const T > const_iterator;
 			typedef ft::reverse_iterator< const_iterator > const_reverse_iterator;
 
 			//default constructor
@@ -516,45 +516,70 @@ namespace ft
 			{
 				size_type index = position - data;
 				size_type i = index;
+				bool	destroyed = false;
+		
+				if ( index >= _size )
+					return (end());
 				if ( index == _size - 1 )
+				{
+					destroyed = true;
 					_alloc.destroy(data + index);
+				}
 				else
 				{
 					while ( i < _size )
 					{
+						if ( i + 1 >= _size)
+							break ;
 						value_type tmp = data[i + 1];
+						_alloc.destroy( data + i + 1);
 						if ( index == i )
 						{
 							_alloc.destroy(data + i);
 							_alloc.construct( data + i, tmp);
+							destroyed = true;
 						}
 						else
-							data[i] = tmp;
+							_alloc.construct( data + i, tmp );
 						i++;
 					}
 				}
+				if ( !destroyed )
+					_alloc.destroy( data + index );
 				_size -= 1;
-				return (index == _size ) ? end() : position + 1;
+				if ( _size == 0 ) return (begin());
+				if ( index == _size ) return ( position - 1 );
+				return ( position + 1 );
 			}
 
 			iterator	erase( iterator first, iterator last )
 			{
-				if ( first >= data + _size || first < data || first >= last  || last > data + _size )
-					return (first);
+				// if ( first >= data + _size || first < data || first >= last  || last >= data + _size )
+				// 	return (first);
 				size_type start = first - data;
-				size_type end = last - data;
+				size_type finish = last - data;
+				if ( start >= _size || start >= finish || finish > _size )
+					return (first);
 				size_type n = last - first;
+				if ( start == 0 && finish == _size )
+				{
+					for ( size_type i = 0; i < _size; i++ )
+						_alloc.destroy(data + i);
+					_size = 0;
+					return end();
+				}
 				size_type i = 0;
 				size_type j = 0;
 				value_type *newData = _alloc.allocate(_capacity);
-				// if ( newData == NULL )
-				// 	throw(std::bad_alloc());
 				while ( i < _size && j < _size - n )
 				{
 					if ( start == i )
 					{
-						while ( i < end )
+						while ( i < finish )
+						{
+							_alloc.destroy( data + i );
 							i++;
+						}
 						continue ;
 					}
 					_alloc.construct(newData + j, data[i]);
@@ -562,7 +587,7 @@ namespace ft
 					i++;
 					j++;
 				}
-				_alloc.deallocate(data, _size);
+				_alloc.deallocate(data, _capacity);
 				_size -= n;
 				data = newData;
 				return (first + n);

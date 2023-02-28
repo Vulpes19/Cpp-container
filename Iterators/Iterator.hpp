@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/21 14:03:48 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/28 11:29:03 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ namespace ft
 			{
 				data -= n;
 				return (*this);
-			};		
+			};
 			size_t	operator-( const random_access_iterator &it ) const
 			{
 				return (data - it.data);

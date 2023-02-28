@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/27 10:20:03 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/28 12:50:21 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -418,6 +418,10 @@ void	testing_erase( void )
 	ft_it += 1;
 	std_it += 1;
 
+	printSizeAndCapacity(ftvec);
+	printSizeAndCapacity(stdvec);
+	printVecElements(ftvec);
+	printVecElements(stdvec);
 	ft_ret = ftvec.erase(ft_it);
 	std_ret = stdvec.erase(std_it);
 	printSizeAndCapacity(ftvec);
@@ -450,6 +454,18 @@ void	testing_erase( void )
 	printSizeAndCapacity(stdvec);
 	printVecElements(ftvec);
 	printVecElements(stdvec);
+	std::vector<int> vec3(9, 1);
+	ft::vector<int> vec4(9, 1);
+	printSizeAndCapacity(vec3);
+	printSizeAndCapacity(vec4);
+	printVecElements(vec3);
+	printVecElements(vec4);
+	vec3.erase(vec3.begin(), vec3.end());
+	vec4.erase(vec4.begin(), vec4.end());
+	printVecElements(vec3);
+	printVecElements(vec4);
+	printSizeAndCapacity(vec3);
+	printSizeAndCapacity(vec4);
 }
 
 void	testing_resize( void )
@@ -534,17 +550,8 @@ void	testing_assign2( void )
 }
 int	main( void )
 {
-	ft::vector<int> v(1, 5);
-
-	printVecElements(v);
-	myIterator it = v.erase(v.begin());
-	std::cout << "*******\n";
-	printVecElements(v);
-	if ( it != v.end() )
-		std::cout << "wrong iterator\n";
-	printSizeAndCapacity(v);
 	// testing_vec_constructors();
-	// testing_erase();
+	testing_erase();
 	// testing_iterator_traits();
 	// testing_push_back();
 	// testing_assign();
