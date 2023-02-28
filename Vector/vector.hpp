@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/28 12:57:13 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/28 13:14:59 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -548,8 +548,8 @@ namespace ft
 					_alloc.destroy( data + index );
 				_size -= 1;
 				if ( _size == 0 ) return (begin());
-				if ( index == _size ) return ( position - 1 );
-				return ( position + 1 );
+				if ( index == _size ) return ( position );
+				return ( position );
 			}
 
 			iterator	erase( iterator first, iterator last )

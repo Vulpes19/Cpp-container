@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/28 12:50:21 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/02/28 13:12:58 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -466,6 +466,35 @@ void	testing_erase( void )
 	printVecElements(vec4);
 	printSizeAndCapacity(vec3);
 	printSizeAndCapacity(vec4);
+	{
+		std::cout << "********\n" << std::endl;
+		stdIterator std_ret;
+		myIterator ft_ret;
+		ft::vector<int> ft_vec;
+		for ( size_t i = 1; i <= 10; i++ )
+			ft_vec.push_back(i);
+		std::vector<int> std_vec;
+		for ( size_t i = 1; i <= 10; i++ )
+			std_vec.push_back(i);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		ft_ret = ft_vec.erase( ft_vec.begin() + 5);
+		std_ret = std_vec.erase( std_vec.begin() + 5);
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		std::cout << "it: " << *ft_ret << std::endl;
+		std::cout << "it: " << *std_ret << std::endl;
+		ft_vec.erase(ft_ret);
+		std_vec.erase(std_ret);
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+	}
 }
 
 void	testing_resize( void )
