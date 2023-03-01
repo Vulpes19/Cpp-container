@@ -10,7 +10,7 @@ V_FILE = vector_main.cpp
 V_OBJ = vector_main.o
 
 #* FLAGS *#
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 
 #* INCLUDE PATHS *#
 V_INCLUDE = Vector/

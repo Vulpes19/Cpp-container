@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/28 13:12:58 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/01 11:24:57 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,12 +281,52 @@ void	testing_insert( void )
 
 	it = vec.begin() + 1;
 	it2 = ftvec.begin() + 1;
-	vec.insert( it, 42);
-	ftvec.insert( it2, 42);
-	printSizeAndCapacity(vec);
-	printSizeAndCapacity(ftvec);
-	printVecElements(vec);
-	printVecElements(ftvec);
+	{
+		std::vector<int> vec2;
+		ft::vector<int> ftvec2;
+		vec2.insert( vec2.end(), 42);
+		ftvec2.insert( ftvec2.end(), 42);
+		printSizeAndCapacity(vec2);
+		printSizeAndCapacity(ftvec2);
+		printVecElements(vec2);
+		printVecElements(ftvec2);
+		vec2.insert( vec2.begin(), 422);
+		ftvec2.insert( ftvec2.begin(), 422);
+		printSizeAndCapacity(vec2);
+		printSizeAndCapacity(ftvec2);
+		printVecElements(vec2);
+		printVecElements(ftvec2);
+		vec2.insert( vec2.begin() + 1, 4222);
+		ftvec2.insert( ftvec2.begin() + 1, 4222);
+		printSizeAndCapacity(vec2);
+		printSizeAndCapacity(ftvec2);
+		printVecElements(vec2);
+		printVecElements(ftvec2);
+		vec2.insert( vec2.begin() + 1, 42222);
+		ftvec2.insert( ftvec2.begin() + 1, 42222);
+		printSizeAndCapacity(vec2);
+		printSizeAndCapacity(ftvec2);
+		printVecElements(vec2);
+		printVecElements(ftvec2);
+		vec2.insert( vec2.begin() + 2, 422222);
+		ftvec2.insert( ftvec2.begin() + 2, 422222);
+		printSizeAndCapacity(vec2);
+		printSizeAndCapacity(ftvec2);
+		printVecElements(vec2);
+		printVecElements(ftvec2);
+		vec2.insert( vec2.begin() + 3, 4222222);
+		ftvec2.insert( ftvec2.begin() + 3, 4222222);
+		printSizeAndCapacity(vec2);
+		printSizeAndCapacity(ftvec2);
+		printVecElements(vec2);
+		printVecElements(ftvec2);
+		vec2.insert( vec2.begin() + 2, 42222222);
+		ftvec2.insert( ftvec2.begin() + 2, 42222222);
+		printSizeAndCapacity(vec2);
+		printSizeAndCapacity(ftvec2);
+		printVecElements(vec2);
+		printVecElements(ftvec2);
+	}
 }
 
 void	testing_iterator_traits( void )
@@ -580,12 +620,12 @@ void	testing_assign2( void )
 int	main( void )
 {
 	// testing_vec_constructors();
-	testing_erase();
+	// testing_erase();
 	// testing_iterator_traits();
 	// testing_push_back();
 	// testing_assign();
 	// testing_assign2();
-	// testing_insert();
+	testing_insert();
 	// testing_resize();
 	// testing_reverse_iterator();
 	// testing_algorithm();

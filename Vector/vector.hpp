@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/28 13:14:59 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/01 13:49:17 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -394,19 +394,64 @@ namespace ft
 			//insert member function
 			iterator	insert( iterator position, const value_type &value )
 			{
-				size_type index = position - data;
-				_size += 1;
+				// if ( _size == 0 || position == end() )
+				// {
+				// 	push_back(value);
+				// 	return (position);
+				// }
 
+				// size_type index = position - data;
+				// if ( _size + 1 > _capacity )
+				// {
+				// 	pointer newData = _alloc.allocate(_capacity * 2);
+				// 	size_type i, j;
+				// 	i = 0;
+				// 	j = 0;
+				// 	while ( i < _size + 1 && j < _size )
+				// 	{
+				// 		if ( j == index )
+				// 		{
+				// 			_alloc.construct( newData + j, value );
+				// 			continue;
+				// 		}
+				// 		value_type tmp = data[i];
+				// 		_alloc.destroy( data + i );
+				// 		_alloc.construct( newData + j, tmp );
+				// 		i++;
+				// 		j++;
+				// 	}
+				// 	if ( data )
+				// 		_alloc.deallocate( data, _capacity );
+				// 	data = newData;
+				// 	_size++;
+				// 	_capacity *= 2;
+				// }
+				// else
+				// {
+				// 	for ( size_type i = _size; i > index; --i )
+				// 	{
+				// 		data[i] = data[i - 1];
+				// 	}
+				// 	data[index] = value;
+				// }
+				// return (position);
+				if ( position > end() )
+					return (position);
+				if ( _size == 0 || position == end() )
+				{
+					push_back(value);
+					return position;
+				}
+				
+				size_type index = position - data;
 				if ( _size > _capacity )
 				{
+				_size += 1;
 					size_type i, j;
 					
 					i = 0;
 					j = 0;
-					_capacity *= 2;
-					value_type	*newData = _alloc.allocate(_capacity);
-					if ( newData == NULL )
-						throw(std::bad_alloc());
+					value_type	*newData = _alloc.allocate(_capacity * 2);
 					while ( i < _size && j < _size - 1 )
 					{
 						if ( i == index )
@@ -420,7 +465,9 @@ namespace ft
 						i++;
 						j++;
 					}
-					_alloc.deallocate(data, _size - 1);
+					if (data )
+						_alloc.deallocate(data, _size);
+					_capacity *= 2;
 					data = newData;
 				}
 				else
@@ -430,12 +477,20 @@ namespace ft
 						data[i] = data[i - 1];
 					}
 					data[index] = value;
+					_size += 1;
 				}
 				return ( position );
 			};
 
 			void	insert( iterator position, size_type n, const value_type &value )
 			{
+			
+				// if ( _size == 0 || position == end() )
+				// {
+				// 	for ( size_type i = 0; i < n; i++ )
+				// 		push_back(value);
+				// 	return ;
+				// }
 				size_type index = position - data;
 				if ( _size + n > _capacity )
 				{
@@ -461,7 +516,8 @@ namespace ft
 						i++;
 						j++;
 					}
-					_alloc.deallocate(data, _size);
+					if (data)
+						_alloc.deallocate(data, _capacity);
 					_size += n;
 					data = newData;
 				}
