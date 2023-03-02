@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/02 12:14:51 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:34:21 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -451,91 +451,180 @@ namespace ft
 				return ( begin() + index );
 			};
 
+			//insert size
 			void	insert( iterator position, size_type n, const value_type &value )
 			{
-			
+				if ( position > end() || n == 0 )
+					return ;
 				if ( _size == 0 || position == end() )
 				{
 					for ( size_type i = 0; i < n; i++ )
 						push_back(value);
 					return ;
 				}
-				size_type index = position - data;
+				size_type index = position - begin();
 				if ( _size + n > _capacity )
 				{
+					_size += n;
 					size_type i, j;
 					
 					i = 0;
 					j = 0;
+					size_type tmp = _capacity;
 					_capacity *= 2;
 					value_type	*newData = _alloc.allocate(_capacity);
-					if ( newData == NULL )
-						throw(std::bad_alloc());
-					while ( i < _size + n && j < _size )
+					while ( i < _size && j < _size - n )
 					{
 						if ( i == index )
 						{
 							for ( size_type k = i; k < i + n; k++ )
 								_alloc.construct(newData + k, value);
 							i += n;
-							continue ;
 						}
-						_alloc.construct(newData + i, data[j]);
-						// std::cout << "destoryed: " << j << std::endl;
-						_alloc.destroy(data + j);
-						i++;
-						j++;
+						else
+						{
+							_alloc.construct(newData + i, data[j]);
+							_alloc.destroy(data + j);
+							i++;
+							j++;
+						}
 					}
-					if (data)
-						_alloc.deallocate(data, _capacity);
-					_size += n;
+					if (data )
+						_alloc.deallocate(data, tmp);
 					data = newData;
 				}
 				else
 				{
-					for ( size_type i = _size - 1; i > index; --i )
+					for ( size_type i = _size; i > index; --i )
 						data[i + n] = data[i];
 					for ( size_type i = index; i < index + n; i++ )
 						data[i] = value;
 					_size += n;
+					data[index] = value;
 				}
+				return ;
+				// if ( _size + n > _capacity )
+				// {
+				// 	size_type i, j;
+					
+				// 	i = 0;
+				// 	j = 0;
+				// 	_capacity *= 2;
+				// 	value_type	*newData = _alloc.allocate(_capacity);
+				// 	if ( newData == NULL )
+				// 		throw(std::bad_alloc());
+				// 	while ( i < _size + n && j < _size )
+				// 	{
+				// 		if ( i == index )
+				// 		{
+				// 			for ( size_type k = i; k < i + n; k++ )
+				// 				_alloc.construct(newData + k, value);
+				// 			i += n;
+				// 			continue ;
+				// 		}
+				// 		_alloc.construct(newData + i, data[j]);
+				// 		// std::cout << "destoryed: " << j << std::endl;
+				// 		_alloc.destroy(data + j);
+				// 		i++;
+				// 		j++;
+				// 	}
+				// 	if (data)
+				// 		_alloc.deallocate(data, _capacity);
+				// 	_size += n;
+				// 	data = newData;
+				// }
+				// else
+				// {
+				// 	for ( size_type i = _size - 1; i > index; --i )
+				// 		data[i + n] = data[i];
+				// 	for ( size_type i = index; i < index + n; i++ )
+				// 		data[i] = value;
+				// 	_size += n;
+				// }
 			};
+			
+			template < typename InputIterator >
+			
+			void	inserting( iterator position, InputIterator first, InputIterator last, std::input_iterator_tag )
+			{
+				for ( ; first != last; ++first )
+					position = insert( position, *first );
+			};
+
+			template < typename InputIterator >
+			
+			void	inserting( iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag )
+			{
+				for ( ; first != last; ++first )
+					position = insert( position, *first );
+			};
+
+			template < typename InputIterator >
+
+			void	inserting( iterator position, InputIterator first, InputIterator last, std::random_access_iterator_tag )
+			{
+				size_type	index = position - data;
+				size_type	n = ft::distance( first, last );
+				if ( _size + n > _capacity )
+				{
+					reserve(_capacity * 2);
+					position = data + index;
+				}
+				for ( ; first != last; ++first )
+					position = insert( position, *first );
+			}
+
+			template < typename InputIterator >
+
+			void	inserting( iterator position, InputIterator first, InputIterator last, ft::random_access_iterator_tag )
+			{
+				size_type	index = position - data;
+				size_type	n = ft::distance( first, last );
+				if ( _size + n > _capacity )
+				{
+					reserve(_capacity * 2);
+					position = data + index;
+				}
+				for ( ; first != last; ++first )
+					position = insert( position, *first );
+			}
 
 			template < typename InputIterator >
 			
 			void	insert( typename ft::enable_if<!ft::is_integral<InputIterator>::value, typename ft::vector<T>::iterator>::type position,
 				 InputIterator first, InputIterator last )
 			{
-				size_type	index = position - data;
-				size_type	n = ft::distance( first, last );
-				if ( _size + n > _capacity )
-				{
-					size_type i, j;
+				inserting( position, first, last, typename ft::iterator_traits<InputIterator>::iterator_category() );
+				// size_type	index = position - data;
+				// size_type	n = ft::distance( first, last );
+				// if ( _size + n > _capacity )
+				// {
+				// 	size_type i, j;
 					
-					i = 0;
-					j = 0;
-					_capacity *= 2;
-					value_type	*newData = _alloc.allocate(_capacity);
-					if ( newData == NULL )
-						throw(std::bad_alloc());
-					while ( i < _size + n && j < _size )
-					{
-						if ( i == index )
-						{
-							for ( size_type k = i; first != last; k++, ++first )
-								_alloc.construct(newData + k, *first);
-							i += n;
-							continue ;
-						}
-						_alloc.construct(newData + i, data[j]);
-						_alloc.destroy(data + j);
-						i++;
-						j++;
-					}
-					_alloc.deallocate(data, _size);
-					_size += n;
-					data = newData;
-				}
+				// 	i = 0;
+				// 	j = 0;
+				// 	_capacity *= 2;
+				// 	value_type	*newData = _alloc.allocate(_capacity);
+				// 	if ( newData == NULL )
+				// 		throw(std::bad_alloc());
+				// 	while ( i < _size + n && j < _size )
+				// 	{
+				// 		if ( i == index )
+				// 		{
+				// 			for ( size_type k = i; first != last; k++, ++first )
+				// 				_alloc.construct(newData + k, *first);
+				// 			i += n;
+				// 			continue ;
+				// 		}
+				// 		_alloc.construct(newData + i, data[j]);
+				// 		_alloc.destroy(data + j);
+				// 		i++;
+				// 		j++;
+				// 	}
+				// 	_alloc.deallocate(data, _size);
+				// 	_size += n;
+				// 	data = newData;
+				// }
 			};
 			//erase member function
 			iterator	erase( iterator position )
@@ -689,16 +778,16 @@ namespace ft
 			{
 				if ( newSize > _capacity )
 				{
-					_capacity = newSize;
-					value_type *newData = _alloc.allocate(_capacity);
+					value_type *newData = _alloc.allocate(newSize);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
 					{
-						_alloc.construct(newData + i, data[i]);
+						_alloc.construct( newData + i, data[i] );
 						_alloc.destroy(data + i);
 					}
-					_alloc.deallocate(data, _size);
+					_alloc.deallocate( data, _capacity );
+					_capacity = newSize;
 					data = newData;
 				}
 			};
