@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/01 13:49:17 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:14:51 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -394,103 +394,72 @@ namespace ft
 			//insert member function
 			iterator	insert( iterator position, const value_type &value )
 			{
-				// if ( _size == 0 || position == end() )
-				// {
-				// 	push_back(value);
-				// 	return (position);
-				// }
-
-				// size_type index = position - data;
-				// if ( _size + 1 > _capacity )
-				// {
-				// 	pointer newData = _alloc.allocate(_capacity * 2);
-				// 	size_type i, j;
-				// 	i = 0;
-				// 	j = 0;
-				// 	while ( i < _size + 1 && j < _size )
-				// 	{
-				// 		if ( j == index )
-				// 		{
-				// 			_alloc.construct( newData + j, value );
-				// 			continue;
-				// 		}
-				// 		value_type tmp = data[i];
-				// 		_alloc.destroy( data + i );
-				// 		_alloc.construct( newData + j, tmp );
-				// 		i++;
-				// 		j++;
-				// 	}
-				// 	if ( data )
-				// 		_alloc.deallocate( data, _capacity );
-				// 	data = newData;
-				// 	_size++;
-				// 	_capacity *= 2;
-				// }
-				// else
-				// {
-				// 	for ( size_type i = _size; i > index; --i )
-				// 	{
-				// 		data[i] = data[i - 1];
-				// 	}
-				// 	data[index] = value;
-				// }
-				// return (position);
 				if ( position > end() )
 					return (position);
-				if ( _size == 0 || position == end() )
+				if ( position == end() )
 				{
 					push_back(value);
-					return position;
-				}
-				
-				size_type index = position - data;
-				if ( _size > _capacity )
+					return (end() - 1);
+				} 
+				if ( _size == 0 )
 				{
-				_size += 1;
+					push_back(value);
+					return (begin());
+				}
+				size_type index = position - begin();
+				if ( _size + 1 > _capacity )
+				{
+					_size += 1;
 					size_type i, j;
 					
 					i = 0;
 					j = 0;
-					value_type	*newData = _alloc.allocate(_capacity * 2);
+					size_type tmp = _capacity;
+					_capacity *= 2;
+					value_type	*newData = _alloc.allocate(_capacity);
 					while ( i < _size && j < _size - 1 )
 					{
 						if ( i == index )
 						{
 							_alloc.construct(newData + i, value);
 							i++;
-							continue ;
 						}
-						_alloc.construct(newData + i, data[j]);
-						_alloc.destroy(data + j);
-						i++;
-						j++;
+						else
+						{
+							_alloc.construct(newData + i, data[j]);
+							_alloc.destroy(data + j);
+							i++;
+							j++;
+						}
 					}
 					if (data )
-						_alloc.deallocate(data, _size);
-					_capacity *= 2;
+						_alloc.deallocate(data, tmp);
 					data = newData;
 				}
 				else
 				{
 					for ( size_type i = _size; i > index; --i )
 					{
-						data[i] = data[i - 1];
+						if ( i == _size )
+							_alloc.construct( data + i, data[i - 1] );
+						else
+							data[i] = data[i - 1];
 					}
-					data[index] = value;
 					_size += 1;
+					data[index] = value;
 				}
-				return ( position );
+				return ( begin() + index );
 			};
 
 			void	insert( iterator position, size_type n, const value_type &value )
 			{
 			
-				// if ( _size == 0 || position == end() )
-				// {
-				// 	for ( size_type i = 0; i < n; i++ )
-				// 		push_back(value);
-				// 	return ;
-				// }
+				if ( _size == 0 || position == end() )
+				{
+					for ( size_type i = 0; i < n; i++ )
+						push_back(value);
+					return ;
+				}
 				size_type index = position - data;
 				if ( _size + n > _capacity )
 				{
@@ -512,6 +481,7 @@ namespace ft
 							continue ;
 						}
 						_alloc.construct(newData + i, data[j]);
+						// std::cout << "destoryed: " << j << std::endl;
 						_alloc.destroy(data + j);
 						i++;
 						j++;

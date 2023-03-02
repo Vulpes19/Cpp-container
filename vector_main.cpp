@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/01 11:24:57 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:57:47 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,50 +282,66 @@ void	testing_insert( void )
 	it = vec.begin() + 1;
 	it2 = ftvec.begin() + 1;
 	{
-		std::vector<int> vec2;
-		ft::vector<int> ftvec2;
-		vec2.insert( vec2.end(), 42);
-		ftvec2.insert( ftvec2.end(), 42);
+		std::vector<std::string> vec2;
+		ft::vector<std::string> ftvec2;
+		std::vector<std::string>::iterator it1;
+		ft::vector<std::string>::iterator it2;
+		it1 = vec2.insert( vec2.end(), "42");
+		it2 = ftvec2.insert( ftvec2.end(), "42");
+		std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
 		printSizeAndCapacity(vec2);
 		printSizeAndCapacity(ftvec2);
 		printVecElements(vec2);
 		printVecElements(ftvec2);
-		vec2.insert( vec2.begin(), 422);
-		ftvec2.insert( ftvec2.begin(), 422);
+		it1 = vec2.insert( vec2.begin(), "422");
+		it2 = ftvec2.insert( ftvec2.begin(), "422");
+		std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
 		printSizeAndCapacity(vec2);
 		printSizeAndCapacity(ftvec2);
 		printVecElements(vec2);
 		printVecElements(ftvec2);
-		vec2.insert( vec2.begin() + 1, 4222);
-		ftvec2.insert( ftvec2.begin() + 1, 4222);
+		it1 = vec2.insert( vec2.begin() + 1, "4222");
+		it2 = ftvec2.insert( ftvec2.begin() + 1, "4222");
+		std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
 		printSizeAndCapacity(vec2);
 		printSizeAndCapacity(ftvec2);
 		printVecElements(vec2);
 		printVecElements(ftvec2);
-		vec2.insert( vec2.begin() + 1, 42222);
-		ftvec2.insert( ftvec2.begin() + 1, 42222);
+		it1 = vec2.insert( vec2.begin() + 1, "42222");
+		it2 = ftvec2.insert( ftvec2.begin() + 1, "42222");
+		std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
 		printSizeAndCapacity(vec2);
 		printSizeAndCapacity(ftvec2);
 		printVecElements(vec2);
 		printVecElements(ftvec2);
-		vec2.insert( vec2.begin() + 2, 422222);
-		ftvec2.insert( ftvec2.begin() + 2, 422222);
+		it1 = vec2.insert( vec2.begin() + 2, "422222");
+		it2 = ftvec2.insert( ftvec2.begin() + 2, "422222");
+		std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
 		printSizeAndCapacity(vec2);
 		printSizeAndCapacity(ftvec2);
 		printVecElements(vec2);
 		printVecElements(ftvec2);
-		vec2.insert( vec2.begin() + 3, 4222222);
-		ftvec2.insert( ftvec2.begin() + 3, 4222222);
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert( vec2.begin() + 2, 42222222);
-		ftvec2.insert( ftvec2.begin() + 2, 42222222);
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
+		// it1 = vec2.insert( vec2.begin() + 3, "4222222");
+		// it2 = ftvec2.insert( ftvec2.begin() + 3, "4222222");
+		// std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
+		// printSizeAndCapacity(vec2);
+		// printSizeAndCapacity(ftvec2);
+		// printVecElements(vec2);
+		// printVecElements(ftvec2);
+		// it1 = vec2.insert( vec2.begin() + 2, "42222222");
+		// it2 = ftvec2.insert( ftvec2.begin() + 2, "42222222");
+		// std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
+		// printSizeAndCapacity(vec2);
+		// printSizeAndCapacity(ftvec2);
+		// printVecElements(vec2);
+		// printVecElements(ftvec2);
+		// it1 = vec2.insert( vec2.end(), "42222222");
+		// it2 = ftvec2.insert( ftvec2.end(), "42222222");
+		// std::cout << "iterator: " << *it1 << " " << *it2 << std::endl;
+		// printSizeAndCapacity(vec2);
+		// printSizeAndCapacity(ftvec2);
+		// printVecElements(vec2);
+		// printVecElements(ftvec2);
 	}
 }
 
