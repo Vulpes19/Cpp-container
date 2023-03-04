@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/04 11:48:18 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/04 11:56:33 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -865,21 +865,22 @@ namespace ft
 			{
 				// if ( _size == 0 )
 				// 	throw(std::length_error("size is zero"));
-				_size -= 1;
-				_alloc.destroy( data + _size - 1 );
-				if ( _size < _capacity / 2 )
+				if ( _size > 0 )
 				{
-					_capacity = _size;
-					value_type *newData = _alloc.allocate( _capacity );
-					// if ( newData == NULL )
-					// 	throw( std::bad_alloc() );
-					for ( size_type i = 0; i < _size; i++ )
+					_size -= 1;
+					_alloc.destroy( data + _size );
+					if ( _size < _capacity / 2 )
 					{
-						_alloc.construct(newData + i, data[i]);
-						_alloc.destroy(data + i);
+						_capacity = _size;
+						value_type *newData = _alloc.allocate( _capacity );
+						for ( size_type i = 0; i < _size; i++ )
+						{
+							_alloc.construct(newData + i, data[i]);
+							_alloc.destroy(data + i);
+						}
+						_alloc.deallocate(data, _size + 1);
+						data = newData;
 					}
-					_alloc.deallocate(data, _size + 1);
-					data = newData;
 				}
 			};
 
