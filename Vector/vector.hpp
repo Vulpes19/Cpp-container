@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/04 11:56:33 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/04 19:19:58 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ namespace ft
 			typedef ft::reverse_iterator< iterator > reverse_iterator;
 			typedef ft::random_access_iterator< const T > const_iterator;
 			typedef ft::reverse_iterator< const_iterator > const_reverse_iterator;
+			typedef typename ft::iterator_traits<iterator>::difference_type difference_type; 
 
 			//default constructor
 			explicit vector( const allocator_type &alloc = allocator_type() ) : data(NULL), _size(0), _capacity(0), _alloc(alloc) {};
@@ -394,6 +395,7 @@ namespace ft
 			//insert member function
 			iterator	insert( iterator position, const value_type &value )
 			{
+				size_type index = position - begin();
 				if ( position > end() )
 					return (position);
 				if ( position == end() )
@@ -404,9 +406,8 @@ namespace ft
 				if ( _size == 0 )
 				{
 					push_back(value);
-					return (begin());
+					return (end() - 1);
 				}
-				size_type index = position - begin();
 				if ( _size + 1 > _capacity )
 				{
 					_size += 1;
@@ -448,6 +449,7 @@ namespace ft
 					_size += 1;
 					data[index] = value;
 				}
+				// return (position);
 				return ( begin() + index );
 			};
 
@@ -552,54 +554,46 @@ namespace ft
 			
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::input_iterator_tag )
 			{
-				std::cout << "input it\n";
-					// std::cout << "position: " << *position << std::endl;
-				for ( ; first != last; ++first )
-				{
-					position = insert( position, *first );
-					// std::cout << "position: " << *position << std::endl;
-				}
+				for ( ; first != last; ++first, ++position )
+					insert( position, *first );
 			};
 
 			template < typename InputIterator >
 			
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag )
 			{
-				std::cout << "forward it\n";
-				for ( ; first != last; ++first )
-					position = insert( position, *first );
+				for ( ; first != last; ++first, ++position )
+					insert( position, *first );
 			};
 
 			template < typename InputIterator >
 
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::random_access_iterator_tag )
 			{
-				std::cout << "std::random access it\n";
 				size_type	index = position - data;
 				size_type	n = ft::distance( first, last );
 				if ( _size + n > _capacity )
 				{
-					reserve(_capacity * 2);
+					reserve(_size + n);
 					position = data + index;
 				}
-				for ( ; first != last; ++first )
-					position = insert( position, *first );
+				for ( ; first != last; ++first, ++position )
+					insert( position, *first );
 			}
 
 			template < typename InputIterator >
 
 			void	inserting( iterator position, InputIterator first, InputIterator last, ft::random_access_iterator_tag )
 			{
-				std::cout << "ft::random access it\n";
 				size_type	index = position - data;
 				size_type	n = ft::distance( first, last );
 				if ( _size + n > _capacity )
 				{
-					reserve(_capacity * 2);
+					reserve(_size + n);
 					position = data + index;
 				}
-				for ( ; first != last; ++first )
-					position = insert( position, *first );
+				for ( ; first != last; ++first, ++position )
+					insert( position, *first );
 			}
 
 			template < typename InputIterator >
@@ -607,37 +601,9 @@ namespace ft
 			void	insert( typename ft::enable_if<!ft::is_integral<InputIterator>::value, typename ft::vector<T>::iterator>::type position,
 				 InputIterator first, InputIterator last )
 			{
+				if ( position > end())
+					return ;
 				inserting( position, first, last, typename ft::iterator_traits<InputIterator>::iterator_category() );
-				// size_type	index = position - data;
-				// size_type	n = ft::distance( first, last );
-				// if ( _size + n > _capacity )
-				// {
-				// 	size_type i, j;
-					
-				// 	i = 0;
-				// 	j = 0;
-				// 	_capacity *= 2;
-				// 	value_type	*newData = _alloc.allocate(_capacity);
-				// 	if ( newData == NULL )
-				// 		throw(std::bad_alloc());
-				// 	while ( i < _size + n && j < _size )
-				// 	{
-				// 		if ( i == index )
-				// 		{
-				// 			for ( size_type k = i; first != last; k++, ++first )
-				// 				_alloc.construct(newData + k, *first);
-				// 			i += n;
-				// 			continue ;
-				// 		}
-				// 		_alloc.construct(newData + i, data[j]);
-				// 		_alloc.destroy(data + j);
-				// 		i++;
-				// 		j++;
-				// 	}
-				// 	_alloc.deallocate(data, _size);
-				// 	_size += n;
-				// 	data = newData;
-				// }
 			};
 			//erase member function
 			iterator	erase( iterator position )
@@ -678,12 +644,10 @@ namespace ft
 				if ( _size == 0 ) return (begin());
 				if ( index == _size ) return ( position );
 				return ( position );
-			}
+			};
 
 			iterator	erase( iterator first, iterator last )
 			{
-				// if ( first >= data + _size || first < data || first >= last  || last >= data + _size )
-				// 	return (first);
 				size_type start = first - data;
 				size_type finish = last - data;
 				if ( start >= _size || start >= finish || finish > _size )
@@ -719,7 +683,7 @@ namespace ft
 				_size -= n;
 				data = newData;
 				return (first + n);
-			}
+			};
 			//operations
 			//at member function
 			reference	at( size_type position )
@@ -863,8 +827,6 @@ namespace ft
 			//pop_back member function
 			void	pop_back( void )
 			{
-				// if ( _size == 0 )
-				// 	throw(std::length_error("size is zero"));
 				if ( _size > 0 )
 				{
 					_size -= 1;

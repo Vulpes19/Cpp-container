@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/04 11:17:34 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/04 19:16:03 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -388,8 +388,8 @@ void	testing_insert( void )
 		printVecElements(std_vec);
 		printSizeAndCapacity(ft_vec);
 		printSizeAndCapacity(std_vec);
-		ft_vec.insert(ft_vec.begin() + 20, s2, s2 + 5);
-		std_vec.insert(std_vec.begin() + 20, s2, s2 + 5);
+		ft_vec.insert(ft_vec.begin() + 3, s2, s2 + 5);
+		std_vec.insert(std_vec.begin() + 3, s2, s2 + 5);
 		printVecElements(ft_vec);
 		printVecElements(std_vec);
 		printSizeAndCapacity(ft_vec);
