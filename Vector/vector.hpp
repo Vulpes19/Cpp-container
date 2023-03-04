@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/02 14:34:21 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/04 11:30:17 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -495,8 +495,13 @@ namespace ft
 				}
 				else
 				{
-					for ( size_type i = _size; i > index; --i )
-						data[i + n] = data[i];
+					for ( size_type i = _size - 1; i > index; --i )
+					{
+						if ( i + n >= _size )
+							_alloc.construct( data + i + n, data[i]);
+						else
+							data[i + n] = data[i];
+					}
 					for ( size_type i = index; i < index + n; i++ )
 						data[i] = value;
 					_size += n;
@@ -547,14 +552,20 @@ namespace ft
 			
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::input_iterator_tag )
 			{
+				std::cout << "input it\n";
+					// std::cout << "position: " << *position << std::endl;
 				for ( ; first != last; ++first )
+				{
 					position = insert( position, *first );
+					// std::cout << "position: " << *position << std::endl;
+				}
 			};
 
 			template < typename InputIterator >
 			
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag )
 			{
+				std::cout << "forward it\n";
 				for ( ; first != last; ++first )
 					position = insert( position, *first );
 			};
@@ -563,6 +574,7 @@ namespace ft
 
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::random_access_iterator_tag )
 			{
+				std::cout << "std::random access it\n";
 				size_type	index = position - data;
 				size_type	n = ft::distance( first, last );
 				if ( _size + n > _capacity )
@@ -578,6 +590,7 @@ namespace ft
 
 			void	inserting( iterator position, InputIterator first, InputIterator last, ft::random_access_iterator_tag )
 			{
+				std::cout << "ft::random access it\n";
 				size_type	index = position - data;
 				size_type	n = ft::distance( first, last );
 				if ( _size + n > _capacity )
@@ -786,7 +799,8 @@ namespace ft
 						_alloc.construct( newData + i, data[i] );
 						_alloc.destroy(data + i);
 					}
-					_alloc.deallocate( data, _capacity );
+					if ( _capacity != 0 )
+						_alloc.deallocate( data, _capacity );
 					_capacity = newSize;
 					data = newData;
 				}

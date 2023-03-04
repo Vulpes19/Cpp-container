@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/02 13:35:55 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/04 11:17:34 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,63 +281,140 @@ void	testing_insert( void )
 
 	// it = vec.begin() + 1;
 	// it2 = ftvec.begin() + 1;
+	// {
+	// 	std::vector<int> vec2;
+	// 	ft::vector<int> ftvec2;
+	// 	vec2.insert(vec2.begin(), 0, 64 );
+	// 	ftvec2.insert(ftvec2.begin(), 0, 64 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.end(), 0, 64 );
+	// 	ftvec2.insert(ftvec2.end(), 0, 64 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.end(), 10, 64 );
+	// 	ftvec2.insert(ftvec2.end(), 10, 64 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.begin(), 5, -1 );
+	// 	ftvec2.insert(ftvec2.begin(), 5, -1 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.begin() + 1, 1, -9 );
+	// 	ftvec2.insert(ftvec2.begin() + 1, 1, -9 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.begin() + 7, 21, 88 );
+	// 	ftvec2.insert(ftvec2.begin() + 7, 21, 88 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.begin(), 0, 2 );
+	// 	ftvec2.insert(ftvec2.begin(), 0, 2 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.end(), 0, 4 );
+	// 	ftvec2.insert(ftvec2.end(), 0, 4 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// 	vec2.insert(vec2.end(), 18, 420 );
+	// 	ftvec2.insert(ftvec2.end(), 18, 420 );
+	// 	printSizeAndCapacity(vec2);
+	// 	printSizeAndCapacity(ftvec2);
+	// 	printVecElements(vec2);
+	// 	printVecElements(ftvec2);
+	// }
 	{
-		std::vector<int> vec2;
-		ft::vector<int> ftvec2;
-		vec2.insert(vec2.begin(), 0, 64 );
-		ftvec2.insert(ftvec2.begin(), 0, 64 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.end(), 0, 64 );
-		ftvec2.insert(ftvec2.end(), 0, 64 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.end(), 10, 64 );
-		ftvec2.insert(ftvec2.end(), 10, 64 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.begin(), 5, -1 );
-		ftvec2.insert(ftvec2.begin(), 5, -1 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.begin() + 1, 1, -9 );
-		ftvec2.insert(ftvec2.begin() + 1, 1, -9 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.begin() + 7, 21, 88 );
-		ftvec2.insert(ftvec2.begin() + 7, 21, 88 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.begin(), 0, 2 );
-		ftvec2.insert(ftvec2.begin(), 0, 2 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.end(), 0, 4 );
-		ftvec2.insert(ftvec2.end(), 0, 4 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
-		vec2.insert(vec2.end(), 18, 420 );
-		ftvec2.insert(ftvec2.end(), 18, 420 );
-		printSizeAndCapacity(vec2);
-		printSizeAndCapacity(ftvec2);
-		printVecElements(vec2);
-		printVecElements(ftvec2);
+		ft::vector<std::string> ft_vec;
+		std::vector<std::string> std_vec;
+		std::string s1[5] = {
+			"ayman",
+			"AYMAN",
+			"AYYYMANNN",
+			"HELLO",
+			"HEY"
+		};
+
+		std::string s2[5] = {
+			"SAY MY NAME",
+			"YOU'RE GOD DAMN RIGHT",
+			"WE NEED TO COOK",
+			"HEISENBERG",
+			"AMOGUS"
+		};
+
+		ft_vec.insert(ft_vec.begin(), ft_vec.begin(), ft_vec.begin());
+		std_vec.insert(std_vec.begin(), std_vec.begin(), std_vec.begin());
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		ft_vec.insert(ft_vec.begin(), ft_vec.begin(), ft_vec.end());
+		std_vec.insert(std_vec.begin(), std_vec.begin(), std_vec.end());
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		ft_vec.insert(ft_vec.end(), ft_vec.begin(), ft_vec.end());
+		std_vec.insert(std_vec.end(), std_vec.begin(), std_vec.end());
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		ft_vec.insert(ft_vec.begin(), s1, s1 + 5);
+		std_vec.insert(std_vec.begin(), s1, s1 + 5);
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		ft_vec.insert(ft_vec.begin(), s2, s2 + 2);
+		std_vec.insert(std_vec.begin(), s2, s2 + 2);
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		ft_vec.insert(ft_vec.begin() + 20, s2, s2 + 5);
+		std_vec.insert(std_vec.begin() + 20, s2, s2 + 5);
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		ft_vec.insert(ft_vec.end(), s1 + 2, s1 + 5);
+		std_vec.insert(std_vec.end(), s1 + 2, s1 + 5);
+		printVecElements(ft_vec);
+		printVecElements(std_vec);
+		printSizeAndCapacity(ft_vec);
+		printSizeAndCapacity(std_vec);
+		std::istringstream str("1 2 3 4 5 6 7 8 9 0 A B C D E F");
+		std::istringstream str2("1 2 3 4 5 6 7 8 9 0 A B C D E F");
+        std::istreambuf_iterator<char> it(str), end, it2(str2);
+		ft::vector<char> ftvec(2, 'U');
+		std::vector<char> stdvec(2, 'U');
+		printVecElements(ftvec);
+		printVecElements(stdvec);
+		printSizeAndCapacity(ftvec);
+		printSizeAndCapacity(stdvec);
+		ftvec.insert(ftvec.end(), it, end);
+		stdvec.insert(stdvec.end(), it2, end);
+		printVecElements(ftvec);
+		printVecElements(stdvec);
+		printSizeAndCapacity(ftvec);
+		printSizeAndCapacity(stdvec);
 	}
 }
 
