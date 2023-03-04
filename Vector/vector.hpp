@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/04 11:30:17 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/04 11:48:18 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -769,8 +769,7 @@ namespace ft
 				}
 				if ( newSize > _capacity )
 				{
-					_capacity *= 2;
-					value_type *newData = _alloc.allocate(_capacity);
+					value_type *newData = _alloc.allocate(newSize);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
@@ -778,8 +777,21 @@ namespace ft
 						_alloc.construct(newData + i, data[i]);
 						_alloc.destroy(data + i);
 					}
-					_alloc.deallocate(data, _size);
+					if ( _capacity > 0)
+						_alloc.deallocate(data, _capacity);
+					_capacity = newSize;
 					data = newData;
+					for ( size_type i = _size; i < newSize; i++ )
+						_alloc.construct( data + i, val );
+					_size = newSize;
+					return ;
+				}
+				if ( newSize < _size )
+				{
+					for ( size_type i = newSize; i < _size; i++ )
+						data[i] = val;
+					_size = newSize;
+					return ;
 				}
 				for ( size_type i = _size; i < newSize; i++ )
 					data[i] = val;
@@ -799,7 +811,7 @@ namespace ft
 						_alloc.construct( newData + i, data[i] );
 						_alloc.destroy(data + i);
 					}
-					if ( _capacity != 0 )
+					if ( _capacity > 0 )
 						_alloc.deallocate( data, _capacity );
 					_capacity = newSize;
 					data = newData;
