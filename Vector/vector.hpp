@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/04 19:19:58 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/05 11:34:25 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -510,44 +510,6 @@ namespace ft
 					data[index] = value;
 				}
 				return ;
-				// if ( _size + n > _capacity )
-				// {
-				// 	size_type i, j;
-					
-				// 	i = 0;
-				// 	j = 0;
-				// 	_capacity *= 2;
-				// 	value_type	*newData = _alloc.allocate(_capacity);
-				// 	if ( newData == NULL )
-				// 		throw(std::bad_alloc());
-				// 	while ( i < _size + n && j < _size )
-				// 	{
-				// 		if ( i == index )
-				// 		{
-				// 			for ( size_type k = i; k < i + n; k++ )
-				// 				_alloc.construct(newData + k, value);
-				// 			i += n;
-				// 			continue ;
-				// 		}
-				// 		_alloc.construct(newData + i, data[j]);
-				// 		// std::cout << "destoryed: " << j << std::endl;
-				// 		_alloc.destroy(data + j);
-				// 		i++;
-				// 		j++;
-				// 	}
-				// 	if (data)
-				// 		_alloc.deallocate(data, _capacity);
-				// 	_size += n;
-				// 	data = newData;
-				// }
-				// else
-				// {
-				// 	for ( size_type i = _size - 1; i > index; --i )
-				// 		data[i + n] = data[i];
-				// 	for ( size_type i = index; i < index + n; i++ )
-				// 		data[i] = value;
-				// 	_size += n;
-				// }
 			};
 			
 			template < typename InputIterator >
@@ -555,7 +517,7 @@ namespace ft
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::input_iterator_tag )
 			{
 				for ( ; first != last; ++first, ++position )
-					insert( position, *first );
+					position = insert( position, *first );
 			};
 
 			template < typename InputIterator >
@@ -563,7 +525,7 @@ namespace ft
 			void	inserting( iterator position, InputIterator first, InputIterator last, std::forward_iterator_tag )
 			{
 				for ( ; first != last; ++first, ++position )
-					insert( position, *first );
+					position = insert( position, *first );
 			};
 
 			template < typename InputIterator >
