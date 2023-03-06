@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 11:59:49 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/26 16:35:54 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:03:16 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 namespace ft
 {
 	
-	struct random_access_iterator_tag {};
-	struct bidirectional_iterator_tag {};
-	struct forward_iterator_tag {};
 	struct input_iterator_tag {};
 	struct output_iterator_tag {};
+	struct bidirectional_iterator_tag {};
+	struct forward_iterator_tag : input_iterator_tag {};
+	struct random_access_iterator_tag : bidirectional_iterator_tag {};
+
 	template< typename Iterator >
 	class iterator_traits
 	{

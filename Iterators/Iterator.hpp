@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/28 11:29:03 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:24:30 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,14 @@ namespace ft
 	class random_access_iterator
 	{
 		public:
-			typedef T				value_type;
-			typedef ptrdiff_t		difference_type;
-			typedef value_type*		pointer;
-			typedef value_type&		reference;
+			typedef T						value_type;
+			typedef ptrdiff_t				difference_type;
+			typedef value_type*				pointer;
+			typedef value_type&				reference;
+			typedef const value_type*		const_pointer;
+			typedef const value_type& 		const_reference;
 			typedef	ft::random_access_iterator_tag iterator_category;
+			typedef size_t size_type;
 
 			random_access_iterator( void ) : data(NULL) {};
 			random_access_iterator( pointer newData ) : data(newData) {};			
@@ -45,6 +48,12 @@ namespace ft
 			};
 			~random_access_iterator( void )
 			{};
+
+			operator    random_access_iterator<const T>()
+            {
+                return (random_access_iterator<const T>(data));
+            }
+
 			bool	operator==( const random_access_iterator &it ) const
 			{
 				return ( data == it.data );
@@ -53,45 +62,53 @@ namespace ft
 			{
 				return ( data != it.data );
 			};
-			reference	operator*( void ) const
+			reference	operator*( void )
 			{
 				return (*data);
 			};
-			pointer		operator->( void ) const
+			pointer		operator->( void )
 			{
 				return (data);
 			};
-			random_access_iterator	&operator++( void )
+
+			const_reference	operator*( void ) const
+			{
+				return (*data);
+			};
+			const_pointer		operator->( void ) const
+			{
+				return (data);
+			};
+
+			random_access_iterator	&operator++( int )
 			{
 				data++;
 				return (*this);
 			};		
-			random_access_iterator	&operator--( void )
+			random_access_iterator	&operator--( int )
 			{
 				data--;
 				return (*this);
 			};
-			random_access_iterator	operator++( int )
+			random_access_iterator	operator++( void )
 			{
 				random_access_iterator it = *this;
-				++data;
+				data++;
 				return (it);
 			};		
-			random_access_iterator	operator--( int )
+			random_access_iterator	operator--( void )
 			{
 				random_access_iterator it = *this;
-				--data;
+				data--;
 				return (it);
 			};		
-			random_access_iterator	&operator+( const int &n )
+			random_access_iterator	operator+( const difference_type &n )
 			{
-				data += n;
-				return (*this);
+				return (random_access_iterator(data + n));
 			};		
-			random_access_iterator	&operator-( const int &n )
+			random_access_iterator	operator-( const difference_type &n )
 			{
-				data -= n;
-				return (*this);
+				return (random_access_iterator(data - n));
 			};
 			size_t	operator-( const random_access_iterator &it ) const
 			{
@@ -113,25 +130,24 @@ namespace ft
 			{
 				return ( data >= it.data );
 			};				
-			random_access_iterator	&operator+=( int n )
+			random_access_iterator	&operator+=( size_type n )
 			{
 				data += n;
 				return (*this);
 			};
-			random_access_iterator	&operator-=( int n )
+			random_access_iterator	&operator-=( size_type n )
 			{
 				data -= n;
 				return (*this);
 			};
-			reference	operator[]( size_t index ) const
+			reference	operator[]( size_type index ) const
 			{
 				return (data[index]);
 			};
 
-		private:
-			value_type	*data;
+		protected:
+			pointer	data;
 	};
-
 	template< typename iterator_type >
 
 	class reverse_iterator

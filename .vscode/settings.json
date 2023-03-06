@@ -68,6 +68,9 @@
         "list": "cpp",
         "set": "cpp",
         "stack": "cpp",
-        "strstream": "cpp"
+        "strstream": "cpp",
+        "iomanip": "cpp",
+        "numeric": "cpp",
+        "random": "cpp"
     }
 }

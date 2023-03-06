@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/05 11:34:25 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:12:19 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,106 +409,68 @@ namespace ft
 					return (end() - 1);
 				}
 				if ( _size + 1 > _capacity )
+					reserve(_capacity * 2);
+				for ( size_type i = _size; i > index; --i )
 				{
-					_size += 1;
-					size_type i, j;
-					
-					i = 0;
-					j = 0;
-					size_type tmp = _capacity;
-					_capacity *= 2;
-					value_type	*newData = _alloc.allocate(_capacity);
-					while ( i < _size && j < _size - 1 )
-					{
-						if ( i == index )
-						{
-							_alloc.construct(newData + i, value);
-							i++;
-						}
-						else
-						{
-							_alloc.construct(newData + i, data[j]);
-							_alloc.destroy(data + j);
-							i++;
-							j++;
-						}
-					}
-					if (data )
-						_alloc.deallocate(data, tmp);
-					data = newData;
+					if ( i == _size )
+						_alloc.construct( data + i, data[i - 1] );
+					else
+						data[i] = data[i - 1];
 				}
-				else
-				{
-					for ( size_type i = _size; i > index; --i )
-					{
-						if ( i == _size )
-							_alloc.construct( data + i, data[i - 1] );
-						else
-							data[i] = data[i - 1];
-					}
-					_size += 1;
-					data[index] = value;
-				}
-				// return (position);
+				_size += 1;
+				data[index] = value;
 				return ( begin() + index );
 			};
 
 			//insert size
 			void	insert( iterator position, size_type n, const value_type &value )
 			{
-				if ( position > end() || n == 0 )
+				if ( n == 0 )
+				{
+					// std::cout << "hello there\n";
 					return ;
+				}
 				if ( _size == 0 || position == end() )
 				{
+					// std::cout << "I'm here1\n";
+					reserve(_capacity * 2);
 					for ( size_type i = 0; i < n; i++ )
 						push_back(value);
 					return ;
 				}
 				size_type index = position - begin();
+				// std::cout << "index " << index << std::endl;
+				// std::cout << "size: " << _size << "\n" << "size + n = " << _size + n << std::endl;
 				if ( _size + n > _capacity )
+					reserve( _capacity * 2 );
+				// iterator oldFinish = data + _size;
+				// size_type oldSize = _size;
+				// size_type newSize = _size + n;
+				// while ( oldFinish != position )
+				// {
+				// 	--oldFinish;
+				// 	_alloc.construct(data + newSize - 1, *oldFinish);
+				// 	_alloc.destroy(data + oldSize - 1);
+				// 	newSize--;
+				// }
+
+				// for ( size_type i = index; i < index + n; i++ )
+				// {
+				// 	// data[i] = value;
+				// 	_alloc.construct( data + i, value);
+				// }
+				// _size += n;
+				for ( size_type i = _size - 1; i >= index + n; --i )
 				{
-					_size += n;
-					size_type i, j;
-					
-					i = 0;
-					j = 0;
-					size_type tmp = _capacity;
-					_capacity *= 2;
-					value_type	*newData = _alloc.allocate(_capacity);
-					while ( i < _size && j < _size - n )
-					{
-						if ( i == index )
-						{
-							for ( size_type k = i; k < i + n; k++ )
-								_alloc.construct(newData + k, value);
-							i += n;
-						}
-						else
-						{
-							_alloc.construct(newData + i, data[j]);
-							_alloc.destroy(data + j);
-							i++;
-							j++;
-						}
-					}
-					if (data )
-						_alloc.deallocate(data, tmp);
-					data = newData;
+					if ( i + n >= _size )
+						_alloc.construct( data + i + n, data[i]);
+					else
+						data[i] = data[i - n];
 				}
-				else
-				{
-					for ( size_type i = _size - 1; i > index; --i )
-					{
-						if ( i + n >= _size )
-							_alloc.construct( data + i + n, data[i]);
-						else
-							data[i + n] = data[i];
-					}
-					for ( size_type i = index; i < index + n; i++ )
-						data[i] = value;
-					_size += n;
-					data[index] = value;
-				}
+				for ( size_type i = index; i < index + n; i++ )
+					data[i] = value;
+				_size += n;
+				data[index] = value;
 				return ;
 			};
 			
