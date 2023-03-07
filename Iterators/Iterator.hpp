@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/07 15:52:49 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:00:07 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ namespace ft
 			reverse_iterator( void ) {};
 			explicit	reverse_iterator( iterator_type it ) : it(it) {};
 			template < typename Iter >
-			reverse_iterator( const reverse_iterator<Iter> &rev_it ) : it(rev_it.it) {};
+			reverse_iterator( const reverse_iterator<Iter> &rev_it ) : it(rev_it.base()) {};
 			pointer	operator->( void ) const
 			{
 				iterator_type tmp = it;
@@ -237,6 +237,14 @@ namespace ft
 				it += n;
 				return (*this);
 			};
+			reverse_iterator	operator+( const difference_type &n )
+			{
+				return (reverse_iterator(data + n));
+			};		
+			reverse_iterator	operator-( const difference_type &n )
+			{
+				return (reverse_iterator(data - n));
+			};
 			bool	operator==( const reverse_iterator &rev) const
 			{
 				return ( this->it == rev.it );
@@ -261,6 +269,11 @@ namespace ft
 			{
 				return ( this->it <= rev.it );
 			};
+
+			iterator_type base( void ) const
+			{
+				return (it);
+			}
 		private:
 			iterator_type it;
 	};

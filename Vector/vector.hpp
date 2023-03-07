@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/07 13:21:44 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:59:13 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ namespace ft
 				return (const_iterator( data ));
 			};
 
-			reverse_iterator	rbegin( void )
+			reverse_iterator	rbegin( void ) const
 			{
 				return (reverse_iterator(data + _size));
 			};
@@ -209,7 +209,7 @@ namespace ft
 				return (const_iterator( data + _size ));
 			};
 
-			reverse_iterator	rend( void )
+			reverse_iterator	rend( void ) const
 			{
 				return (reverse_iterator( data ));
 			};
