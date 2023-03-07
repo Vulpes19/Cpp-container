@@ -6,13 +6,14 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 17:47:35 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/18 18:36:13 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/07 14:33:48 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "../Algorithm/Algorithm.hpp"
+#include "../Iterators/Iterator_traits.hpp"
 
 namespace ft
 {

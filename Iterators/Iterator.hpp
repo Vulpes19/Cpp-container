@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/06 12:24:30 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:52:49 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft
 			typedef value_type&				reference;
 			typedef const value_type*		const_pointer;
 			typedef const value_type& 		const_reference;
-			typedef	ft::random_access_iterator_tag iterator_category;
+			typedef	std::random_access_iterator_tag iterator_category;
 			typedef size_t size_type;
 
 			random_access_iterator( void ) : data(NULL) {};
@@ -80,27 +80,27 @@ namespace ft
 				return (data);
 			};
 
-			random_access_iterator	&operator++( int )
+			random_access_iterator	operator++( int )
 			{
+				random_access_iterator it = *this;
 				data++;
-				return (*this);
+				return (it);
 			};		
-			random_access_iterator	&operator--( int )
+			random_access_iterator	operator--( int )
 			{
+				random_access_iterator it = *this;
 				data--;
-				return (*this);
+				return (it);
 			};
-			random_access_iterator	operator++( void )
+			random_access_iterator	&operator++( void )
 			{
-				random_access_iterator it = *this;
 				data++;
-				return (it);
+				return (*this);
 			};		
-			random_access_iterator	operator--( void )
+			random_access_iterator	&operator--( void )
 			{
-				random_access_iterator it = *this;
 				data--;
-				return (it);
+				return (*this);
 			};		
 			random_access_iterator	operator+( const difference_type &n )
 			{
@@ -110,25 +110,38 @@ namespace ft
 			{
 				return (random_access_iterator(data - n));
 			};
+			friend	random_access_iterator	operator+( size_type n, random_access_iterator it )
+			{
+				return ( it + n );
+			}
+			friend	random_access_iterator	operator-( size_type n, random_access_iterator it )
+			{
+				return ( it - n );
+			}
+
 			size_t	operator-( const random_access_iterator &it ) const
 			{
 				return (data - it.data);
 			};
-			bool	operator<( const random_access_iterator &it ) const
+			template<typename U>
+			bool	operator<( const random_access_iterator<U> &it ) const
 			{
-				return ( data < it.data );
+				return ( data < it.base() );
+			};
+			template<typename U>
+			bool	operator<=( const random_access_iterator<U> &it ) const
+			{
+				return ( data <= it.base() );
 			};		
-			bool	operator<=( const random_access_iterator &it ) const
+			template<typename U>
+			bool	operator>( const random_access_iterator<U> &it ) const
 			{
-				return ( data <= it.data );
-			};		
-			bool	operator>( const random_access_iterator &it ) const
+				return ( data > it.base() );
+			};
+			template<typename U>
+			bool	operator>=( const random_access_iterator<U> &it ) const
 			{
-				return ( data > it.data );
-			};				
-			bool	operator>=( const random_access_iterator &it ) const
-			{
-				return ( data >= it.data );
+				return ( data >= it.base() );
 			};				
 			random_access_iterator	&operator+=( size_type n )
 			{
@@ -145,7 +158,11 @@ namespace ft
 				return (data[index]);
 			};
 
-		protected:
+			pointer	base( void ) const
+			{
+				return (data);
+			}
+		private:
 			pointer	data;
 	};
 	template< typename iterator_type >

@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/05 14:05:24 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/07 12:54:50 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -791,6 +791,52 @@ void	testing_assign2( void )
 	printVecElements(std_vec);
 	printVecElements(my_vec);
 }
+
+void	testing_iterators( void )
+{
+	std::vector<std::string> vec;
+	vec.push_back("say my name");
+	vec.push_back("Heisenberg");
+	vec.push_back("you're god damn right");
+	ft::vector<std::string> ftvec;
+	ftvec.push_back("say my name");
+	ftvec.push_back("Heisenberg");
+	ftvec.push_back("you're god damn right");
+	std::vector<std::string>::iterator it = vec.begin();
+	std::vector<std::string>::const_iterator const_it = vec.begin() + 3;
+	ft::vector<std::string>::iterator ft_it = ftvec.begin();
+	ft::vector<std::string>::const_iterator ft_const_it = ftvec.begin() + 3;
+
+	std::cout << "iterators" << std::endl;
+	std::cout << *it << std::endl;
+	std::cout << *ft_it << std::endl;
+	std::cout << "const iterators" << std::endl;
+	std::cout << *const_it << std::endl;
+	std::cout << *ft_const_it << std::endl;
+	--const_it;
+	--ft_const_it;
+	++it;
+	++ft_it;
+
+	std::cout << "iterators" << std::endl;
+	std::cout << *it << std::endl;
+	std::cout << *ft_it << std::endl;
+	std::cout << "const iterators" << std::endl;
+	std::cout << *const_it << std::endl;
+	std::cout << *ft_const_it << std::endl;
+
+	--it;
+	--ft_it;
+
+	std::cout << "iterators" << std::endl;
+	std::cout << *( 2 + it ) << std::endl;
+	std::cout << *( 2 + ft_it ) << std::endl;
+	std::cout << "const iterators" << std::endl;
+	std::cout << *(const_it + 1) << std::endl;
+	std::cout << *(ft_const_it + 1) << std::endl;
+	
+}
+
 int	main( void )
 {
 	// testing_vec_constructors();
@@ -799,7 +845,8 @@ int	main( void )
 	// testing_push_back();
 	// testing_assign();
 	// testing_assign2();
-	testing_insert();
+	// testing_insert();
+	testing_iterators();
 	// testing_resize();
 	// testing_reverse_iterator();
 	// testing_algorithm();
