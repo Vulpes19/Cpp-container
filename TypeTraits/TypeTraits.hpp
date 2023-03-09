@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TypeTraits.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 15:07:36 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/02/15 15:53:13 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:55:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,23 @@ namespace ft
         static const bool value = true;
     };
 
-    template<> 
-    struct is_integral< char16_t >
-    {
-        static const bool value = true;
-    };
+    // template<> 
+    // struct is_integral< char16_t >
+    // {
+    //     static const bool value = true;
+    // };
 
-    template<> 
-    struct is_integral< char32_t >
-    {
-        static const bool value = true;
-    };
+    // template<> 
+    // struct is_integral< char32_t >
+    // {
+    //     static const bool value = true;
+    // };
 
-    template<> 
-    struct is_integral< wchar_t >
-    {
-        static const bool value = true;
-    };
+    // template<> 
+    // struct is_integral< wchar_t >
+    // {
+    //     static const bool value = true;
+    // };
 
     template<> 
     struct is_integral< signed char >

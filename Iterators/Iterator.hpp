@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Iterator.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/07 16:00:07 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:56:14 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,13 @@ namespace ft
 
 	class reverse_iterator
 	{
+		public:
 		typedef typename iterator_type::value_type	value_type;
 		typedef	typename iterator_type::pointer		pointer;
+		typedef typename iterator_type::difference_type	difference_type;
 		typedef value_type&							reference;
 		typedef size_t 								size_type;
 		
-		public:
 			reverse_iterator( void ) {};
 			explicit	reverse_iterator( iterator_type it ) : it(it) {};
 			template < typename Iter >
@@ -239,11 +240,11 @@ namespace ft
 			};
 			reverse_iterator	operator+( const difference_type &n )
 			{
-				return (reverse_iterator(data + n));
+				return (reverse_iterator(it + n));
 			};		
 			reverse_iterator	operator-( const difference_type &n )
 			{
-				return (reverse_iterator(data - n));
+				return (reverse_iterator(it - n));
 			};
 			bool	operator==( const reverse_iterator &rev) const
 			{

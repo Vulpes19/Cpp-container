@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/07 15:59:13 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:55:06 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,12 +164,18 @@ namespace ft
 			//[] operator
 			reference	operator[]( size_type index )
 			{
-				return (index >= _size) ? throw(std::invalid_argument("invalid range")) : data[index];
+				if ( index >= _size )
+					throw(std::invalid_argument("invalid range"));
+				else
+					return (data[index]);
 			};
 
 			const_reference operator[]( size_type index ) const
 			{
-				return (index >= _size) ? throw(std::invalid_argument("invalid range")) : data[index];
+				if ( index >= _size )
+					throw(std::invalid_argument("invalid range"));
+				else
+					return (data[index]);
 			};
 
 			//swap member function

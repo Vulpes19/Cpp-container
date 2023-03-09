@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_main.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/07 12:54:50 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/09 16:53:32 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -588,7 +588,7 @@ void	testing_utility( void )
 	ft::pair<int, int> pc2(6, 9);
 	p2 = pc2;
 	std::cout << p2.first << p2.second << std::endl;
-	p.swap(pc);
+	swap(pc, p);
 	std::cout << p.first << p.second << std::endl;
 	std::cout << pc.first << pc.second << std::endl;
 	p2.swap(pc2);
@@ -852,8 +852,6 @@ int	main( void )
 	// testing_algorithm();
 	// testing_utility();
 	// testing_relational_op();
-
-	system("leaks test_vector");
 
 
 	// std::cout << empty[0] << std::endl;
