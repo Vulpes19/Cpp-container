@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/09 16:53:32 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/10 11:12:38 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -839,6 +839,18 @@ void	testing_iterators( void )
 
 int	main( void )
 {
+	std::vector<int> vec;
+	for ( size_t i = 1; i <= 10; i++ )
+		vec.push_back(i);
+	ft::vector<int> ftvec;
+	for ( size_t i = 1; i <= 10; i++ )
+		ftvec.push_back(i);
+	std::reverse_iterator<std::vector<int>::iterator > it = vec.rbegin();
+	ft::reverse_iterator<ft::vector<int>::iterator > ft_it = ftvec.rbegin();
+	std::cout << "std it: " << *(it + 5) << std::endl;
+	std::cout << "my it: " << *(ft_it + 5) << std::endl;
+	std::cout << "std it: " << *(3 + it) << std::endl;
+	std::cout << "my it: " << *(3 + ft_it) << std::endl;
 	// testing_vec_constructors();
 	// testing_erase();
 	// testing_iterator_traits();
@@ -846,7 +858,7 @@ int	main( void )
 	// testing_assign();
 	// testing_assign2();
 	// testing_insert();
-	testing_iterators();
+	// testing_iterators();
 	// testing_resize();
 	// testing_reverse_iterator();
 	// testing_algorithm();

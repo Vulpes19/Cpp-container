@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/09 16:55:06 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/09 16:58:44 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -724,7 +724,7 @@ namespace ft
 			};
 
 			//push_back member function
-			void	push_back( const T &val )
+			void	push_back( const value_type &val )
 			{
 				if ( _capacity == 0 )
 				{
@@ -737,7 +737,7 @@ namespace ft
 				if ( _size + 1 > _capacity )
 				{
 					_capacity *= 2;
-					value_type *newData = _alloc.allocate(_capacity);
+					pointer	newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
 						throw(std::bad_alloc());
 					for ( size_type i = 0; i < _size; i++ )
@@ -763,7 +763,7 @@ namespace ft
 					if ( _size < _capacity / 2 )
 					{
 						_capacity = _size;
-						value_type *newData = _alloc.allocate( _capacity );
+						pointer newData = _alloc.allocate( _capacity );
 						for ( size_type i = 0; i < _size; i++ )
 						{
 							_alloc.construct(newData + i, data[i]);
@@ -818,7 +818,7 @@ namespace ft
 
 			friend bool operator>( const vector<U, Alloc> &v1, const vector<U, Alloc> &v2 );
 		private:
-			T			*data;
+			pointer		data;
 			size_type	_size;
 			size_type	_capacity;
 			Allocator	_alloc;

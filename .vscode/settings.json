@@ -71,6 +71,9 @@
         "strstream": "cpp",
         "iomanip": "cpp",
         "numeric": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "clocale": "cpp",
+        "fstream": "cpp"
     }
 }

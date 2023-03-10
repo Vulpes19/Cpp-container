@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/09 16:56:14 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/10 11:23:05 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ namespace ft
 				return ( it - n );
 			}
 
-			size_t	operator-( const random_access_iterator &it ) const
+			difference_type	operator-( const random_access_iterator &it ) const
 			{
 				return (data - it.data);
 			};
@@ -170,11 +170,12 @@ namespace ft
 	class reverse_iterator
 	{
 		public:
-		typedef typename iterator_type::value_type	value_type;
-		typedef	typename iterator_type::pointer		pointer;
-		typedef typename iterator_type::difference_type	difference_type;
-		typedef value_type&							reference;
-		typedef size_t 								size_type;
+		typedef typename iterator_type::value_type			value_type;
+		typedef	typename iterator_type::pointer				pointer;
+		typedef typename iterator_type::difference_type		difference_type;
+		typedef typename iterator_type::iterator_category	iterator_category;
+		typedef value_type&									reference;
+		typedef size_t 										size_type;
 		
 			reverse_iterator( void ) {};
 			explicit	reverse_iterator( iterator_type it ) : it(it) {};
@@ -184,7 +185,7 @@ namespace ft
 			{
 				iterator_type tmp = it;
 				tmp--;
-				return (tmp);
+				return (tmp.operator->());
 			};
 			reference	operator*( void ) const
 			{
@@ -198,12 +199,12 @@ namespace ft
 			};
 			reverse_iterator	&operator++( void )
 			{
-				--it;
+				it--;
 				return (*this);
 			};
 			reverse_iterator	&operator--( void )
 			{
-				++it;
+				it++;
 				return (*this);
 			};
 			reverse_iterator	operator++( int )
@@ -218,33 +219,47 @@ namespace ft
 				it++;
 				return (tmp);
 			};
-			reverse_iterator	&operator+=( int n )
+			reverse_iterator	&operator+=( difference_type n )
 			{
 				it -= n;
 				return (*this);
 			};
-			reverse_iterator	&operator-=( int n )
-			{
-				it += n;
-				return (*this);
-			};
-			reverse_iterator	&operator+( const int &n )
-			{
-				it -= n;
-				return (*this);
-			};		
-			reverse_iterator	&operator-( const int &n )
+			reverse_iterator	&operator-=( difference_type n )
 			{
 				it += n;
 				return (*this);
 			};
 			reverse_iterator	operator+( const difference_type &n )
 			{
-				return (reverse_iterator(it + n));
+				return (reverse_iterator(it - n));
 			};		
 			reverse_iterator	operator-( const difference_type &n )
 			{
+				return (reverse_iterator(it + n));
+			};
+			difference_type	operator+( const reverse_iterator &rev )
+			{
+				return (it + rev.it);
+			};		
+			difference_type	operator-( const reverse_iterator &rev )
+			{
+				return -(it - rev.it);
+			};
+			reverse_iterator	operator+( const difference_type &n ) const
+			{
+				return (reverse_iterator(it + n));
+			};		
+			reverse_iterator	operator-( const difference_type &n ) const
+			{
 				return (reverse_iterator(it - n));
+			};
+			friend reverse_iterator	operator+( const difference_type &n, reverse_iterator rev )
+			{
+				return reverse_iterator(rev + n);
+			};		
+			friend reverse_iterator	operator-( const difference_type &n, reverse_iterator rev )
+			{
+				return reverse_iterator(rev - n);
 			};
 			bool	operator==( const reverse_iterator &rev) const
 			{
@@ -270,7 +285,6 @@ namespace ft
 			{
 				return ( this->it <= rev.it );
 			};
-
 			iterator_type base( void ) const
 			{
 				return (it);
