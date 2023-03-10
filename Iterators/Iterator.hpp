@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/10 11:23:05 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/10 11:31:49 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,10 @@ namespace ft
 			};
 			reference	operator[]( size_type index ) const
 			{
-				return (it[index]);
+				iterator_type ret = it;
+
+				ret -= index + 1;
+				return (*ret);
 			};
 			reverse_iterator	&operator++( void )
 			{

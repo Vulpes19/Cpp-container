@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/10 11:12:38 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/10 11:26:43 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -847,10 +847,8 @@ int	main( void )
 		ftvec.push_back(i);
 	std::reverse_iterator<std::vector<int>::iterator > it = vec.rbegin();
 	ft::reverse_iterator<ft::vector<int>::iterator > ft_it = ftvec.rbegin();
-	std::cout << "std it: " << *(it + 5) << std::endl;
-	std::cout << "my it: " << *(ft_it + 5) << std::endl;
-	std::cout << "std it: " << *(3 + it) << std::endl;
-	std::cout << "my it: " << *(3 + ft_it) << std::endl;
+	std::cout << it[5] << std::endl;
+	std::cout << ft_it[5] << std::endl;
 	// testing_vec_constructors();
 	// testing_erase();
 	// testing_iterator_traits();
