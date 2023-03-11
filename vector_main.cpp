@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 11:25:10 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/10 11:26:43 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/11 10:46:08 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -839,16 +839,6 @@ void	testing_iterators( void )
 
 int	main( void )
 {
-	std::vector<int> vec;
-	for ( size_t i = 1; i <= 10; i++ )
-		vec.push_back(i);
-	ft::vector<int> ftvec;
-	for ( size_t i = 1; i <= 10; i++ )
-		ftvec.push_back(i);
-	std::reverse_iterator<std::vector<int>::iterator > it = vec.rbegin();
-	ft::reverse_iterator<ft::vector<int>::iterator > ft_it = ftvec.rbegin();
-	std::cout << it[5] << std::endl;
-	std::cout << ft_it[5] << std::endl;
 	// testing_vec_constructors();
 	// testing_erase();
 	// testing_iterator_traits();

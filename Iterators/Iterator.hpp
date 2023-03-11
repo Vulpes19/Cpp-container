@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 11:03:44 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/10 11:31:49 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/11 10:45:46 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ namespace ft
 	class random_access_iterator
 	{
 		public:
-			typedef T						value_type;
-			typedef ptrdiff_t				difference_type;
-			typedef value_type*				pointer;
-			typedef value_type&				reference;
-			typedef const value_type*		const_pointer;
-			typedef const value_type& 		const_reference;
+			typedef T								value_type;
+			typedef ptrdiff_t						difference_type;
+			typedef T*								pointer;
+			typedef T&								reference;
+			typedef const T*						const_pointer;
+			typedef const T& 						const_reference;
 			typedef	std::random_access_iterator_tag iterator_category;
-			typedef size_t size_type;
+			typedef size_t 							size_type;
 
 			random_access_iterator( void ) : data(NULL) {};
 			random_access_iterator( pointer newData ) : data(newData) {};			
@@ -46,8 +46,7 @@ namespace ft
 				}
 				return *this;
 			};
-			~random_access_iterator( void )
-			{};
+			~random_access_iterator( void ) {};
 
 			operator    random_access_iterator<const T>()
             {
@@ -170,12 +169,12 @@ namespace ft
 	class reverse_iterator
 	{
 		public:
-		typedef typename iterator_type::value_type			value_type;
-		typedef	typename iterator_type::pointer				pointer;
-		typedef typename iterator_type::difference_type		difference_type;
-		typedef typename iterator_type::iterator_category	iterator_category;
-		typedef value_type&									reference;
-		typedef size_t 										size_type;
+			typedef typename iterator_type::value_type			value_type;
+			typedef	typename iterator_type::pointer				pointer;
+			typedef typename iterator_type::difference_type		difference_type;
+			typedef typename iterator_type::iterator_category	iterator_category;
+			typedef value_type&									reference;
+			typedef size_t 										size_type;
 		
 			reverse_iterator( void ) {};
 			explicit	reverse_iterator( iterator_type it ) : it(it) {};
@@ -264,29 +263,35 @@ namespace ft
 			{
 				return reverse_iterator(rev - n);
 			};
-			bool	operator==( const reverse_iterator &rev) const
+			template <typename U>
+			bool	operator==( const reverse_iterator<U> &rev) const
 			{
-				return ( this->it == rev.it );
+				return ( this->it == rev.base() );
 			};
-			bool	operator!=( const reverse_iterator &rev ) const
+			template <typename U>
+			bool	operator!=( const reverse_iterator<U> &rev ) const
 			{
-				return ( this->it != rev.it );
+				return ( this->it != rev.base() );
 			};
-			bool	operator<( const reverse_iterator &rev ) const
+			template <typename U>
+			bool	operator<( const reverse_iterator<U> &rev ) const
 			{
-				return ( this->it > rev.it );
+				return ( this->it > rev.base() );
 			};
-			bool	operator<=( const reverse_iterator &rev ) const
+			template <typename U>
+			bool	operator<=( const reverse_iterator<U> &rev ) const
 			{
-				return ( this->it >= rev.it );
+				return ( this->it >= rev.base() );
 			};
-			bool	operator>( const reverse_iterator &rev ) const
+			template <typename U>
+			bool	operator>( const reverse_iterator<U> &rev ) const
 			{
-				return ( this->it < rev.it );
+				return ( this->it < rev.base() );
 			};
-			bool	operator>=( const reverse_iterator &rev ) const
+			template <typename U>
+			bool	operator>=( const reverse_iterator<U> &rev ) const
 			{
-				return ( this->it <= rev.it );
+				return ( this->it <= rev.base() );
 			};
 			iterator_type base( void ) const
 			{
