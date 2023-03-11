@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/09 16:58:44 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/11 11:08:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,6 +297,7 @@ namespace ft
 				size_type newSize = ft::distance(first, last);
 				if ( newSize > _capacity )
 				{
+					size_type tmpCapacity = _capacity;
 					if ( _capacity < newSize )
 						_capacity = newSize;
 					else
@@ -308,7 +309,7 @@ namespace ft
 					{
 						for ( size_type i = 0; i < _size; i++ )
 							_alloc.destroy(data + i);
-						_alloc.deallocate(data, _size);
+						_alloc.deallocate(data, tmpCapacity);
 					}
 					_size = newSize;
 					for ( size_type i = 0; first != last; i++, ++first )
@@ -347,6 +348,7 @@ namespace ft
 				size_type newSize = ft::distance(first, last);
 				if ( newSize > _capacity )
 				{
+					size_type tmpCapacity = _capacity;
 					if ( _capacity < newSize )
 						_capacity = newSize;
 					else
@@ -358,7 +360,7 @@ namespace ft
 					{
 						for ( size_type i = 0; i < _size; i++ )
 							_alloc.destroy(data + i);
-						_alloc.deallocate(data, _size);
+						_alloc.deallocate(data, tmpCapacity);
 					}
 					_size = newSize;
 					for ( size_type i = 0; first != last; i++, ++first )
@@ -736,6 +738,7 @@ namespace ft
 				}
 				if ( _size + 1 > _capacity )
 				{
+					size_type tmpCapacity = _capacity;
 					_capacity *= 2;
 					pointer	newData = _alloc.allocate(_capacity);
 					if ( newData == NULL )
@@ -746,7 +749,7 @@ namespace ft
 						_alloc.destroy(data + i);
 					}
 					if (data)
-						_alloc.deallocate(data, _size);
+						_alloc.deallocate(data, tmpCapacity);
 					data = newData;
 				}
 				_alloc.construct( data + _size, val );
@@ -762,6 +765,7 @@ namespace ft
 					_alloc.destroy( data + _size );
 					if ( _size < _capacity / 2 )
 					{
+						size_type tmpCapacity = _capacity;
 						_capacity = _size;
 						pointer newData = _alloc.allocate( _capacity );
 						for ( size_type i = 0; i < _size; i++ )
@@ -769,7 +773,7 @@ namespace ft
 							_alloc.construct(newData + i, data[i]);
 							_alloc.destroy(data + i);
 						}
-						_alloc.deallocate(data, _size + 1);
+						_alloc.deallocate(data, tmpCapacity);
 						data = newData;
 					}
 				}

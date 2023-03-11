@@ -2,7 +2,6 @@
 nonsense.cpp
 .gitignore
 Map
-Stack
 *.o
 ft_containers-terminator
 ft_containers_tests
