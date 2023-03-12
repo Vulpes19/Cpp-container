@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:42:13 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/11 11:08:11 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/12 11:28:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "../Iterators/Iterator_traits.hpp"
 #include "../TypeTraits/TypeTraits.hpp"
 #include "../Algorithm/Algorithm.hpp"
+#include <limits>
 
 namespace ft
 {
@@ -430,55 +431,17 @@ namespace ft
 			};
 
 			//insert size
-			void	insert( iterator position, size_type n, const value_type &value )
+			void	insert( iterator position, difference_type n, const value_type &value )
 			{
+				if ( std::numeric_limits<std::ptrdiff_t>::max() <= n )
+					throw( std::length_error("size overflow") );
 				if ( n == 0 )
-				{
-					// std::cout << "hello there\n";
 					return ;
-				}
-				if ( _size == 0 || position == end() )
+				for ( difference_type i = 0; i < n; i++ )
 				{
-					// std::cout << "I'm here1\n";
-					reserve(_capacity * 2);
-					for ( size_type i = 0; i < n; i++ )
-						push_back(value);
-					return ;
+					position = insert( position, value );
+					++position;
 				}
-				size_type index = position - begin();
-				// std::cout << "index " << index << std::endl;
-				// std::cout << "size: " << _size << "\n" << "size + n = " << _size + n << std::endl;
-				if ( _size + n > _capacity )
-					reserve( _capacity * 2 );
-				// iterator oldFinish = data + _size;
-				// size_type oldSize = _size;
-				// size_type newSize = _size + n;
-				// while ( oldFinish != position )
-				// {
-				// 	--oldFinish;
-				// 	_alloc.construct(data + newSize - 1, *oldFinish);
-				// 	_alloc.destroy(data + oldSize - 1);
-				// 	newSize--;
-				// }
-
-				// for ( size_type i = index; i < index + n; i++ )
-				// {
-				// 	// data[i] = value;
-				// 	_alloc.construct( data + i, value);
-				// }
-				// _size += n;
-				for ( size_type i = _size - 1; i >= index + n; --i )
-				{
-					if ( i + n >= _size )
-						_alloc.construct( data + i + n, data[i]);
-					else
-						data[i] = data[i - n];
-				}
-				for ( size_type i = index; i < index + n; i++ )
-					data[i] = value;
-				_size += n;
-				data[index] = value;
-				return ;
 			};
 			
 			template < typename InputIterator >
