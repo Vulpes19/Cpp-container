@@ -1,7 +1,6 @@
 .vscode
 nonsense.cpp
 .gitignore
-Map
 *.o
 ft_containers-terminator
 ft_containers_tests
