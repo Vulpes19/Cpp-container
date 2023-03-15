@@ -5,15 +5,18 @@ MAP = test_map
 
 #* SRC FILES *#
 V_FILE = vector_main.cpp
+M_FILE = map_main.cpp
 
 #* OBJECT FILES *#
 V_OBJ = vector_main.o
+M_OBJ = map_main.o
 
 #* FLAGS *#
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
 #* INCLUDE PATHS *#
 V_INCLUDE = Vector/
+M_INCLUDE = Map/
 IT_INCLUDE = Iterators/
 TYPE_INCLUDE = TypeTraits/
 ALGO_INCLUDE = Algorithm/
@@ -34,6 +37,16 @@ $(VECTOR): $(V_OBJ) $(V_FILE) $(V_INCLUDE) $(IT_INCLUDE) $(TYPE_INCLUDE) $(UTIL_
 	@c++ $(CFLAGS) -I $(V_INCLUDE) -I $(IT_INCLUDE) -I $(TYPE_INCLUDE) -I $(UTIL_INCLUDE) -I $(ALGO_INCLUDE) $(V_OBJ) -o $(VECTOR)
 	@echo "Vector test compiled"
 
+map: $(MAP)
+
+$(M_OBJ): $(M_FILE)
+	@c++ $(CFLAGS) -I $(M_INCLUDE) -c $(M_FILE)
+	@echo "Map test object files created"
+
+$(MAP): $(M_OBJ)
+	@c++ $(CFLAGS) -I $(M_INCLUDE) $(M_OBJ) -o $(MAP)
+	@echo "Map test compiled"
+	
 re: fclean all
 rev: fclean vector
 res: fclean stack
