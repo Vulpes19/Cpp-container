@@ -46,18 +46,18 @@ $(M_OBJ): $(M_FILE)
 $(MAP): $(M_OBJ)
 	@c++ $(CFLAGS) -I $(M_INCLUDE) $(M_OBJ) -o $(MAP)
 	@echo "Map test compiled"
-	
+
 re: fclean all
 rev: fclean vector
 res: fclean stack
 rem: fclean map
 
 clean:
-	@$(DEL) $(V_OBJ)
-	@echo "Vector test object files deleted"
+	@$(DEL) $(V_OBJ) $(M_OBJ)
+	@echo "all test object files deleted"
 
 fclean: clean
-	@$(DEL) $(VECTOR)
-	@echo "Vector test binary deleted"
+	@$(DEL) $(VECTOR) $(MAP)
+	@echo "all test binary deleted"
 
 .PHONY: all re clean fclean

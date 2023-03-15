@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/15 12:16:21 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:03:07 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,55 @@
 #define RED 'r'
 #define BLACK 'b'
 
-template < typename T, typename Key >
+template < typename Key, typename T >
 
 struct node
 {
 	T		value;
 	Key		key;
 	char	color;
-	node<T, Key> *parent;
-	node<T, Key> *right;
-	node<T, Key> *left;
+	node<Key, T> *parent;
+	node<Key, T> *right;
+	node<Key, T> *left;
 
-	node( T value, Key key, char color = RED, node *left = NULL, node *right = NULL, node *parent = NULL) : value(value), key(key), color(color), parent(parent), right(right), left(left) {}
+	node( Key key, T value, char color = RED, node *left = makeNIL(), node *right = makeNIL(), node *parent = makeNIL() ) : value(value), key(key), color(color), parent(parent), right(right), left(left) {};
+	static node<Key, T>	*makeNIL( void )
+	{
+		return ( new node( T(), Key(), BLACK, NULL, NULL, NULL ) );
+	}
+	bool	operator==( const node<Key, T> *x )
+	{
+		return ( key == x->key );
+	}
+	bool	operator!=( const node<Key, T> *x )
+	{
+		return ( key != x->key );
+	}
+	bool	operator>( const node<Key, T> *x )
+	{
+		return ( key > x->key );
+	}
+	bool	operator<( const node<Key, T> *x )
+	{
+		return ( key < x->key );
+	}
 };
 
-template < typename T, typename Key >
+template < typename Key, typename T >
 
 class RedBlackTree
 {
 	public:
 		RedBlackTree( void )
 		{
-			nil = new node<T, Key>( T(), Key(), BLACK );
+			nil = new node<Key, T>( Key(), T(), BLACK );
 			root = nil;
 		}
 		//insertion
-		void	insertNode( node<T, Key> *newNode )
+		void	insertNode( node<Key, T> *newNode )
 		{
-			node<T, Key> *tmpParent = nil;
-			node<T, Key> *tmpRoot = root;
+			node<Key, T> *tmpParent = nil;
+			node<Key, T> *tmpRoot = root;
 			while ( tmpRoot != nil )
 			{
 				tmpParent = tmpRoot;
@@ -66,9 +86,9 @@ class RedBlackTree
 			fixInsert( newNode );
 		};
 		//LEFT ROTATE
-		void leftRotate( node<T, Key> *toRotate )
+		void leftRotate( node<Key, T> *toRotate )
 		{
-			node<T, Key> *tmp = toRotate->right;
+			node<Key, T> *tmp = toRotate->right;
 			toRotate->right = tmp->left;
 			if ( tmp->left != nil )
 				tmp->left->parent = toRotate;
@@ -83,31 +103,38 @@ class RedBlackTree
 			toRotate->parent = tmp;
 		}
 		//RIGHT ROTATE
-		void rightRotate( node<T, Key> *toRotate )
+		void rightRotate( node<Key, T> *toRotate )
 		{
-			node<T, Key> *tmp = toRotate->left;
+			node<Key, T> *tmp = toRotate->left;
 			toRotate->left = tmp->right;
-			if ( tmp->right != nil )
+			// std::cout << "hello: " << toRotate->value << std::endl;
+			if ( tmp->right && tmp->right != nil )
 				tmp->right->parent = toRotate;
 			tmp->parent = toRotate->parent;
 			if ( toRotate->parent == nil )
 				root = tmp;
-			else if ( toRotate == toRotate->parent->right )
-				toRotate->parent->right = tmp;
-			else
+			else if ( toRotate == toRotate->parent->left )
 				toRotate->parent->left = tmp;
+			else
+				toRotate->parent->right = tmp;
+			// if ( toRotate->parent == nil )
+			// 	root = tmp;
+			// else if ( toRotate == toRotate->parent->right )
+			// 	toRotate->parent->right = tmp;
+			// else
+			// 	toRotate->parent->left = tmp;
 			tmp->right = toRotate;
 			toRotate->parent = tmp;
 		}
 
 		//fix_insertion
-		void	fixInsert( node<T, Key> *insertedNode )
+		void	fixInsert( node<Key, T> *insertedNode )
 		{
 			while ( insertedNode->parent->color == RED )
 			{
 				if ( insertedNode->parent == insertedNode->parent->parent->left )
 				{
-					node<T, Key> *tmp = insertedNode->parent->parent->right;
+					node<Key, T> *tmp = insertedNode->parent->parent->right;
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -126,7 +153,7 @@ class RedBlackTree
 				}
 				else
 				{
-					node<T, Key> *tmp = insertedNode->parent->parent->left;
+					node<Key, T> *tmp = insertedNode->parent->parent->left;
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -146,8 +173,8 @@ class RedBlackTree
 			}
 			root->color = BLACK;
 		}
-		node<T, Key> *getRoot( void ) const { return ( root ); };
-		void print( node<T, Key> *root )
+		node<Key, T> *getRoot( void ) const { return ( root ); };
+		void print( node<Key, T> *root )
 		{
 			if ( root == nil )
 				return ;
@@ -163,6 +190,6 @@ class RedBlackTree
 		//Predecessor
 		//Traversal
 	private:
-		node<T, Key>	*root;
-		node<T, Key>	*nil;
+		node<Key, T>	*root;
+		node<Key, T>	*nil;
 };

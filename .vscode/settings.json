@@ -74,6 +74,7 @@
         "random": "cpp",
         "*.tcc": "cpp",
         "clocale": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "csignal": "cpp"
     }
 }
