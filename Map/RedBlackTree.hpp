@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/15 15:03:07 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:09:10 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ struct node
 	node( Key key, T value, char color = RED, node *left = makeNIL(), node *right = makeNIL(), node *parent = makeNIL() ) : value(value), key(key), color(color), parent(parent), right(right), left(left) {};
 	static node<Key, T>	*makeNIL( void )
 	{
-		return ( new node( T(), Key(), BLACK, NULL, NULL, NULL ) );
+		return ( new node( Key(), T(), BLACK, NULL, NULL, NULL ) );
 	}
 	bool	operator==( const node<Key, T> *x )
 	{
@@ -57,7 +57,7 @@ class RedBlackTree
 	public:
 		RedBlackTree( void )
 		{
-			nil = new node<Key, T>( Key(), T(), BLACK );
+			nil = new node<Key, T>( Key(), T(), BLACK, NULL, NULL, NULL );
 			root = nil;
 		}
 		//insertion
@@ -83,6 +83,8 @@ class RedBlackTree
 			newNode->left = nil;
 			newNode->right = nil;
 			newNode->color = RED;
+			if ( newNode->parent->parent == NULL || newNode->parent->parent == nil )
+				return ;
 			fixInsert( newNode );
 		};
 		//LEFT ROTATE
@@ -90,7 +92,7 @@ class RedBlackTree
 		{
 			node<Key, T> *tmp = toRotate->right;
 			toRotate->right = tmp->left;
-			if ( tmp->left != nil )
+			if ( toRotate && tmp->left != NULL && tmp->left != nil )
 				tmp->left->parent = toRotate;
 			tmp->parent = toRotate->parent;
 			if ( toRotate->parent == nil )
@@ -107,9 +109,12 @@ class RedBlackTree
 		{
 			node<Key, T> *tmp = toRotate->left;
 			toRotate->left = tmp->right;
-			// std::cout << "hello: " << toRotate->value << std::endl;
-			if ( tmp->right && tmp->right != nil )
-				tmp->right->parent = toRotate;
+			if ( toRotate && toRotate->left != NULL && toRotate->left != nil )
+			{
+				// std::cout << "right key: " << tmp->right->color << std::endl;
+				// std::cout << "hello: " << toRotate->key << std::endl;
+				toRotate->left->parent = toRotate;
+			}
 			tmp->parent = toRotate->parent;
 			if ( toRotate->parent == nil )
 				root = tmp;
@@ -117,12 +122,6 @@ class RedBlackTree
 				toRotate->parent->left = tmp;
 			else
 				toRotate->parent->right = tmp;
-			// if ( toRotate->parent == nil )
-			// 	root = tmp;
-			// else if ( toRotate == toRotate->parent->right )
-			// 	toRotate->parent->right = tmp;
-			// else
-			// 	toRotate->parent->left = tmp;
 			tmp->right = toRotate;
 			toRotate->parent = tmp;
 		}
@@ -148,8 +147,11 @@ class RedBlackTree
 						leftRotate( insertedNode );
 					}
 					insertedNode->parent->color = BLACK;
-					insertedNode->parent->parent->color = RED;
-					rightRotate( insertedNode );
+					if ( insertedNode->parent->parent )
+					{	
+						insertedNode->parent->parent->color = RED;
+						rightRotate( insertedNode->parent->parent );
+					}
 				}
 				else
 				{
@@ -164,12 +166,17 @@ class RedBlackTree
 					else if ( insertedNode == insertedNode->parent->left )
 					{
 						insertedNode = insertedNode->parent;
-						leftRotate( insertedNode );
+						rightRotate( insertedNode );
 					}
 					insertedNode->parent->color = BLACK;
-					insertedNode->parent->parent->color = RED;
-					rightRotate( insertedNode );
+					if ( insertedNode->parent->parent )
+					{
+						insertedNode->parent->parent->color = RED;
+						leftRotate( insertedNode->parent->parent );
+					}
 				}
+				if ( insertedNode == root )
+					break ;
 			}
 			root->color = BLACK;
 		}
