@@ -12,7 +12,7 @@ V_OBJ = vector_main.o
 M_OBJ = map_main.o
 
 #* FLAGS *#
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -std=c++98 #-fsanitize=address
 
 #* INCLUDE PATHS *#
 V_INCLUDE = Vector/

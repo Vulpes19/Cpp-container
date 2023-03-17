@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/16 14:09:10 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/17 16:20:20 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <iostream>
 #define RED 'r'
 #define BLACK 'b'
-
+#define LEFT_DIR 'L'
+#define RIGHT_DIR 'R'
 template < typename Key, typename T >
 
 struct node
@@ -133,7 +134,7 @@ class RedBlackTree
 			{
 				if ( insertedNode->parent == insertedNode->parent->parent->left )
 				{
-					node<Key, T> *tmp = insertedNode->parent->parent->right;
+					node<Key, T> *tmp = getUncle( insertedNode, RIGHT_DIR );
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -155,7 +156,7 @@ class RedBlackTree
 				}
 				else
 				{
-					node<Key, T> *tmp = insertedNode->parent->parent->left;
+					node<Key, T> *tmp = getUncle( insertedNode, LEFT_DIR );
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -181,6 +182,7 @@ class RedBlackTree
 			root->color = BLACK;
 		}
 		node<Key, T> *getRoot( void ) const { return ( root ); };
+		
 		void print( node<Key, T> *root )
 		{
 			if ( root == nil )
@@ -188,11 +190,186 @@ class RedBlackTree
 			std::cout << "value: " << root->value << " key: " << root->key << std::endl;
 			print(root->left);
 			print(root->right);
-		}
+		};
+
+		node<Key, T> *getUncle( node<Key, T> *n, char dir )
+		{ 
+			if ( dir == LEFT_DIR )
+				return ( n->parent->parent->left );
+			else if ( dir == RIGHT_DIR )
+				return ( n->parent->parent->right );
+			return (NULL);
+		};
+
+		node<Key, T> *getSibling( node<Key, T> *n, char dir )
+		{ 
+			if ( dir == LEFT_DIR )
+				return ( n->parent->left );
+			else if ( dir == RIGHT_DIR )
+				return ( n->parent->right );
+			return (NULL);
+		};
 		//deletion
+		void	transplant( node<Key, T> *x, node<Key, T> *y )
+		{
+			if ( x->parent == nil )
+				root = y;
+			else if ( x == x->parent->left )
+				x->parent->left = y;
+			else
+				x->parent->right = y;
+			y->parent = x->parent;
+		};
+		void    draw()
+		{
+			_draw(root);
+		}
+
+		void    _draw(node<Key, T> *node)
+		{
+			if (!node) // if you have nil node ==> this should be if (node == nil_node)
+			{
+				std::cerr << "null";
+				return;
+			} 
+
+			std::cerr << "{" << "data:" << node->key  // i don't think you need static cast in your case
+							<< ", isblack:" << (node->color == BLACK ? "true" : "false") // check if color is black and print true if yes
+							<< ",left :";
+			_draw(node->left);
+			std::cerr << ", right : ";
+			_draw(node->right);
+			std::cerr << "}";
+		}
+		void	fixDelete( node<Key, T> *n )
+		{
+			while ( n != root && n->color == BLACK )
+			{
+				if ( n == n->parent->left )
+				{
+					node<Key, T> *sibling = n->parent->right;
+					//case 1
+					if ( sibling->color == RED )
+					{
+						sibling->color = BLACK;
+						n->parent->color = RED;
+						leftRotate(n->parent);
+						sibling = n->parent->right;
+					}
+					//case 2
+					if ( sibling->left->color == BLACK && sibling->right->color == BLACK )
+					{
+						sibling->color = RED;
+						n = n->parent;
+					}
+					//case 3
+					else if ( sibling->right->color == BLACK )
+					{
+						sibling->right->color = BLACK;
+						sibling->left->color = BLACK;
+						sibling->color = BLACK;
+						rightRotate(sibling);
+						sibling = n->parent->right;
+					}
+					//case 4
+					sibling->color = n->parent->color;
+					n->parent->color = BLACK;
+					sibling->right->color = BLACK;
+					leftRotate(n->parent);
+					n = root;
+				}
+				else
+				{
+					node<Key, T> *sibling = n->parent->left;
+					//case 1
+					if ( sibling->color == RED )
+					{
+						sibling->color = BLACK;
+						n->parent->color = RED;
+						leftRotate(n->parent);
+						sibling = n->parent->left;
+					}
+					//case 2
+					if ( sibling->left->color == BLACK && sibling->right->color == BLACK )
+					{
+						sibling->color = RED;
+						n = n->parent;
+					}
+					//case 3
+					else if ( sibling->left->color == BLACK )
+					{
+						sibling->right->color = BLACK;
+						sibling->left->color = BLACK;
+						sibling->color = BLACK;
+						rightRotate(sibling);
+						sibling = n->parent->right;
+					}
+					//case 4
+					sibling->color = n->parent->color;
+					n->parent->color = BLACK;
+					sibling->right->color = BLACK;
+					leftRotate(n->parent);
+					n = root;
+				}
+			}
+			n->color = BLACK;
+		}
+
+		void	deleteNode( node<Key, T> *n )
+		{
+			node<Key, T> *savedNode = n;
+			node<Key, T> *x = nil;
+			char savedColor = savedNode->color;
+			if ( n->left == nil )
+			{
+				x = n->right;
+				transplant( n, n->right );
+			}
+			else if ( n->right == nil )
+			{
+				x = n->left;
+				transplant( n, n->left );
+			}
+			else
+			{
+				savedNode = minimum( n->right );
+				savedColor = savedNode->color;
+				x = savedNode->right;
+				if ( savedNode->parent == n )
+					x->parent = savedNode;
+				else
+				{
+					transplant( savedNode, savedNode->right );
+					savedNode->right = n->right;
+					savedNode->right->parent = savedNode;
+				}
+				transplant( n, savedNode );
+				savedNode->left = n->left;
+				savedNode->left->parent = savedNode;
+				savedNode->color = n->color;
+			}
+			if ( savedColor == BLACK )
+				fixDelete( x );
+		};
 		//Search
 		//Minimum
+		node<Key, T>	*minimum( node<Key, T> *n ) const
+		{
+			if ( n == NULL || n == nil )
+				return (n);
+			while ( n->left != nil )
+				n = n->left;
+			return (n);
+		}
 		//Maximum
+		node<Key, T>	*maximum( node<Key, T> *n ) const
+		{
+			if ( n == NULL || n == nil )
+				return (n);
+			while ( n->right != nil )
+				n = n->right;
+			return (n);
+		}
 		//Successor
 		//Predecessor
 		//Traversal

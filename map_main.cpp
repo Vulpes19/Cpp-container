@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 11:56:51 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/16 14:09:53 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/17 16:21:50 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 int main( void )
 {
-	RedBlackTree<char, int> *tree = new RedBlackTree<char, int>();
-	node<char, int> *n1 = new node<char, int>( 'c', 1 );
-	node<char, int> *n2 = new node<char, int>( 'b', 2 );
-	node<char, int> *n3 = new node<char, int>( 'a', 2 );
-	node<char, int> *n4 = new node<char, int>( 'k', 4 );
-	node<char, int> *n5 = new node<char, int>( 'e', -2 );
-	fancy_tree<char, int> tree2; 
+	RedBlackTree<int, int> *tree = new RedBlackTree<int, int>();
+	node<int, int> *n1 = new node<int, int>( 1, 1 );
+	node<int, int> *n2 = new node<int, int>( 2, 2 );
+	node<int, int> *n3 = new node<int, int>( 3, 2 );
+	node<int, int> *n4 = new node<int, int>( 4, 4 );
+	node<int, int> *n5 = new node<int, int>( 5, -2 );
+	fancy_tree<int, int> tree2; 
 	tree->insertNode(n1);
 	tree->insertNode(n2);
 	tree2.print_tree(tree->getRoot(), V_VIEW);
@@ -33,5 +33,10 @@ int main( void )
 
 	tree->insertNode(n5);
 	tree2.print_tree(tree->getRoot(), V_VIEW);
+	tree->deleteNode(n4);
+	tree2.print_tree(tree->getRoot(), V_VIEW);
+	tree->deleteNode(n5);
+	tree->draw();
+	// system("leaks test_map");
 	// tree.print( tree.getRoot() );
 }

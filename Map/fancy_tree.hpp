@@ -17,7 +17,7 @@
 #define LEFT left				// left attribute
 #define RIGHT right			// right attribute
 #define PARENT parent			// parent attribute (can be ignnored)
-#define CONTENT value			// data attribute + element of pair(if exists)
+#define CONTENT key			// data attribute + element of pair(if exists)
 
 /*===========================================*/
 
