@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:28:55 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/17 16:43:32 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:03:22 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ namespace ft
 			typedef const T& 						const_reference;
 			typedef	std::bidirectional_iterator_tag iterator_category;
 			typedef size_t 							size_type;
+
+            bidirectional_iterator( void )
         private:
             node<Key, T> *n;
     };

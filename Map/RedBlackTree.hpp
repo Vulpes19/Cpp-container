@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/18 14:03:33 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/18 19:41:26 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,55 +19,65 @@
 #define RIGHT_DIR 'R'
 
 
-template < typename Key, typename T >
+template < typename pair, typename Allocator = std::allocator< pair > >
 
 struct node
 {
-	T		value;
-	Key		key;
+	typedef typename pair::first_type	key_type;
+	typedef typename pair::second_type 	value_type; 
+	value_type	value;
+	key_type	key;
 	char	color;
-	node<Key, T> *parent;
-	node<Key, T> *right;
-	node<Key, T> *left;
+	node<pair, Allocator> *parent;
+	node<pair, Allocator> *right;
+	node<pair, Allocator> *left;
 
-	node( Key key, T value, char color = RED, node *left = makeNIL(), node *right = makeNIL(), node *parent = makeNIL() ) : value(value), key(key), color(color), parent(parent), right(right), left(left) {};
-	static node<Key, T>	*makeNIL( void )
+	node( void ) : key(key_type()), value(value_type()), color('b'), left(NULL), right(NULL), parent(NULL) {};
+	node( key_type key, value_type value, char color = RED, node *left = makeNIL(Allocator()), node *right = makeNIL(Allocator()), node *parent = makeNIL(Allocator()) ) : value(value), key(key), color(color), parent(parent), right(right), left(left) {};
+	static node<pair, Allocator>	*makeNIL( const Allocator &a )
 	{
-		return ( new node( Key(), T(), BLACK, NULL, NULL, NULL ) );
+		node<pair, Allocator> *ret = a.allocate(1);
+		return ( a.construct( ret, node<pair, Allocator>(key_type(), value_type(), BLACK, NULL, NULL, NULL ) ));
 	}
-	bool	operator==( const node<Key, T> *x )
+	bool	operator==( const node<pair, Allocator> *x )
 	{
 		return ( key == x->key );
 	}
-	bool	operator!=( const node<Key, T> *x )
+	bool	operator!=( const node<pair, Allocator> *x )
 	{
 		return ( key != x->key );
 	}
-	bool	operator>( const node<Key, T> *x )
+	bool	operator>( const node<pair, Allocator> *x )
 	{
 		return ( key > x->key );
 	}
-	bool	operator<( const node<Key, T> *x )
+	bool	operator<( const node<pair, Allocator> *x )
 	{
 		return ( key < x->key );
 	}
+
+	private:
+		Allocator _alloc;
 };
 
-template < typename Key, typename T >
+template < typename pair, typename Comp = std::less< typename pair::first_type > , typename Allocator = std::allocator< pair > >
 
 class RedBlackTree
 {
 	public:
+		typedef typename pair::first_type key_type;
+		typedef typename pair::second_type value_type;
 		RedBlackTree( void )
 		{
-			nil = new node<Key, T>( Key(), T(), BLACK, NULL, NULL, NULL );
+			std::allocator_traits<Allocator>::construct( _alloc, nil, key_type(), value_type(), BLACK, NULL, NULL, NULL );
+			// nil = _alloc.allocate(node<pair, Allocator>( key_type(), value_type(), BLACK, NULL, NULL, NULL ));
 			root = nil;
 		}
 		//insertion
-		void	insertNode( node<Key, T> *newNode )
+		void	insertNode( node<pair, Allocator> *newNode )
 		{
-			node<Key, T> *tmpParent = nil;
-			node<Key, T> *tmpRoot = root;
+			node<pair, Allocator> *tmpParent = nil;
+			node<pair, Allocator> *tmpRoot = root;
 			while ( tmpRoot != nil )
 			{
 				tmpParent = tmpRoot;
@@ -79,7 +89,7 @@ class RedBlackTree
 			newNode->parent = tmpParent;
 			if ( tmpParent == nil )
 				root = newNode;
-			else if ( newNode->key < tmpParent->key )
+			else if ( compare(newNode->key, tmpParent->Key) )
 				tmpParent->left = newNode;
 			else
 				tmpParent->right = newNode;
@@ -91,11 +101,10 @@ class RedBlackTree
 			fixInsert( newNode );
 		};
 		//LEFT ROTATE
-		void leftRotate( node<Key, T> *toRotate )
+		void leftRotate( node<pair, Allocator> *toRotate )
 		{
-			node<Key, T> *tmp = toRotate->right;
+			node<pair, Allocator> *tmp = toRotate->right;
 			toRotate->right = tmp->left;
-			std::cout << toRotate->key << std::endl;
 			if ( toRotate != nil && tmp->left != NULL && tmp->left != nil )
 				tmp->left->parent = toRotate;
 			tmp->parent = toRotate->parent;
@@ -109,9 +118,9 @@ class RedBlackTree
 			toRotate->parent = tmp;
 		}
 		//RIGHT ROTATE
-		void rightRotate( node<Key, T> *toRotate )
+		void rightRotate( node<pair, Allocator> *toRotate )
 		{
-			node<Key, T> *tmp = toRotate->left;
+			node<pair, Allocator> *tmp = toRotate->left;
 			toRotate->left = tmp->right;
 			if ( toRotate != nil && toRotate->left != NULL && toRotate->left != nil )
 				toRotate->left->parent = toRotate;
@@ -127,14 +136,13 @@ class RedBlackTree
 		}
 
 		//fix_insertion
-		void	fixInsert( node<Key, T> *insertedNode )
+		void	fixInsert( node<pair, Allocator> *insertedNode )
 		{
 			while ( insertedNode->parent->color == RED )
 			{
 				if ( insertedNode->parent == insertedNode->parent->parent->left )
 				{
-					std::cout << "hello1\n";
-					node<Key, T> *tmp = getUncle( insertedNode, RIGHT_DIR );
+					node<pair, Allocator> *tmp = getUncle( insertedNode, RIGHT_DIR );
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -156,8 +164,7 @@ class RedBlackTree
 				}
 				else
 				{
-					std::cout << "hello2\n";
-					node<Key, T> *tmp = getUncle( insertedNode, LEFT_DIR );
+					node<pair, Allocator> *tmp = getUncle( insertedNode, LEFT_DIR );
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -183,9 +190,9 @@ class RedBlackTree
 			}
 			root->color = BLACK;
 		}
-		node<Key, T> *getRoot( void ) const { return ( root ); };
+		node<pair, Allocator> *getRoot( void ) const { return ( root ); };
 		
-		void print( node<Key, T> *root )
+		void print( node<pair, Allocator> *root )
 		{
 			if ( root == nil )
 				return ;
@@ -194,7 +201,7 @@ class RedBlackTree
 			print(root->right);
 		};
 
-		node<Key, T> *getUncle( node<Key, T> *n, char dir )
+		node<pair, Allocator> *getUncle( node<pair, Allocator> *n, char dir )
 		{ 
 			if ( dir == LEFT_DIR )
 				return ( n->parent->parent->left );
@@ -203,7 +210,7 @@ class RedBlackTree
 			return (NULL);
 		};
 
-		node<Key, T> *getSibling( node<Key, T> *n, char dir )
+		node<pair, Allocator> *getSibling( node<pair, Allocator> *n, char dir )
 		{ 
 			if ( dir == LEFT_DIR )
 				return ( n->parent->left );
@@ -212,7 +219,7 @@ class RedBlackTree
 			return (NULL);
 		};
 		//deletion
-		void	transplant( node<Key, T> *x, node<Key, T> *y )
+		void	transplant( node<pair, Allocator> *x, node<pair, Allocator> *y )
 		{
 			if ( x->parent == nil )
 				root = y;
@@ -227,7 +234,7 @@ class RedBlackTree
 			_draw(root);
 		}
 
-		void    _draw(node<Key, T> *node)
+		void    _draw(node<pair, Allocator> *node)
 		{
 			if (!node) // if you have nil node ==> this should be if (node == nil_node)
 			{
@@ -243,13 +250,13 @@ class RedBlackTree
 			_draw(node->right);
 			std::cerr << "}";
 		}
-		void	fixDelete( node<Key, T> *n )
+		void	fixDelete( node<pair, Allocator> *n )
 		{
 			while ( n != root && n->color == BLACK )
 			{
 				if ( n == n->parent->left )
 				{
-					node<Key, T> *sibling = n->parent->right;
+					node<pair, Allocator> *sibling = n->parent->right;
 					//case 1
 					if ( sibling->color == RED )
 					{
@@ -282,7 +289,7 @@ class RedBlackTree
 				}
 				else
 				{
-					node<Key, T> *sibling = n->parent->left;
+					node<pair, Allocator> *sibling = n->parent->left;
 					//case 1
 					if ( sibling->color == RED )
 					{
@@ -317,10 +324,10 @@ class RedBlackTree
 			n->color = BLACK;
 		}
 
-		void	deleteNode( node<Key, T> *n )
+		void	deleteNode( node<pair, Allocator> *n )
 		{
-			node<Key, T> *savedNode = n;
-			node<Key, T> *x = nil;
+			node<pair, Allocator> *savedNode = n;
+			node<pair, Allocator> *x = nil;
 			char savedColor = savedNode->color;
 			if ( n->left == nil )
 			{
@@ -355,34 +362,43 @@ class RedBlackTree
 		};
 		//Search
 		//Minimum
-		node<Key, T>	*minimum( node<Key, T> *n ) const
+		node<pair, Allocator>	*minimum( node<pair, Allocator> *n ) const
 		{
 			if ( n == NULL || n == nil )
 				return (n);
-			while ( n->left != nil )
+			while ( n->left && n->left != nil )
 				n = n->left;
 			return (n);
 		}
 		//Maximum
-		node<Key, T>	*maximum( node<Key, T> *n ) const
+		node<pair, Allocator>	*maximum( node<pair, Allocator> *n ) const
 		{
 			if ( n == NULL || n == nil )
 				return (n);
-			while ( n->right != nil )
+			while ( n->right && n->right != nil )
 				n = n->right;
 			return (n);
 		}
 		//Successor
-		// node<Key, T>	*successor( node<Key, T> *n ) const
-		// {
-		// 	if ( n->right != nil )
-		// 		return ( minimum(n->right) );
-		// 	else
-		// 		return 
-		// }
+		node<pair, Allocator>	*successor( node<pair, Allocator> *n ) const
+		{
+			if ( n == NULL || n == nil )
+				return (n);
+			if ( n->right && n->right != nil )
+				return ( minimum(n->right) );	
+		}
 		//Predecessor
+		node<pair, Allocator>	*predecessor( node<pair, Allocator> *n ) const
+		{
+			if ( n == NULL || n == nil )
+				return (n);
+			if ( n->left && n->left != nil )
+				return ( maximum(n->left) );	
+		}
 		//Traversal
 	private:
-		node<Key, T>	*root;
-		node<Key, T>	*nil;
+		node<pair, Allocator>	*root;
+		node<pair, Allocator>	*nil;
+		Allocator				_alloc;
+		Comp					compare;
 };
