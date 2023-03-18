@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 11:56:51 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/17 16:21:50 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:04:18 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int main( void )
 	node<int, int> *n3 = new node<int, int>( 3, 2 );
 	node<int, int> *n4 = new node<int, int>( 4, 4 );
 	node<int, int> *n5 = new node<int, int>( 5, -2 );
+	node<int, int> *n6 = new node<int, int>( 6, 4 );
+	node<int, int> *n7 = new node<int, int>( 7, -2 );
 	fancy_tree<int, int> tree2; 
 	tree->insertNode(n1);
 	tree->insertNode(n2);
@@ -32,10 +34,14 @@ int main( void )
 	tree2.print_tree(tree->getRoot(), V_VIEW);
 
 	tree->insertNode(n5);
+	tree->insertNode(n6);
+	tree->insertNode(n7);
 	tree2.print_tree(tree->getRoot(), V_VIEW);
-	tree->deleteNode(n4);
-	tree2.print_tree(tree->getRoot(), V_VIEW);
-	tree->deleteNode(n5);
+
+	// tree2.print_tree(tree->getRoot(), V_VIEW);
+	// tree->deleteNode(n4);
+	// tree2.print_tree(tree->getRoot(), V_VIEW);
+	// tree->deleteNode(n5);
 	tree->draw();
 	// system("leaks test_map");
 	// tree.print( tree.getRoot() );

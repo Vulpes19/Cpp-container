@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/17 16:20:20 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:03:33 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #define BLACK 'b'
 #define LEFT_DIR 'L'
 #define RIGHT_DIR 'R'
+
+
 template < typename Key, typename T >
 
 struct node
@@ -93,12 +95,13 @@ class RedBlackTree
 		{
 			node<Key, T> *tmp = toRotate->right;
 			toRotate->right = tmp->left;
-			if ( toRotate && tmp->left != NULL && tmp->left != nil )
+			std::cout << toRotate->key << std::endl;
+			if ( toRotate != nil && tmp->left != NULL && tmp->left != nil )
 				tmp->left->parent = toRotate;
 			tmp->parent = toRotate->parent;
-			if ( toRotate->parent == nil )
+			if ( toRotate->parent && toRotate->parent == nil )
 				root = tmp;
-			else if ( toRotate == toRotate->parent->left )
+			else if ( toRotate && toRotate == toRotate->parent->left )
 				toRotate->parent->left = tmp;
 			else
 				toRotate->parent->right = tmp;
@@ -110,12 +113,8 @@ class RedBlackTree
 		{
 			node<Key, T> *tmp = toRotate->left;
 			toRotate->left = tmp->right;
-			if ( toRotate && toRotate->left != NULL && toRotate->left != nil )
-			{
-				// std::cout << "right key: " << tmp->right->color << std::endl;
-				// std::cout << "hello: " << toRotate->key << std::endl;
+			if ( toRotate != nil && toRotate->left != NULL && toRotate->left != nil )
 				toRotate->left->parent = toRotate;
-			}
 			tmp->parent = toRotate->parent;
 			if ( toRotate->parent == nil )
 				root = tmp;
@@ -134,6 +133,7 @@ class RedBlackTree
 			{
 				if ( insertedNode->parent == insertedNode->parent->parent->left )
 				{
+					std::cout << "hello1\n";
 					node<Key, T> *tmp = getUncle( insertedNode, RIGHT_DIR );
 					if ( tmp->color == RED )
 					{
@@ -148,7 +148,7 @@ class RedBlackTree
 						leftRotate( insertedNode );
 					}
 					insertedNode->parent->color = BLACK;
-					if ( insertedNode->parent->parent )
+					if ( insertedNode->parent->parent && insertedNode->parent->parent != nil )
 					{	
 						insertedNode->parent->parent->color = RED;
 						rightRotate( insertedNode->parent->parent );
@@ -156,6 +156,7 @@ class RedBlackTree
 				}
 				else
 				{
+					std::cout << "hello2\n";
 					node<Key, T> *tmp = getUncle( insertedNode, LEFT_DIR );
 					if ( tmp->color == RED )
 					{
@@ -170,8 +171,9 @@ class RedBlackTree
 						rightRotate( insertedNode );
 					}
 					insertedNode->parent->color = BLACK;
-					if ( insertedNode->parent->parent )
+					if ( insertedNode->parent->parent && insertedNode->parent->parent != nil )
 					{
+						std::cout << insertedNode->parent->parent->key << std::endl;
 						insertedNode->parent->parent->color = RED;
 						leftRotate( insertedNode->parent->parent );
 					}
@@ -371,6 +373,13 @@ class RedBlackTree
 			return (n);
 		}
 		//Successor
+		// node<Key, T>	*successor( node<Key, T> *n ) const
+		// {
+		// 	if ( n->right != nil )
+		// 		return ( minimum(n->right) );
+		// 	else
+		// 		return 
+		// }
 		//Predecessor
 		//Traversal
 	private:
