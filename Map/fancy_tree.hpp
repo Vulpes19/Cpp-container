@@ -11,7 +11,7 @@
 /*===================Node====================*/
 
 // Node class
-#define NODE node<Key, T>
+#define NODE node<Key>
 
 // Node class attributes
 #define LEFT left				// left attribute

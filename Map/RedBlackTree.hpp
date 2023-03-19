@@ -6,58 +6,65 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/18 19:41:26 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/19 15:36:15 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <iostream>
+#include "../Utility/Utility.hpp"
 #define RED 'r'
 #define BLACK 'b'
 #define LEFT_DIR 'L'
 #define RIGHT_DIR 'R'
 
+template < typename node >
 
-template < typename pair, typename Allocator = std::allocator< pair > >
+struct node_base {
+	node *parent;
+	node *left;
+	node *right;
+	char	color;
 
-struct node
+	node_base( void ) : parent(NULL), left(NULL), right(NULL), color(BLACK) {};
+	node_base( node *parent, node *left, node *right, char color ) : parent(parent), left(left), right(right), color(color) {};
+};
+template < typename pair >
+
+struct node: node_base< node<pair> >
 {
 	typedef typename pair::first_type	key_type;
 	typedef typename pair::second_type 	value_type; 
 	value_type	value;
 	key_type	key;
-	char	color;
-	node<pair, Allocator> *parent;
-	node<pair, Allocator> *right;
-	node<pair, Allocator> *left;
+	
 
-	node( void ) : key(key_type()), value(value_type()), color('b'), left(NULL), right(NULL), parent(NULL) {};
-	node( key_type key, value_type value, char color = RED, node *left = makeNIL(Allocator()), node *right = makeNIL(Allocator()), node *parent = makeNIL(Allocator()) ) : value(value), key(key), color(color), parent(parent), right(right), left(left) {};
-	static node<pair, Allocator>	*makeNIL( const Allocator &a )
+	node( void ) : node_base< node<pair> >(NULL, NULL, NULL, BLACK), key(key_type()), value(value_type()) {};
+	node( pair p, char color = RED, node *left= NULL , node *right = NULL, node *parent = NULL ) : node_base< node<pair> >(parent, left, right, color)
 	{
-		node<pair, Allocator> *ret = a.allocate(1);
-		return ( a.construct( ret, node<pair, Allocator>(key_type(), value_type(), BLACK, NULL, NULL, NULL ) ));
-	}
-	bool	operator==( const node<pair, Allocator> *x )
+		value = p.second;
+		key = p.first;
+	};
+
+	
+	bool	operator==( const node<pair> *x )
 	{
 		return ( key == x->key );
 	}
-	bool	operator!=( const node<pair, Allocator> *x )
+	bool	operator!=( const node<pair> *x )
 	{
 		return ( key != x->key );
 	}
-	bool	operator>( const node<pair, Allocator> *x )
+	bool	operator>( const node<pair> *x )
 	{
 		return ( key > x->key );
 	}
-	bool	operator<( const node<pair, Allocator> *x )
+	bool	operator<( const node<pair> *x )
 	{
 		return ( key < x->key );
 	}
 
-	private:
-		Allocator _alloc;
 };
 
 template < typename pair, typename Comp = std::less< typename pair::first_type > , typename Allocator = std::allocator< pair > >
@@ -67,17 +74,21 @@ class RedBlackTree
 	public:
 		typedef typename pair::first_type key_type;
 		typedef typename pair::second_type value_type;
+		typedef typename Allocator::template rebind< node<pair> >::other node_allocator;
+		typedef typename Allocator::template rebind<  node_base<  node<pair> > >::other node_base_allocator;
 		RedBlackTree( void )
 		{
-			std::allocator_traits<Allocator>::construct( _alloc, nil, key_type(), value_type(), BLACK, NULL, NULL, NULL );
-			// nil = _alloc.allocate(node<pair, Allocator>( key_type(), value_type(), BLACK, NULL, NULL, NULL ));
+			// pair p = ft::make_pair( key_type(), value_type() );
+			nil = static_cast<node<pair> *> (node_base_allocator().allocate(1));
+			node_base_allocator().construct( nil, node_base<node<pair> >(NULL, NULL, NULL, BLACK) );
+			// nil = _alloc.allocate(node<pair>( key_type(), value_type(), BLACK, NULL, NULL, NULL ));
 			root = nil;
 		}
 		//insertion
-		void	insertNode( node<pair, Allocator> *newNode )
+		void	insertNode( node<pair> *newNode )
 		{
-			node<pair, Allocator> *tmpParent = nil;
-			node<pair, Allocator> *tmpRoot = root;
+			node<pair> *tmpParent = nil;
+			node<pair> *tmpRoot = root;
 			while ( tmpRoot != nil )
 			{
 				tmpParent = tmpRoot;
@@ -89,7 +100,7 @@ class RedBlackTree
 			newNode->parent = tmpParent;
 			if ( tmpParent == nil )
 				root = newNode;
-			else if ( compare(newNode->key, tmpParent->Key) )
+			else if ( compare(newNode->key, tmpParent->key) )
 				tmpParent->left = newNode;
 			else
 				tmpParent->right = newNode;
@@ -101,9 +112,9 @@ class RedBlackTree
 			fixInsert( newNode );
 		};
 		//LEFT ROTATE
-		void leftRotate( node<pair, Allocator> *toRotate )
+		void leftRotate( node<pair> *toRotate )
 		{
-			node<pair, Allocator> *tmp = toRotate->right;
+			node<pair> *tmp = toRotate->right;
 			toRotate->right = tmp->left;
 			if ( toRotate != nil && tmp->left != NULL && tmp->left != nil )
 				tmp->left->parent = toRotate;
@@ -118,9 +129,9 @@ class RedBlackTree
 			toRotate->parent = tmp;
 		}
 		//RIGHT ROTATE
-		void rightRotate( node<pair, Allocator> *toRotate )
+		void rightRotate( node<pair> *toRotate )
 		{
-			node<pair, Allocator> *tmp = toRotate->left;
+			node<pair> *tmp = toRotate->left;
 			toRotate->left = tmp->right;
 			if ( toRotate != nil && toRotate->left != NULL && toRotate->left != nil )
 				toRotate->left->parent = toRotate;
@@ -136,13 +147,13 @@ class RedBlackTree
 		}
 
 		//fix_insertion
-		void	fixInsert( node<pair, Allocator> *insertedNode )
+		void	fixInsert( node<pair> *insertedNode )
 		{
 			while ( insertedNode->parent->color == RED )
 			{
 				if ( insertedNode->parent == insertedNode->parent->parent->left )
 				{
-					node<pair, Allocator> *tmp = getUncle( insertedNode, RIGHT_DIR );
+					node<pair> *tmp = getUncle( insertedNode, RIGHT_DIR );
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -164,7 +175,7 @@ class RedBlackTree
 				}
 				else
 				{
-					node<pair, Allocator> *tmp = getUncle( insertedNode, LEFT_DIR );
+					node<pair> *tmp = getUncle( insertedNode, LEFT_DIR );
 					if ( tmp->color == RED )
 					{
 						insertedNode->parent->color = BLACK;
@@ -190,9 +201,9 @@ class RedBlackTree
 			}
 			root->color = BLACK;
 		}
-		node<pair, Allocator> *getRoot( void ) const { return ( root ); };
+		node<pair> *getRoot( void ) const { return ( root ); };
 		
-		void print( node<pair, Allocator> *root )
+		void print( node<pair> *root )
 		{
 			if ( root == nil )
 				return ;
@@ -201,7 +212,7 @@ class RedBlackTree
 			print(root->right);
 		};
 
-		node<pair, Allocator> *getUncle( node<pair, Allocator> *n, char dir )
+		node<pair> *getUncle( node<pair> *n, char dir )
 		{ 
 			if ( dir == LEFT_DIR )
 				return ( n->parent->parent->left );
@@ -210,7 +221,7 @@ class RedBlackTree
 			return (NULL);
 		};
 
-		node<pair, Allocator> *getSibling( node<pair, Allocator> *n, char dir )
+		node<pair> *getSibling( node<pair> *n, char dir )
 		{ 
 			if ( dir == LEFT_DIR )
 				return ( n->parent->left );
@@ -219,7 +230,7 @@ class RedBlackTree
 			return (NULL);
 		};
 		//deletion
-		void	transplant( node<pair, Allocator> *x, node<pair, Allocator> *y )
+		void	transplant( node<pair> *x, node<pair> *y )
 		{
 			if ( x->parent == nil )
 				root = y;
@@ -234,9 +245,9 @@ class RedBlackTree
 			_draw(root);
 		}
 
-		void    _draw(node<pair, Allocator> *node)
+		void    _draw(node<pair> *node)
 		{
-			if (!node) // if you have nil node ==> this should be if (node == nil_node)
+			if (node == nil) // if you have nil node ==> this should be if (node == nil_node)
 			{
 				std::cerr << "null";
 				return;
@@ -250,13 +261,13 @@ class RedBlackTree
 			_draw(node->right);
 			std::cerr << "}";
 		}
-		void	fixDelete( node<pair, Allocator> *n )
+		void	fixDelete( node<pair> *n )
 		{
 			while ( n != root && n->color == BLACK )
 			{
 				if ( n == n->parent->left )
 				{
-					node<pair, Allocator> *sibling = n->parent->right;
+					node<pair> *sibling = n->parent->right;
 					//case 1
 					if ( sibling->color == RED )
 					{
@@ -289,7 +300,7 @@ class RedBlackTree
 				}
 				else
 				{
-					node<pair, Allocator> *sibling = n->parent->left;
+					node<pair> *sibling = n->parent->left;
 					//case 1
 					if ( sibling->color == RED )
 					{
@@ -321,13 +332,14 @@ class RedBlackTree
 					n = root;
 				}
 			}
-			n->color = BLACK;
+			// n->color = BLACK;
+			root->color = BLACK;
 		}
 
-		void	deleteNode( node<pair, Allocator> *n )
+		void	deleteNode( node<pair> *n )
 		{
-			node<pair, Allocator> *savedNode = n;
-			node<pair, Allocator> *x = nil;
+			node<pair> *savedNode = n;
+			node<pair> *x = nil;
 			char savedColor = savedNode->color;
 			if ( n->left == nil )
 			{
@@ -362,7 +374,7 @@ class RedBlackTree
 		};
 		//Search
 		//Minimum
-		node<pair, Allocator>	*minimum( node<pair, Allocator> *n ) const
+		node<pair>	*minimum( node<pair> *n ) const
 		{
 			if ( n == NULL || n == nil )
 				return (n);
@@ -371,7 +383,7 @@ class RedBlackTree
 			return (n);
 		}
 		//Maximum
-		node<pair, Allocator>	*maximum( node<pair, Allocator> *n ) const
+		node<pair>	*maximum( node<pair> *n ) const
 		{
 			if ( n == NULL || n == nil )
 				return (n);
@@ -380,7 +392,7 @@ class RedBlackTree
 			return (n);
 		}
 		//Successor
-		node<pair, Allocator>	*successor( node<pair, Allocator> *n ) const
+		node<pair>	*successor( node<pair> *n ) const
 		{
 			if ( n == NULL || n == nil )
 				return (n);
@@ -388,7 +400,7 @@ class RedBlackTree
 				return ( minimum(n->right) );	
 		}
 		//Predecessor
-		node<pair, Allocator>	*predecessor( node<pair, Allocator> *n ) const
+		node<pair>	*predecessor( node<pair> *n ) const
 		{
 			if ( n == NULL || n == nil )
 				return (n);
@@ -397,8 +409,8 @@ class RedBlackTree
 		}
 		//Traversal
 	private:
-		node<pair, Allocator>	*root;
-		node<pair, Allocator>	*nil;
-		Allocator				_alloc;
+		node<pair>	*root;
+		node<pair>	*nil;
+		node_allocator		    _alloc;
 		Comp					compare;
 };
