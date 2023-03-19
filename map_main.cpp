@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 11:56:51 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/19 15:42:08 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/19 16:39:32 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int main( void )
 	pair g(7, -2);
 	RedBlackTree<pair ,std::less<pair::first_type>, alloc > *tree = new RedBlackTree<pair ,std::less<pair::first_type>,  alloc >();
 	std::vector<node<pair> *> nodes;
-	srand(time(5));
+	srand(5);
 	// insert and delete random nodes in the tree
 	// std::vector<std::pair<int, int> >  random_instructions;
 	// std::vector<int> tmp;

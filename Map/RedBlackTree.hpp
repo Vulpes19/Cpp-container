@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/19 15:36:15 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:33:15 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,22 @@ struct node: node_base< node<pair> >
 	};
 
 	
-	bool	operator==( const node<pair> *x )
-	{
-		return ( key == x->key );
-	}
-	bool	operator!=( const node<pair> *x )
-	{
-		return ( key != x->key );
-	}
-	bool	operator>( const node<pair> *x )
-	{
-		return ( key > x->key );
-	}
-	bool	operator<( const node<pair> *x )
-	{
-		return ( key < x->key );
-	}
+	// bool	operator==( const node<pair> *x )
+	// {
+	// 	return ( key == x->key );
+	// }
+	// bool	operator!=( const node<pair> *x )
+	// {
+	// 	return ( key != x->key );
+	// }
+	// bool	operator>( const node<pair> *x )
+	// {
+	// 	return ( key > x->key );
+	// }
+	// bool	operator<( const node<pair> *x )
+	// {
+	// 	return ( key < x->key );
+	// }
 
 };
 
@@ -92,7 +92,7 @@ class RedBlackTree
 			while ( tmpRoot != nil )
 			{
 				tmpParent = tmpRoot;
-				if ( newNode->key < tmpRoot->key )
+				if ( compare(newNode->key, tmpRoot->key) )
 					tmpRoot = tmpRoot->left;
 				else
 					tmpRoot = tmpRoot->right;
@@ -108,12 +108,17 @@ class RedBlackTree
 			newNode->right = nil;
 			newNode->color = RED;
 			if ( newNode->parent->parent == NULL || newNode->parent->parent == nil )
+			{
+				root->color = BLACK;
 				return ;
+			}
 			fixInsert( newNode );
 		};
 		//LEFT ROTATE
 		void leftRotate( node<pair> *toRotate )
 		{
+			if ( toRotate == NULL || toRotate == nil )
+				return ;
 			node<pair> *tmp = toRotate->right;
 			toRotate->right = tmp->left;
 			if ( toRotate != nil && tmp->left != NULL && tmp->left != nil )
@@ -191,7 +196,6 @@ class RedBlackTree
 					insertedNode->parent->color = BLACK;
 					if ( insertedNode->parent->parent && insertedNode->parent->parent != nil )
 					{
-						std::cout << insertedNode->parent->parent->key << std::endl;
 						insertedNode->parent->parent->color = RED;
 						leftRotate( insertedNode->parent->parent );
 					}
@@ -199,8 +203,10 @@ class RedBlackTree
 				if ( insertedNode == root )
 					break ;
 			}
+			std::cout << "hello " << root->key << std::endl;
 			root->color = BLACK;
 		}
+
 		node<pair> *getRoot( void ) const { return ( root ); };
 		
 		void print( node<pair> *root )
@@ -232,11 +238,13 @@ class RedBlackTree
 		//deletion
 		void	transplant( node<pair> *x, node<pair> *y )
 		{
+			if ( x == NULL || y == NULL )
+				return ;
 			if ( x->parent == nil )
 				root = y;
-			else if ( x == x->parent->left )
+			else if ( x->parent->left && x == x->parent->left )
 				x->parent->left = y;
-			else
+			else if ( x->parent->right && x == x->parent->right )
 				x->parent->right = y;
 			y->parent = x->parent;
 		};
@@ -268,7 +276,6 @@ class RedBlackTree
 				if ( n == n->parent->left )
 				{
 					node<pair> *sibling = n->parent->right;
-					//case 1
 					if ( sibling->color == RED )
 					{
 						sibling->color = BLACK;
@@ -276,22 +283,18 @@ class RedBlackTree
 						leftRotate(n->parent);
 						sibling = n->parent->right;
 					}
-					//case 2
 					if ( sibling->left->color == BLACK && sibling->right->color == BLACK )
 					{
 						sibling->color = RED;
 						n = n->parent;
 					}
-					//case 3
 					else if ( sibling->right->color == BLACK )
 					{
-						sibling->right->color = BLACK;
 						sibling->left->color = BLACK;
 						sibling->color = BLACK;
 						rightRotate(sibling);
 						sibling = n->parent->right;
 					}
-					//case 4
 					sibling->color = n->parent->color;
 					n->parent->color = BLACK;
 					sibling->right->color = BLACK;
@@ -306,7 +309,7 @@ class RedBlackTree
 					{
 						sibling->color = BLACK;
 						n->parent->color = RED;
-						leftRotate(n->parent);
+						rightRotate(n->parent);
 						sibling = n->parent->left;
 					}
 					//case 2
@@ -319,21 +322,20 @@ class RedBlackTree
 					else if ( sibling->left->color == BLACK )
 					{
 						sibling->right->color = BLACK;
-						sibling->left->color = BLACK;
 						sibling->color = BLACK;
-						rightRotate(sibling);
+						leftRotate(sibling);
 						sibling = n->parent->right;
 					}
 					//case 4
 					sibling->color = n->parent->color;
 					n->parent->color = BLACK;
 					sibling->right->color = BLACK;
-					leftRotate(n->parent);
+					rightRotate(n->parent);
 					n = root;
 				}
 			}
-			// n->color = BLACK;
-			root->color = BLACK;
+			n->color = BLACK;
+			// root->color = BLACK;
 		}
 
 		void	deleteNode( node<pair> *n )
