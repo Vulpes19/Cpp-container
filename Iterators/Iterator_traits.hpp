@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Iterator_traits.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 11:59:49 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/07 15:44:24 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:06:13 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <iostream>
+#include <cstddef>
 
 namespace ft
 {

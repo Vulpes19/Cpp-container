@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   map_main.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 11:56:51 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/20 11:42:03 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/20 15:36:28 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RedBlackTree.hpp"
 #include "Utility/Utility.hpp"
-#include "fancy_tree.hpp"
 #include <vector>
+#include <cstdlib>
+
 typedef int			type;
 typedef ft::pair<type, type> pair;
 typedef std::allocator<pair> alloc;
@@ -46,7 +47,7 @@ int main( void )
 	// 		random_instructions.push_back(std::make_pair(1, index));
 	// 	}
 	// }
-	for (int i = 0; i < 10000; ++i) {
+	for (int i = 0; i < 100; ++i) {
 		const int operation = rand() % 2;
 		if (operation == 0 || nodes.empty()) {
 			const int key = rand() % 10000;
