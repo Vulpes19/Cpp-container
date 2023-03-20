@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/19 18:33:15 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/20 11:53:34 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,8 @@ class RedBlackTree
 		typedef typename Allocator::template rebind<  node_base<  node<pair> > >::other node_base_allocator;
 		RedBlackTree( void )
 		{
-			// pair p = ft::make_pair( key_type(), value_type() );
 			nil = static_cast<node<pair> *> (node_base_allocator().allocate(1));
 			node_base_allocator().construct( nil, node_base<node<pair> >(NULL, NULL, NULL, BLACK) );
-			// nil = _alloc.allocate(node<pair>( key_type(), value_type(), BLACK, NULL, NULL, NULL ));
 			root = nil;
 		}
 		//insertion
@@ -154,6 +152,14 @@ class RedBlackTree
 		//fix_insertion
 		void	fixInsert( node<pair> *insertedNode )
 		{
+			if ( insertedNode->key == 2746 )
+			{
+				std::cout << "hellooo\n";
+				std::cout << std::endl;
+				std::cout << std::endl;
+				std::cout << std::endl;
+				// exit(0);
+			}
 			while ( insertedNode->parent->color == RED )
 			{
 				if ( insertedNode->parent == insertedNode->parent->parent->left )
@@ -203,7 +209,6 @@ class RedBlackTree
 				if ( insertedNode == root )
 					break ;
 			}
-			std::cout << "hello " << root->key << std::endl;
 			root->color = BLACK;
 		}
 
@@ -238,13 +243,13 @@ class RedBlackTree
 		//deletion
 		void	transplant( node<pair> *x, node<pair> *y )
 		{
-			if ( x == NULL || y == NULL )
-				return ;
+			// if ( x == NULL || y == NULL )
+			// 	return ;
 			if ( x->parent == nil )
 				root = y;
-			else if ( x->parent->left && x == x->parent->left )
+			else if ( x == x->parent->left )
 				x->parent->left = y;
-			else if ( x->parent->right && x == x->parent->right )
+			else if ( x == x->parent->right )
 				x->parent->right = y;
 			y->parent = x->parent;
 		};
@@ -291,7 +296,7 @@ class RedBlackTree
 					else if ( sibling->right->color == BLACK )
 					{
 						sibling->left->color = BLACK;
-						sibling->color = BLACK;
+						sibling->color = RED;
 						rightRotate(sibling);
 						sibling = n->parent->right;
 					}
@@ -322,14 +327,14 @@ class RedBlackTree
 					else if ( sibling->left->color == BLACK )
 					{
 						sibling->right->color = BLACK;
-						sibling->color = BLACK;
+						sibling->color = RED;
 						leftRotate(sibling);
-						sibling = n->parent->right;
+						sibling = n->parent->left;
 					}
 					//case 4
 					sibling->color = n->parent->color;
 					n->parent->color = BLACK;
-					sibling->right->color = BLACK;
+					sibling->left->color = BLACK;
 					rightRotate(n->parent);
 					n = root;
 				}

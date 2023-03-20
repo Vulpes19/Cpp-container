@@ -6,7 +6,7 @@
 /*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 11:56:51 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/19 16:39:32 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/20 11:42:03 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,16 @@ int main( void )
 			node_pair *n = new node_pair(pair(key, 0));
 			nodes.push_back(n);
 			tree->insertNode(n);
+			std::cout << "**************\n";
 			std::cout << "inserted " << key << std::endl;
+			std::cout << "**************\n";
 		} else {
 			const int key = rand() % nodes.size();
 			node_pair *node = nodes[key];
 			nodes.erase(nodes.begin() + key);
+			std::cout << "**************\n";
 			std::cout << "deleted " << node->key << std::endl;
+			std::cout << "**************\n";
 			tree->deleteNode(node);
 		}
 		tree->draw();
