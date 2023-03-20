@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/20 15:37:41 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/20 18:42:49 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ class RedBlackTree
 			node_base_allocator().construct( nil, node_base<node<pair> >(NULL, NULL, NULL, BLACK) );
 			root = nil;
 		}
+
 		//insertion
 		void	insertNode( node<pair> *newNode )
 		{
@@ -141,6 +142,7 @@ class RedBlackTree
 		//fix_insertion
 		void	fixInsert( node<pair> *insertedNode )
 		{
+			// int k = insertedNode->key;
 			while ( insertedNode->parent->color == RED )
 			{
 				if ( insertedNode->parent == insertedNode->parent->parent->left )
@@ -191,6 +193,11 @@ class RedBlackTree
 					break ;
 			}
 			root->color = BLACK;
+			// if ( k == 4072)
+			// {
+			// 	this->draw();
+			// 	exit(1);
+			// }
 		}
 
 		node<pair> *getRoot( void ) const { return ( root ); };
@@ -224,8 +231,6 @@ class RedBlackTree
 		//deletion
 		void	transplant( node<pair> *x, node<pair> *y )
 		{
-			// if ( x == NULL || y == NULL )
-			// 	return ;
 			if ( x->parent == nil )
 				root = y;
 			else if ( x == x->parent->left )

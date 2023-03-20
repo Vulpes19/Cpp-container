@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 11:56:51 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/20 15:36:28 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/20 18:34:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,28 @@ int main( void )
 	// 		random_instructions.push_back(std::make_pair(1, index));
 	// 	}
 	// }
-	for (int i = 0; i < 100; ++i) {
-		const int operation = rand() % 2;
-		if (operation == 0 || nodes.empty()) {
+	for (int i = 0; i < 50; ++i) {
+		// const int operation = rand() % 2;
+		// if (operation == 0 || nodes.empty()) {
 			const int key = rand() % 10000;
 			node_pair *n = new node_pair(pair(key, 0));
 			nodes.push_back(n);
+			std::cout << "**************\n";
+			std::cout << "to insert " << key << std::endl;
+			std::cout << "**************\n";
 			tree->insertNode(n);
 			std::cout << "**************\n";
 			std::cout << "inserted " << key << std::endl;
 			std::cout << "**************\n";
-		} else {
-			const int key = rand() % nodes.size();
-			node_pair *node = nodes[key];
-			nodes.erase(nodes.begin() + key);
-			std::cout << "**************\n";
-			std::cout << "deleted " << node->key << std::endl;
-			std::cout << "**************\n";
-			tree->deleteNode(node);
-		}
+		// } else {
+		// 	const int key = rand() % nodes.size();
+		// 	node_pair *node = nodes[key];
+		// 	nodes.erase(nodes.begin() + key);
+		// 	std::cout << "**************\n";
+		// 	std::cout << "deleted " << node->key << std::endl;
+		// 	std::cout << "**************\n";
+		// 	tree->deleteNode(node);
+		// }
 		tree->draw();
 		std::cout << std::endl;
 	}
