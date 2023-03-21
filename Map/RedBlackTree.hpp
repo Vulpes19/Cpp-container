@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/20 18:42:49 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/21 16:30:44 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,6 @@ class RedBlackTree
 				newNode->color = BLACK;
 				return ;
 			}
-			if ( newNode->parent->parent == NULL || newNode->parent->parent == nil )
-			{
-				// root->color = BLACK;
-				return ;
-			}
 			fixInsert( newNode );
 		};
 		//LEFT ROTATE
@@ -106,9 +101,12 @@ class RedBlackTree
 			if ( toRotate == NULL || toRotate == nil )
 				return ;
 			node<pair> *tmp = toRotate->right;
+			if ( tmp->left == NULL )
+				tmp->left = nil;
+			if ( tmp->right == NULL )
+				tmp->right = nil;
 			toRotate->right = tmp->left;
-			if ( tmp->left && tmp->left != nil )
-				tmp->left->parent = toRotate;
+			tmp->left->parent = toRotate;
 			tmp->parent = toRotate->parent;
 			if ( toRotate->parent == NULL || toRotate->parent == nil )
 				root = tmp;
@@ -125,9 +123,12 @@ class RedBlackTree
 			if ( toRotate == NULL || toRotate == nil )
 				return ;
 			node<pair> *tmp = toRotate->left;
+			if ( tmp->left == NULL )
+				tmp->left = nil;
+			if ( tmp->right == NULL )
+				tmp->right = nil;
 			toRotate->left = tmp->right;
-			if ( tmp->right && tmp->right != nil )
-				tmp->right->parent = toRotate;
+			tmp->right->parent = toRotate;
 			tmp->parent = toRotate->parent;
 			if ( toRotate->parent == NULL || toRotate->parent == nil )
 				root = tmp;
@@ -142,62 +143,102 @@ class RedBlackTree
 		//fix_insertion
 		void	fixInsert( node<pair> *insertedNode )
 		{
-			// int k = insertedNode->key;
-			while ( insertedNode->parent->color == RED )
+			if ( insertedNode->parent->color == RED )
 			{
-				if ( insertedNode->parent == insertedNode->parent->parent->left )
+				if ( insertedNode->parent == insertedNode->parent->parent->right )
 				{
-					node<pair> *tmp = getUncle( insertedNode, RIGHT_DIR );
-					if ( tmp->color == RED )
+					node<pair> *uncle = getUncle( insertedNode, LEFT_DIR );
+					if ( uncle->color == RED )
 					{
+						uncle->color = BLACK;
 						insertedNode->parent->color = BLACK;
-						tmp->color = BLACK;
 						insertedNode->parent->parent->color = RED;
-						insertedNode = insertedNode->parent->parent;
-					}
-					else if ( insertedNode == insertedNode->parent->right )
-					{
-						insertedNode = insertedNode->parent;
-						leftRotate( insertedNode );
-					}
-					insertedNode->parent->color = BLACK;
-					if ( insertedNode->parent->parent && insertedNode->parent->parent != nil )
-					{	
-						insertedNode->parent->parent->color = RED;
-						rightRotate( insertedNode->parent->parent );
-					}
-				}
-				else
-				{
-					node<pair> *tmp = getUncle( insertedNode, LEFT_DIR );
-					if ( tmp->color == RED )
-					{
-						insertedNode->parent->color = BLACK;
-						tmp->color = BLACK;
-						insertedNode->parent->parent->color = RED;
-						insertedNode = insertedNode->parent->parent;
+						fixInsert(insertedNode->parent->parent);
+						return ;
 					}
 					else if ( insertedNode == insertedNode->parent->left )
 					{
-						insertedNode = insertedNode->parent;
-						rightRotate( insertedNode );
+						rightRotate(insertedNode);
 					}
-					insertedNode->parent->color = BLACK;
-					if ( insertedNode->parent->parent && insertedNode->parent->parent != nil )
-					{
-						insertedNode->parent->parent->color = RED;
-						leftRotate( insertedNode->parent->parent );
-					}
+					leftRotate(insertedNode);
+					insertedNode->color = BLACK;
+					insertedNode->right->color = RED;
+					insertedNode->left->color = RED;
 				}
-				if ( insertedNode == root )
-					break ;
+				else
+				{
+					node<pair> *uncle = getUncle( insertedNode, RIGHT_DIR );
+					if ( uncle->color == RED )
+					{
+						uncle->color = BLACK;
+						insertedNode->parent->color = BLACK;
+						insertedNode->parent->parent->color = RED;
+						fixInsert(insertedNode->parent->parent);
+						return ;
+					}
+					else if ( insertedNode == insertedNode->parent->right )
+					{
+						leftRotate(insertedNode);
+					}
+					rightRotate(insertedNode);
+					insertedNode->color = BLACK;
+					insertedNode->right->color = RED;
+					insertedNode->left->color = RED;
+					// fixInsert(insertedNode->parent);
+				}
 			}
 			root->color = BLACK;
-			// if ( k == 4072)
+			// while ( insertedNode->parent->color == RED )
 			// {
-			// 	this->draw();
-			// 	exit(1);
+			// 	if ( insertedNode->parent == insertedNode->parent->parent->left )
+			// 	{
+			// 		node<pair> *uncle = getUncle( insertedNode, RIGHT_DIR );
+			// 		if ( uncle->color == RED )
+			// 		{
+			// 			insertedNode->parent->color = BLACK;
+			// 			uncle->color = BLACK;
+			// 			insertedNode->parent->parent->color = RED;
+			// 			insertedNode = insertedNode->parent->parent;
+			// 		}
+			// 		else if ( insertedNode == insertedNode->parent->right )
+			// 		{
+			// 			insertedNode = insertedNode->parent;
+			// 			leftRotate( insertedNode );
+			// 		}
+			// 		insertedNode->parent->color = BLACK;
+			// 		if ( insertedNode->parent->parent )
+			// 		{	
+			// 			insertedNode->parent->parent->color = RED;
+			// 			rightRotate( insertedNode->parent->parent );
+			// 		}
+			// 	}
+			// 	else
+			// 	{
+			// 		node<pair> *uncle = getUncle( insertedNode, LEFT_DIR );
+			// 		if ( uncle->color == RED )
+			// 		{
+			// 			insertedNode->parent->color = BLACK;
+			// 			uncle->color = BLACK;
+			// 			insertedNode->parent->parent->color = RED;
+			// 			insertedNode = insertedNode->parent->parent;
+			// 		}
+			// 		else if ( insertedNode == insertedNode->parent->left )
+			// 		{
+			// 			std::cout << "I'm here " << insertedNode->key << std::endl;
+			// 			insertedNode = insertedNode->parent;
+			// 			rightRotate( insertedNode );
+			// 		}
+			// 		insertedNode->parent->color = BLACK;
+			// 		if ( insertedNode->parent->parent )
+			// 		{
+			// 			insertedNode->parent->parent->color = RED;
+			// 			leftRotate( insertedNode->parent->parent );
+			// 		}
+			// 	}
+			// 	if ( insertedNode == root )
+			// 		break ;
 			// }
+			// root->color = BLACK;
 		}
 
 		node<pair> *getRoot( void ) const { return ( root ); };

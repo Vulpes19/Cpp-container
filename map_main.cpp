@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_main.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 11:56:51 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/20 18:34:59 by codespace        ###   ########.fr       */
+/*   Updated: 2023/03/21 16:23:14 by abaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,38 +47,49 @@ int main( void )
 	// 		random_instructions.push_back(std::make_pair(1, index));
 	// 	}
 	// }
-	for (int i = 0; i < 50; ++i) {
-		// const int operation = rand() % 2;
-		// if (operation == 0 || nodes.empty()) {
-			const int key = rand() % 10000;
-			node_pair *n = new node_pair(pair(key, 0));
-			nodes.push_back(n);
-			std::cout << "**************\n";
-			std::cout << "to insert " << key << std::endl;
-			std::cout << "**************\n";
-			tree->insertNode(n);
-			std::cout << "**************\n";
-			std::cout << "inserted " << key << std::endl;
-			std::cout << "**************\n";
-		// } else {
-		// 	const int key = rand() % nodes.size();
-		// 	node_pair *node = nodes[key];
-		// 	nodes.erase(nodes.begin() + key);
-		// 	std::cout << "**************\n";
-		// 	std::cout << "deleted " << node->key << std::endl;
-		// 	std::cout << "**************\n";
-		// 	tree->deleteNode(node);
-		// }
-		tree->draw();
-		std::cout << std::endl;
-	}
-
-	// tree2.print_tree(tree->getRoot(), V_VIEW);
-
-	// tree2.print_tree(tree->getRoot(), V_VIEW);
-	// tree->deleteNode(n4);
-	// tree2.print_tree(tree->getRoot(), V_VIEW);
-	// tree->deleteNode(n5);
-	// system("leaks test_map");
-	// tree.print( tree.getRoot() );
+	// for (int i = 0; i < 10; ++i) {
+	// 	// const int operation = rand() % 2;
+	// 	// if (operation == 0 || nodes.empty()) {
+	// 		const int key = rand() % 10000;
+	// 		node_pair *n = new node_pair(pair(key, 0));
+	// 		nodes.push_back(n);
+	// 		std::cout << "**************\n";
+	// 		std::cout << "to insert " << key << std::endl;
+	// 		std::cout << "**************\n";
+	// 		tree->insertNode(n);
+	// 		std::cout << "**************\n";
+	// 		std::cout << "inserted " << key << std::endl;
+	// 		std::cout << "**************\n";
+	// 	// } else {
+	// 	// 	const int key = rand() % nodes.size();
+	// 	// 	node_pair *node = nodes[key];
+	// 	// 	nodes.erase(nodes.begin() + key);
+	// 	// 	std::cout << "**************\n";
+	// 	// 	std::cout << "deleted " << node->key << std::endl;
+	// 	// 	std::cout << "**************\n";
+	// 	// 	tree->deleteNode(node);
+	// 	// }
+	// 	tree->draw();
+	// 	std::cout << std::endl;
+	// }
+	node_pair *n1 = new node_pair(pair (1, 1));
+	node_pair *n2 = new node_pair(pair(2, 1));
+	node_pair *n3 = new node_pair(pair(0, 1));
+	node_pair *n4 = new node_pair(pair(4, 1));
+	node_pair *n5 = new node_pair(pair(3, 1));
+	tree->insertNode(n1);
+	tree->draw();
+	std::cout << std::endl;
+	tree->insertNode(n2);
+	tree->draw();
+	std::cout << std::endl;
+	tree->insertNode(n3);
+	tree->draw();
+	std::cout << std::endl;
+	tree->insertNode(n4);
+	tree->draw();
+	std::cout << std::endl;
+	tree->insertNode(n5);
+	tree->draw();
+	std::cout << std::endl;
 }
