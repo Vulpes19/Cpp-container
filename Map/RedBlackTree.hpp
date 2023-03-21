@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RedBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaioumy <abaioumy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 10:02:37 by abaioumy          #+#    #+#             */
-/*   Updated: 2023/03/21 16:30:44 by abaioumy         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:16:38 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,48 +143,41 @@ class RedBlackTree
 		//fix_insertion
 		void	fixInsert( node<pair> *insertedNode )
 		{
+			node<pair> *grandParent = NULL;
 			if ( insertedNode->parent->color == RED )
 			{
-				if ( insertedNode->parent == insertedNode->parent->parent->right )
+				grandParent = insertedNode->parent->parent;
+				node<pair> *uncle = getUncle( insertedNode, LEFT_DIR );
+				//color flip
+				if ( uncle && uncle->color == RED )
 				{
-					node<pair> *uncle = getUncle( insertedNode, LEFT_DIR );
-					if ( uncle->color == RED )
-					{
-						uncle->color = BLACK;
-						insertedNode->parent->color = BLACK;
-						insertedNode->parent->parent->color = RED;
-						fixInsert(insertedNode->parent->parent);
-						return ;
-					}
-					else if ( insertedNode == insertedNode->parent->left )
-					{
-						rightRotate(insertedNode);
-					}
-					leftRotate(insertedNode);
-					insertedNode->color = BLACK;
-					insertedNode->right->color = RED;
-					insertedNode->left->color = RED;
+					uncle->color = BLACK;
+					insertedNode->parent->color = BLACK;
+					grandParent->color = RED;
+					fixInsert(grandParent);
+					return ;
 				}
-				else
+				if ( insertedNode == insertedNode->parent->left && insertedNode->parent == grandParent->right )
 				{
-					node<pair> *uncle = getUncle( insertedNode, RIGHT_DIR );
-					if ( uncle->color == RED )
-					{
-						uncle->color = BLACK;
-						insertedNode->parent->color = BLACK;
-						insertedNode->parent->parent->color = RED;
-						fixInsert(insertedNode->parent->parent);
-						return ;
-					}
-					else if ( insertedNode == insertedNode->parent->right )
-					{
-						leftRotate(insertedNode);
-					}
-					rightRotate(insertedNode);
-					insertedNode->color = BLACK;
-					insertedNode->right->color = RED;
+					rightRotate(insertedNode->parent);
+					insertedNode = insertedNode->right;
+				}
+				else if ( insertedNode == insertedNode->parent->right && insertedNode->parent == grandParent->left )
+				{
+					leftRotate(insertedNode->parent);
+					insertedNode = insertedNode->left;
+				}
+				insertedNode->parent->color = BLACK;
+				grandParent->color = RED;
+				if ( insertedNode == insertedNode->parent->right && insertedNode->left )
+				{
 					insertedNode->left->color = RED;
-					// fixInsert(insertedNode->parent);
+					rightRotate(insertedNode->parent);
+				}
+				else if ( insertedNode == insertedNode->parent->left && insertedNode->right )
+				{
+					insertedNode->right->color = RED;
+					leftRotate(insertedNode->parent);
 				}
 			}
 			root->color = BLACK;
